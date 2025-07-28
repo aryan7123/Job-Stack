@@ -19,8 +19,8 @@ const page = () => {
     confirm_password: "",
     terms_conditions: false,
   });
-  const [message, setMessage] = useState("");
 
+  const [btnText, setBtnText] = useState("Register");
   const { your_name, email, password, confirm_password, role, terms_conditions } = formData;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -34,7 +34,15 @@ const page = () => {
   };
 
   const handleRegisterUser = async() => {
-    dispatch(registerUser(formData));
+    if(!your_name || !email || !password || !confirm_password || !role || !terms_conditions) {
+      setBtnText("Register");
+    }
+    else {
+      setTimeout(() => {
+        setBtnText("Registering...");
+      }, 2000);
+      dispatch(registerUser(formData));
+    }
   }
 
   return (
@@ -176,7 +184,7 @@ const page = () => {
               disabled={loading}
               className="w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 bg-emerald-600 text-white font-semibold tetx-base hover:bg-emerald-700 text-center cursor-pointer"
             >
-              {loading ? "Registering..." : "Register"}
+              {btnText}
             </button>
             <div className="flex items-center justify-center gap-2 mt-3">
               <span className="text-slate-400 text-sm font-semibold">
