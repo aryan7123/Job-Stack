@@ -1,8 +1,66 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, resetStatus } from "../store/features/loginSlice";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 const page = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { error, loading, success } = useSelector((state) => state.login);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [btnText, setBtnText] = useState("Login");
+
+  const { email, password } = formData;
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLoginUser = async () => {
+    setBtnText("Signing in...");
+    try {
+      const result = await dispatch(loginUser(formData)).unwrap();
+      setBtnText("Success!");
+      const signInResult = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+      if(!signInResult?.error) {
+        router.push('/profile');
+      }
+    } catch (error) {
+      setBtnText("Try Again");
+      setTimeout(() => setBtnText("Login"), 2000);
+    }
+  };
+
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        dispatch(resetStatus());
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, error]);
+
   return (
     <>
       <section className='w-full h-screen flex items-center justify-center relative overflow-hidden bg-center bg-no-repeat bg-cover bg-[url("/banner/bg3-BPJFnXM6.jpg")]'>
@@ -32,6 +90,8 @@ const page = () => {
                 name="email"
                 id="email"
                 placeholder="Email"
+                value={email}
+                onChange={handleInputChange}
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
             </div>
@@ -46,16 +106,29 @@ const page = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
+                onChange={handleInputChange}
                 placeholder="Password"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
             </div>
-            <div className="text-sm font-semibold text-red-600 my-3"></div>
+            {error && (
+              <div className="text-sm font-semibold text-red-600 my-3">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="text-sm font-semibold text-green-600 my-3">
+                {success}
+              </div>
+            )}
             <button
               type="button"
+              onClick={handleLoginUser}
+              disabled={loading}
               className="w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 bg-emerald-600 text-white font-semibold tetx-base hover:bg-emerald-700 text-center cursor-pointer"
             >
-              Login
+              {btnText}
             </button>
             <div className="flex items-center justify-center gap-2 mt-3">
               <span className="text-slate-400 text-sm font-semibold">

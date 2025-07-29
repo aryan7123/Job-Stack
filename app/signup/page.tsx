@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../store/features/signupSlice";
+import { registerUser, resetStatus } from "../store/features/signupSlice";
 
 const page = () => {
   const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.user);
+  const router = useRouter();
+  const { error, loading, success } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     your_name: "",
@@ -21,29 +23,49 @@ const page = () => {
   });
 
   const [btnText, setBtnText] = useState("Register");
-  const { your_name, email, password, confirm_password, role, terms_conditions } = formData;
+  const {
+    your_name,
+    email,
+    password,
+    confirm_password,
+    role,
+    terms_conditions,
+  } = formData;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleRegisterUser = async() => {
-    if(!your_name || !email || !password || !confirm_password || !role || !terms_conditions) {
-      setBtnText("Register");
+  const handleRegisterUser = async () => {
+    setBtnText("Registering...");
+    try {
+      const result = await dispatch(registerUser(formData)).unwrap();
+      if (result) {
+        setBtnText("Success!");
+        setTimeout(() => router.push("/login"), 1000);
+      }
+    } catch (error) {
+      setBtnText("Try Again");
+      setTimeout(() => setBtnText("Register"), 2000);
     }
-    else {
-      setTimeout(() => {
-        setBtnText("Registering...");
-      }, 2000);
-      dispatch(registerUser(formData));
+  };
+
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        dispatch(resetStatus());
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-  }
+  }, [success, error]);
 
   return (
     <>
@@ -110,9 +132,7 @@ const page = () => {
                 onChange={handleInputChange}
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               >
-                <option defaultValue="Select Role">
-                  Select Role
-                </option>
+                <option defaultValue="Select Role">Select Role</option>
                 <option value="Seeker">Seeker</option>
                 <option value="Employer">Employer</option>
                 <option value="Admin">Admin</option>
@@ -176,13 +196,26 @@ const page = () => {
               </label>
             </div>
             {error && (
-              <div className="text-sm font-semibold text-red-600 my-3">{error}</div>
+              <div className="text-sm font-semibold text-red-600 my-3">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="text-sm font-semibold text-green-600 my-3">
+                {success}
+              </div>
             )}
             <button
               type="button"
               onClick={handleRegisterUser}
               disabled={loading}
-              className="w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 bg-emerald-600 text-white font-semibold tetx-base hover:bg-emerald-700 text-center cursor-pointer"
+              className={`w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 
+              ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-emerald-600 hover:bg-emerald-700"
+              } 
+              text-white font-semibold text-base text-center`}
             >
               {btnText}
             </button>

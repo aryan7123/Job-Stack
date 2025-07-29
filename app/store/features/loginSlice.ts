@@ -1,22 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const registerUser = createAsyncThunk(
-  "user/registerUser",
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
   async (formData, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/api/signup", formData);
+      const res = await axios.post("/api/login", formData);
       return res.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data || { message: "Something went wrong" }
+        error.response?.data || { message: "Login failed" }
       );
     }
   }
 );
 
-const userSlice = createSlice({
-  name: "user",
+const userLoginSlice = createSlice({
+  name: "login",
   initialState: {
     user: null,
     loading: false,
@@ -31,22 +31,22 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(registerUser.pending, (state) => {
+      .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user || null;
-        state.success = action.payload.message || "User registered successfully";
+        state.success = action.payload.message || "Login Successful";
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to register user";
+        state.error = action.payload?.message || "Login Failed";
         state.success = null;
       });
   },
 });
 
-export const { resetStatus } = userSlice.actions;
-export default userSlice.reducer;
+export const { resetStatus } = userLoginSlice.actions;
+export default userLoginSlice.reducer;

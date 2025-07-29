@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error('Email and password are required');
         }
 
         const user = await prisma.user.findUnique({
@@ -24,12 +24,12 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) {
-          return null;
+          throw new Error('No user found with this email');
         }
 
         const isPasswordValid = await compare(credentials.password, user.password);
         if (!isPasswordValid) {
-          return null;
+          throw new Error('Incorrect password');
         }
 
         console.log("Authorized user:", user);
@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id.toString(),
           email: user.email,
           name: user.name,
+          role: user.role,
           avatar: user.avatar ?? null,
         };
       },
