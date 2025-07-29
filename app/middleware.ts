@@ -1,22 +1,46 @@
 import { NextResponse } from 'next/server'
-import { NextRequestWithAuth, withAuth } from 'next-auth/middleware'
+import { getToken } from 'next-auth/jwt'
+import type { NextRequest } from 'next/server'
 
-export default withAuth(
-  function middleware(request: NextRequestWithAuth) {
-    if (request.nextUrl.pathname.startsWith('/profile')) {
-      if (!request.nextauth.token) {
-        return NextResponse.redirect(new URL('/', request.url))
-      }
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // Get the token directly using getToken
+  const token = await getToken({ 
+    req: request, 
+    secret: process.env.NEXTAUTH_SECRET 
+  });
+  
+  const isLoggedIn = !!token;
+  
+  console.log('Middleware - Path:', pathname, 'Token exists:', isLoggedIn, 'User ID:', token?.id);
+
+  // Protected routes - redirect to login if not authenticated
+  if (pathname.startsWith('/profile') || pathname.startsWith('/settings')) {
+    if (!isLoggedIn) {
+      console.log('Redirecting to login - accessing protected route without auth');
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('callbackUrl', pathname);
+      return NextResponse.redirect(loginUrl);
     }
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token
-    },
   }
-)
+
+  // Auth pages - redirect to profile if already authenticated
+  if (pathname === '/login' || pathname === '/signup') {
+    if (isLoggedIn) {
+      console.log('Redirecting to profile - user already authenticated');
+      return NextResponse.redirect(new URL('/profile', request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: ['/profile', '/profile/:path*'],
-}
+  matcher: [
+    '/profile/:path*', 
+    '/login', 
+    '/signup', 
+    '/settings/:path*'
+  ],
+};
