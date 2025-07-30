@@ -40,26 +40,26 @@ const Footer = () => {
         <div className='max-w-6xl mx-auto flex md:flex-row flex-col md:gap-0 gap-5 items-center justify-between py-8'>
           <span className='text-gray-300 font-semibold'>©2025 Jobstack. All Rights Reserved</span>
           <ul className="flex items-center gap-2">
-            <li>
-              
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <FaFacebookF />
             </li>
-            <li>
-
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <FaInstagram />
             </li>
-            <li>
-
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <FaLinkedin />
             </li>
-            <li>
-
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <FaTwitter />
             </li>
-            <li>
-
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <FaDribbble />
             </li>
-            <li>
-
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <FaBehance />
             </li>
-            <li>
-
+            <li className='border border-gray-800 rounded-md flex items-center justify-center size-8 text-white text-base transition-colors hover:bg-emerald-600 duration-500 cursor-pointer p-2'>
+              <MdMailOutline />
             </li>
           </ul>
         </div>

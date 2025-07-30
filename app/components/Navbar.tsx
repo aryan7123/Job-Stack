@@ -114,7 +114,7 @@ const Navbar = () => {
                             <SheetTrigger asChild>
                                 <CiMenuBurger size={24} className='md:hidden block text-gray-800' />
                             </SheetTrigger>
-                            <SheetContent side='top' className='z-[1000]'>
+                            <SheetContent side='top' className='z-[100]'>
                                 <SheetHeader>
                                     <SheetTitle>
                                         <Image
