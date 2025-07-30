@@ -45,7 +45,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className={`w-full ${stickyNavbar ? "bg-white shadow" : "bg-emerald-600/5 shadow-none"} sticky transition duration-300 top-0 left-0 z-[99] md:px-0 px-5 py-5`}>
+            <nav className={`w-full ${stickyNavbar ? "bg-white shadow" : "bg-emerald-600/5 shadow-none"} sticky transition-all ease-in-out duration-300 top-0 left-0 z-[99] md:px-0 px-5 py-5`}>
                 <div className='max-w-6xl mx-auto flex items-center justify-between'>
                     <Image
                         className="object-cover md:block hidden"
@@ -114,7 +114,7 @@ const Navbar = () => {
                             <SheetTrigger asChild>
                                 <CiMenuBurger size={24} className='md:hidden block text-gray-800' />
                             </SheetTrigger>
-                            <SheetContent side='top'>
+                            <SheetContent side='top' className='z-[1000]'>
                                 <SheetHeader>
                                     <SheetTitle>
                                         <Image

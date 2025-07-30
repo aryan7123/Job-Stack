@@ -1,10 +1,68 @@
 import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { FaFacebookF, FaInstagram, FaLinkedin, FaTwitter, FaDribbble, FaBehance } from "react-icons/fa";
+import { MdMailOutline } from "react-icons/md";
 
 const Footer = () => {
   return (
     <>
       <section className='w-full bg-slate-900'>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam magni sed maxime ducimus ipsum a, saepe iste harum deleniti velit quisquam non consequuntur, incidunt quia, id voluptates fugiat quam dolore. Minus nobis numquam rerum. Quisquam pariatur est commodi deserunt molestias, vel, doloribus fugit ullam blanditiis incidunt magni eligendi impedit nostrum eum voluptas dolores aspernatur autem, iusto quibusdam voluptates perspiciatis corrupti eos? Doloribus labore dignissimos repudiandae numquam architecto! Suscipit exercitationem architecto maxime dicta, ipsam laborum consectetur, labore asperiores autem beatae fuga. Ducimus sit, ipsam eos voluptatum similique sapiente animi aliquam quis deserunt amet totam dolorem dolorum numquam voluptatibus aspernatur vel veritatis voluptas dignissimos, dolor magni perspiciatis nisi nulla debitis atque. Consectetur possimus voluptatem sunt sit autem illo mollitia reiciendis eligendi deleniti voluptatum, ipsum eius nemo omnis ipsa quaerat maxime laudantium iste ex. Ex, recusandae? Odit corporis maiores voluptatum, fugit, blanditiis numquam facere quam explicabo aspernatur veniam, deleniti fuga consequatur repudiandae facilis reiciendis? Voluptate, mollitia sunt fugiat, repellendus dignissimos temporibus corrupti vel pariatur quas eligendi consequatur iusto magni aperiam nihil sequi praesentium est, neque dolorum reiciendis ullam. Incidunt quae rerum vero expedita? Dignissimos praesentium possimus neque eum voluptatum aut doloremque mollitia beatae ipsum, accusamus deserunt enim dolores repudiandae earum rerum distinctio itaque!
+        <div className='max-w-6xl mx-auto flex md:flex-row flex-col md:gap-0 gap-5 items-center justify-between py-8'>
+          <Image
+            className="object-cover"
+            src="/footer-logo.png"
+            alt="jobstack"
+            width={140}
+            height={100}
+            priority
+          />
+          <div className='flex items-center justify-center gap-5'>
+            <Link href="" className='text-gray-300 hover:text-gray-400 text-base transition-colors font-semibold'>
+              Home
+            </Link>
+            <Link href="" className='text-gray-300 hover:text-gray-400 text-base transition-colors font-semibold'>
+              About Us
+            </Link>
+            <Link href="" className='text-gray-300 hover:text-gray-400 text-base transition-colors font-semibold'>
+              Services
+            </Link>
+            <Link href="" className='text-gray-300 hover:text-gray-400 text-base transition-colors font-semibold'>
+              Blogs
+            </Link>
+            <Link href="" className='text-gray-300 hover:text-gray-400 text-base transition-colors font-semibold'>
+              Contact Us
+            </Link>
+          </div>
+        </div>
+        <div className='w-full border-b border-gray-800'></div>
+        <div className='max-w-6xl mx-auto flex md:flex-row flex-col md:gap-0 gap-5 items-center justify-between py-8'>
+          <span className='text-gray-300 font-semibold'>©2025 Jobstack. All Rights Reserved</span>
+          <ul className="flex items-center gap-2">
+            <li>
+              
+            </li>
+            <li>
+
+            </li>
+            <li>
+
+            </li>
+            <li>
+
+            </li>
+            <li>
+
+            </li>
+            <li>
+
+            </li>
+            <li>
+
+            </li>
+          </ul>
+        </div>
       </section>
     </>
   )
