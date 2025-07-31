@@ -16,7 +16,6 @@ const page = () => {
   const [formData, setFormData] = useState({
     your_name: "",
     email: "",
-    role: "",
     password: "",
     confirm_password: "",
     terms_conditions: false,
@@ -28,7 +27,6 @@ const page = () => {
     email,
     password,
     confirm_password,
-    role,
     terms_conditions,
   } = formData;
 
@@ -117,26 +115,6 @@ const page = () => {
                 placeholder="Email"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
-            </div>
-            <div className="flex flex-col gap-2.5 mb-3">
-              <label
-                htmlFor="role"
-                className="text-base font-bold text-[#161e2d]"
-              >
-                Role:
-              </label>
-              <select
-                name="role"
-                id="role"
-                value={role}
-                onChange={handleInputChange}
-                className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
-              >
-                <option defaultValue="Select Role">Select Role</option>
-                <option value="Seeker">Seeker</option>
-                <option value="Employer">Employer</option>
-                <option value="Admin">Admin</option>
-              </select>
             </div>
             <div className="flex flex-col gap-2.5 mb-3">
               <label

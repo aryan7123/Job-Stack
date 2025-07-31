@@ -8,6 +8,19 @@ import { IoIosCheckmarkCircleOutline, IoIosMail } from "react-icons/io";
 import Link from "next/link";
 
 export default function Home() {
+  const categories = [
+    "Human Resource",
+    "It & Networking",
+    "Sales & Marketing",
+    "Accounting",
+    "Project Manager",
+    "Consultant",
+    "Data Science",
+    "Help Centre",
+    "Software Developer",
+    "Full Stack Developer"
+  ];
+
   return (
     <>
       <Navbar />
@@ -270,6 +283,27 @@ export default function Home() {
               <IoIosMail size={20} />
               <span className="-mt-[2px]">Contact Us</span>
             </button>
+          </div>
+        </div>
+        <div className="w-full pb-16 bg-white max-w-6xl mx-auto px-5 md:px-0">
+          <h3 className="text-3xl md:text-4xl font-semibold mb-6">Browse by Categories</h3>
+          <div className="flex md:flex-row flex-col md:gap-0 gap-3 md:items-center items-start justify-between">
+            <p className="text-slate-400 text-base font-medium">Search your career opportunity with our categories</p>
+            <Link href="#" className="inline-flex items-center font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center relative border-none after:content-[''] after:absolute after:h-px after:w-0 after:end-0 after:bottom-0 after:start-0 after:transition-all after:duration-500 hover:after:w-full hover:after:end-auto text-emerald-600 hover:text-emerald-600 after:bg-emerald-600">
+              All Categories
+              <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="ms-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"></path></svg>
+            </Link>
+          </div>
+          <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 mt-10 gap-[30px]">
+            {categories.map((item, index) => (
+              <div key={index} className="group rounded-md shadow-sm shadow-gray-200 bg-slate-50 transition-all duration-500 hover:bg-emerald-600 p-4 cursor-pointer">
+                <h3 className="text-lg font-semibold group-hover:text-white mb-2.5">{item}</h3>
+                <div className="flex items-center gap-2 text-emerald-600 font-medium group-hover:text-white">
+                  <span>Read More</span>
+                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="ms-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"></path></svg>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

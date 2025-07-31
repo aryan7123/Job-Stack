@@ -13,8 +13,7 @@ export async function POST(request: NextRequest) {
       email,
       password,
       confirm_password,
-      role,
-      terms_conditions,
+      terms_conditions
     } = body;
 
     const existingUser = await prisma.user.findUnique({
@@ -30,11 +29,6 @@ export async function POST(request: NextRequest) {
       );
     } else if (!email) {
       return NextResponse.json({ message: "Email is empty" }, { status: 400 });
-    } else if (role === "Select Role") {
-      return NextResponse.json(
-        { message: "Please select your role" },
-        { status: 400 }
-      );
     } else if (!password) {
       return NextResponse.json(
         { message: "Password is empty" },
@@ -68,14 +62,12 @@ export async function POST(request: NextRequest) {
         name: your_name,
         email,
         password: hashedPassword,
-        role,
       },
       select: {
         id: true,
         name: true,
         email: true,
         password: true,
-        role: true,
       },
     });
 
