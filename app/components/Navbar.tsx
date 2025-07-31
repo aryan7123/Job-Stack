@@ -64,19 +64,19 @@ const Navbar = () => {
                         priority
                     />
                     <div className='md:flex hidden items-center justify-center gap-6'>
-                        <Link href="" className='text-emerald-600 text-sm font-semibold'>
+                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Home
                         </Link>
-                        <Link href="" className='text-emerald-600 text-sm font-semibold'>
+                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             About Us
                         </Link>
-                        <Link href="" className='text-emerald-600 text-sm font-semibold'>
+                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Services
                         </Link>
-                        <Link href="" className='text-emerald-600 text-sm font-semibold'>
+                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Blogs
                         </Link>
-                        <Link href="" className='text-emerald-600 text-sm font-semibold'>
+                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Contact Us
                         </Link>
                     </div>

@@ -1,5 +1,11 @@
+import Image from "next/image";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+
+import { FaBriefcase, FaSearch, FaDesktop, FaStopwatch, FaCameraRetro, FaPlay } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import { IoIosCheckmarkCircleOutline, IoIosMail } from "react-icons/io";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -7,8 +13,264 @@ export default function Home() {
       <Navbar />
       <section className="w-full relative">
         <div className="absolute inset-0 bg-emerald-600/5 pointer-events-none"></div>
-        <div className="">
-          <p className="text-sm font-semibold text-gray-800">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint architecto qui sunt ex, porro sit blanditiis in debitis voluptatibus nemo? Perspiciatis perferendis, quo id est iusto tenetur aperiam odit laboriosam earum repudiandae blanditiis dolorem voluptate! Debitis quas reprehenderit excepturi quia assumenda ab velit accusamus eius vitae doloribus ad ut soluta, iste distinctio dignissimos repellendus eos maxime dolor maiores sint eum atque quibusdam veniam! Non, a voluptatibus perspiciatis quia nulla ad rem at, facilis quasi libero porro nostrum tempora dolore nesciunt, obcaecati rerum officia nisi reprehenderit labore? Libero porro, neque nobis ad, error dicta adipisci magnam laboriosam tempora dolorum facere, aspernatur distinctio? Consectetur quis perferendis maiores magni, expedita esse at tempore voluptatibus eos facere adipisci dolor ex blanditiis reiciendis possimus illo commodi rerum dolores repudiandae porro corrupti vitae alias. Minus, repudiandae. Dicta dolorum perferendis corrupti! Magni quia fugiat obcaecati. Quidem accusamus eligendi facilis sunt et maiores perspiciatis natus quos eum aliquam, fugit ex, magnam explicabo asperiores nemo consequuntur amet dolorem! Sequi porro a reiciendis cum, tempora corrupti? Ad, porro? Est illum rem ipsam? Totam error, illum temporibus quo autem id magni perspiciatis vero cum suscipit excepturi? Nam distinctio quibusdam delectus a eius nesciunt dolor tenetur. Error porro, possimus sunt animi exercitationem blanditiis tempora, modi laboriosam aut dolor repellat quis est, quasi excepturi similique placeat? Repellendus, magni? Cupiditate aliquam praesentium doloremque officiis aperiam dolor, ut asperiores suscipit saepe eos rem aliquid possimus provident sapiente nobis repellendus iste distinctio a eius soluta! Obcaecati excepturi odio officiis nulla et optio maiores, eveniet explicabo. Nemo aperiam ducimus illum quasi eius dignissimos libero nobis quidem saepe quae. Odit non atque laudantium odio nobis sunt architecto nihil quisquam asperiores libero officiis, labore distinctio quo pariatur doloribus voluptas amet velit aliquid dolorum cum obcaecati illum similique beatae. In cupiditate earum omnis, quas animi hic dicta repudiandae iure sequi illum suscipit culpa repellendus, eaque a minus ab. Deserunt, blanditiis. Quae mollitia iure aspernatur! Alias nisi necessitatibus cum minima numquam optio consequatur quis cupiditate tempora sapiente reiciendis aliquam, quas assumenda ipsum unde! Sequi numquam voluptate nihil aliquid fuga odit aspernatur possimus, asperiores modi similique. Recusandae facilis illo porro blanditiis suscipit laboriosam quis quam, eveniet alias cumque deleniti cum voluptas vero explicabo fuga minima facere amet expedita soluta a repellendus voluptatem labore. Beatae excepturi soluta ipsam voluptatem reprehenderit hic animi, debitis modi expedita fuga perferendis repudiandae, maiores explicabo veritatis odio architecto doloribus tempore? Vel, fugiat dicta pariatur est facere expedita provident commodi tempore cupiditate. Saepe iusto atque debitis doloremque voluptas, ad adipisci at numquam id similique architecto laudantium ducimus provident impedit ipsam fugit pariatur quam temporibus molestias, ea facilis, veritatis voluptatibus! Iste sequi ab ullam assumenda error deserunt itaque, nostrum dicta rem quasi laboriosam nihil enim magni nobis a repudiandae. Modi dolor magnam fugit tempore minima adipisci dolorem reiciendis incidunt distinctio fuga asperiores suscipit earum nesciunt saepe sit, ullam quas, sed nostrum vitae ab cupiditate omnis? Magni in voluptatum ullam. Quisquam amet fuga adipisci nulla ut consequuntur debitis cum velit obcaecati praesentium dolore perspiciatis cumque modi quam, veritatis fugiat quibusdam iure, hic accusantium ea voluptatibus dolores dolorem. Asperiores ex est sequi dolor odit architecto! Quae cumque debitis dolores. Quod placeat reiciendis voluptatum dignissimos beatae eaque in sunt repellat aliquid fugiat odit dicta excepturi esse consequuntur laudantium, laboriosam architecto adipisci eum? Exercitationem fugiat voluptates eos culpa aliquid cumque minus. Labore alias est aliquam aut quae totam ad minima error assumenda voluptatibus. Vel expedita corrupti ducimus minus similique optio eius eligendi assumenda veniam, provident sit. Illo laudantium nobis nostrum, aliquid ipsa possimus et vitae deleniti exercitationem, provident incidunt laborum mollitia aut error beatae, labore quibusdam laboriosam officia inventore. Quidem similique ipsum blanditiis quae explicabo veritatis beatae expedita, amet atque quam quisquam, assumenda mollitia perferendis laudantium voluptate qui inventore commodi. Accusamus laborum ut distinctio a eum vero iusto quia vel animi esse velit nisi, quam asperiores quasi officiis hic officia harum deserunt enim molestiae, consectetur modi. Accusamus modi atque illum recusandae veniam maxime, saepe inventore quae mollitia velit ducimus quisquam ullam provident placeat quaerat temporibus necessitatibus est natus maiores suscipit! Ipsam nam optio a, veritatis iste quas eius, sunt maiores ipsa, repellat repellendus. Voluptas temporibus quo doloribus explicabo dolor est alias molestiae, quis, accusantium rerum minima eveniet cum sequi tenetur voluptatem tempora voluptatibus quae dolore illo numquam enim impedit aspernatur officiis assumenda? Expedita voluptatibus magni, recusandae tempora quas explicabo aperiam laboriosam iure voluptates dolorum? Velit laudantium ex sint et nam accusamus minima reiciendis aliquid. Cum blanditiis fugiat animi a consequuntur saepe modi, est quos laboriosam itaque nobis error officiis id maiores vero laborum dolorem at quia quod totam ducimus molestias? Iste corrupti aliquid quaerat nulla nobis ipsa quod consequatur laudantium, eaque dolore quae voluptate distinctio magni deleniti voluptates ab laborum minus! Atque sunt reiciendis temporibus saepe, iure a at itaque. Aliquam quo veritatis necessitatibus ratione perspiciatis quidem. Consectetur quae ipsa quo! Iste repellat dolorum laudantium fugit magnam consequatur omnis. Quod dolores praesentium quae expedita culpa quia atque. Labore error odit commodi nemo doloribus magni nobis architecto provident natus? Libero impedit similique veritatis aspernatur, autem doloremque quo eum maxime voluptatibus necessitatibus at! Sed qui voluptatem ratione voluptatum eos cum tenetur a asperiores veniam nam quisquam, dicta, dolores architecto quo ducimus maxime! Consequuntur, debitis beatae? Dolores autem ad saepe iure magni recusandae repellendus esse, quisquam deserunt laudantium illum, odit rem odio dolorem quidem sit architecto voluptatum magnam quas enim laborum ut veniam vitae accusamus? Mollitia, molestias illum incidunt sapiente vitae cumque fuga eveniet officia a animi saepe illo, magnam dicta veniam, error labore autem pariatur dolorum quisquam. Voluptatem molestias nulla eos nesciunt accusamus minima fugiat voluptates eius ex autem! Doloribus magnam veritatis nesciunt tempore dignissimos, accusamus perspiciatis odit rerum impedit ea assumenda error qui deleniti inventore. Reprehenderit id nostrum ullam quibusdam cupiditate maxime iure rem, neque cumque aspernatur harum minima consequatur officia! Sequi delectus tempore odit? Fuga quidem ipsa saepe consectetur? Perferendis saepe totam facere hic architecto dolores fugiat soluta delectus, sunt, alias facilis sit quod. Accusantium fugiat libero cumque quis doloremque! Beatae, distinctio culpa. Nostrum mollitia veniam nam blanditiis voluptatem reiciendis, quasi quo hic autem?</p>
+        <div className="relative py-24 w-full bg-gradient-to-b from-emerald-600/20 dark:from-emerald-600/40 via-emerald-600/10 to-transparent">
+          <div className="w-[inherit] max-w-6xl mx-auto flex md:flex-row flex-col-reverse items-center justify-center md:px-0 px-5 md:gap-14 gap-10">
+            <div className="bg-white w-full md:w-1/2 rounded-xl shadow-sm p-6">
+              <h3 className="text-gray-800 font-semibold text-3xl mb-3">Find Your Expected Job</h3>
+              <p className="text-slate-400">Find Jobs, Employment & Career Opportunities. Some of the companies we&apos;ve helped recruit excellent applicants over the years.</p>
+              <form action="" className="mt-6">
+                <div className="flex flex-col gap-2 mb-5">
+                  <label htmlFor="" className="font-medium text-gray-800">Search:</label>
+                  <div className="w-full flex items-center gap-3 bg-gray-50 px-3 py-3.5">
+                    <FaSearch className="text-emerald-600" />
+                    <input type="text" className="w-[inherit] outline-none text-sm" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 mb-5">
+                  <label htmlFor="" className="font-medium text-gray-800">Location:</label>
+                  <div className="w-full flex items-center gap-3 bg-gray-50 px-3 py-3.5">
+                    <FaLocationDot className="text-emerald-600" />
+                    <select name="" id="" className="w-[inherit] outline-none text-sm">
+                      <option defaultValue="Select Country">Select Country</option>
+                      <option value="USA">USA</option>
+                      <option value="UK">UK</option>
+                      <option value="Germany">Germany</option>
+                      <option value="Cannada">Cannada</option>
+                      <option value="Luxembourg">Luxembourg</option>
+                      <option value="France">France</option>
+                      <option value="Hungary">Hungary</option>
+                      <option value="Switzerland">Switzerland</option>
+                      <option value="India">India</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 mb-5">
+                  <label htmlFor="" className="font-medium text-gray-800">Job Type:</label>
+                  <div className="w-full flex items-center gap-3 bg-gray-50 px-3 py-3.5">
+                    <FaBriefcase className="text-emerald-600" />
+                    <select name="" id="" className="w-[inherit] outline-none text-sm">
+                      <option defaultValue="Select Type">Select Type</option>
+                      <option value="Full Time">Full Time</option>
+                      <option value="Part Time">Part Time</option>
+                      <option value="Freelancer">Freelancer</option>
+                      <option value="Remote">Remote</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Internship">Internship</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="button" className="bg-emerald-600 mt-2 text-white rounded-md font-semibold text-base transition-colors duration-300 hover:bg-emerald-700 px-7 py-3 cursor-pointer">
+                  Search
+                </button>
+              </form>
+            </div>
+            <div className="w-full md:w-1/2">
+              <Image
+                className="w-[inherit] md:w-[540px] md:h-[450px] h-auto object-contain"
+                src="banner/woman_working_2-CtRt_vob.svg"
+                width={100}
+                height={100}
+                alt="woman-banner"
+                priority
+                quality={100}
+              />
+            </div>
+          </div>
+          <div className="w-full mx-auto max-w-6xl mt-16 flex flex-wrap md:justify-between justify-center gap-10 px-5 md:px-0">
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/android-DxDSUxh3.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/whatsapp-DI6pEZsf.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/circle-logo-De1zeqcD.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/facebook-logo-BA8KIyWJ.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/google-logo-BMGBKr3O.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/lenovo-logo-CWm1nm3g.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/linkedin-Df_VHV2-.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/skype-8LcG9xH2.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/spotify-C55lgJAb.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+            <div className="animate-bounce size-12 bg-white shadow-sm shadow-gray-200 flex items-center justify-center py-4 rounded-md transition duration-300">
+              <Image
+                src="/assets/telegram-hDmYG96g.png"
+                width={30}
+                height={30}
+                alt="android-logo"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="w-full pb-16 bg-white max-w-6xl mx-auto px-5 md:px-0">
+          <div className="flex flex-col gap-5 items-center justify-center">
+            <h3 className="text-3xl font-semibold">How it&apos;s Work?</h3>
+            <span className="text-slate-400 text-sm text-center max-w-xl font-medium">Search all the open positions on the web. Get your own personalized salary estimate. Read reviews on over 30000+ companies worldwide.</span>
+          </div>
+          <div className="flex md:flex-row flex-col gap-8 items-center justify-between mt-6">
+            <div className="p-6 bg-white flex flex-col items-center justify-center transition hover:shadow-xl hover:shadow-gray-100 rounded-2xl duration-500">
+              <div className="size-14 bg-emerald-600/5 text-emerald-500 rounded-xl shadow-xs flex items-center justify-center transition">
+                <FaDesktop size={20} />
+              </div>
+              <h3 className="text-base font-semibold mt-3.5 hover:text-emerald-500">Create Account</h3>
+              <p className="text-slate-400 text-sm text-center mt-3">Sign up quickly to access job listings or start posting openings as a recruiter.</p>
+              <div className="mt-5">
+                <Link href="#" className="inline-flex items-center font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center relative border-none after:content-[''] after:absolute after:h-px after:w-0 after:end-0 after:bottom-0 after:start-0 after:transition-all after:duration-500 hover:after:w-full hover:after:end-auto text-emerald-600 hover:text-emerald-600 after:bg-emerald-600">
+                  Read More
+                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="ms-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"></path></svg>
+                </Link>
+              </div>
+            </div>
+            <div className="p-6 bg-white flex flex-col items-center justify-center shadow-xl shadow-gray-100 transition duration-500 rounded-2xl">
+              <div className="size-14 bg-emerald-600/5 text-emerald-500 rounded-xl shadow-xs flex items-center justify-center transition">
+                <FaStopwatch size={20} />
+              </div>
+              <h3 className="text-base font-semibold mt-3.5 hover:text-emerald-500">Complete Your Profile</h3>
+              <p className="text-slate-400 text-sm text-center mt-3">Add your skills, experience, and preferences to get matched with the right opportunities.</p>
+              <div className="mt-5">
+                <Link href="#" className="inline-flex items-center font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center relative border-none after:content-[''] after:absolute after:h-px after:w-0 after:end-0 after:bottom-0 after:start-0 after:transition-all after:duration-500 hover:after:w-full hover:after:end-auto text-emerald-600 hover:text-emerald-600 after:bg-emerald-600">
+                  Read More
+                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="ms-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"></path></svg>
+                </Link>
+              </div>
+            </div>
+            <div className="p-6 bg-white flex flex-col items-center justify-center transition hover:shadow-xl hover:shadow-gray-100 rounded-2xl duration-500">
+              <div className="size-14 bg-emerald-600/5 text-emerald-500 rounded-xl shadow-xs flex items-center justify-center transition">
+                <FaCameraRetro size={20} />
+              </div>
+              <h3 className="text-base font-semibold mt-3.5 hover:text-emerald-500">Apply For Job or Hire</h3>
+              <p className="text-slate-400 text-sm text-center mt-3">Start applying for your dream job or connect with the perfect candidate.</p>
+              <div className="mt-5">
+                <Link href="#" className="inline-flex items-center font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center relative border-none after:content-[''] after:absolute after:h-px after:w-0 after:end-0 after:bottom-0 after:start-0 after:transition-all after:duration-500 hover:after:w-full hover:after:end-auto text-emerald-600 hover:text-emerald-600 after:bg-emerald-600">
+                  Read More
+                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="ms-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"></path></svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-full pb-16 bg-white max-w-6xl flex md:flex-row flex-col md:items-center items-start md:justify-center justify-start mx-auto px-5 md:px-0 md:gap-0 gap-10">
+          <div className="relative w-full md:w-1/2">
+            <div className="grid grid-cols-12 gap-6 items-center">
+              <div className="col-span-6">
+                <div className="grid grid-cols-1 gap-6">
+                  <Image
+                    className="shadow-sm w-56 h-52 rounded-md object-cover"
+                    src="/assets/ab03-sCMv19D3.jpg"
+                    width={100}
+                    height={100}
+                    priority
+                    quality={100}
+                    alt=""
+                  />
+                  <Image
+                    className="shadow-sm w-56 h-52 rounded-md object-cover"
+                    src="/assets/ab02-Dnw9ga1r.jpg"
+                    width={100}
+                    priority
+                    quality={100}
+                    height={100}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div className="col-span-6 md:-ml-14 -ml-0">
+                <div className="grid grid-cols-1 gap-6">
+                  <Image 
+                    className="shadow-sm w-56 h-[260px] rounded-md object-cover" 
+                    src="/assets/ab01-Dky8rhyA.jpg"
+                    alt="" 
+                    width={100}
+                    priority
+                    quality={100}
+                    height={100} 
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="absolute cursor-pointer size-20 bg-white rounded-full flex items-center justify-center text-emerald-600 top-1/2 md:left-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <FaPlay />
+            </div>
+          </div>
+          <div className="w-full md:w-1/2">
+            <h3 className="md:text-4xl text-3xl font-bold mb-6">Get the job of you dreams <br /> quick & easy.</h3>
+            <p className="text-base text-slate-400 max-w-xl">Search all the open positions on the web. Get your own personalized salary estimate. Read reviews on over 30000+ companies worldwide.</p>
+            <ul className="mt-6">
+              <li className="flex items-start gap-2 mb-2.5">
+                <IoIosCheckmarkCircleOutline size={20} className="text-emerald-600 font-bold" />
+                <span className="text-base text-slate-400 -mt-1">Digital Marketing Solutions for Tomorrow</span>
+              </li>
+              <li className="flex items-start gap-2 mb-2.5">
+                <IoIosCheckmarkCircleOutline size={20} className="text-emerald-600 font-bold" />
+                <span className="text-base text-slate-400 -mt-1">Our Talented & Experienced Marketing Agency</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <IoIosCheckmarkCircleOutline size={20} className="text-emerald-600 font-bold" />
+                <span className="text-base text-slate-400 -mt-1">Create your own skin to match your brand</span>
+              </li>
+            </ul>
+            <button type="button" className="flex items-center mt-6 gap-1.5 text-white bg-emerald-600 hover:bg-emerald-700 transition-colors duration-300 cursor-pointer rounded-md font-semibold py-3.5 px-3">
+              <IoIosMail size={20} />
+              <span className="-mt-[2px]">Contact Us</span>
+            </button>
+          </div>
         </div>
       </section>
       <Footer />
