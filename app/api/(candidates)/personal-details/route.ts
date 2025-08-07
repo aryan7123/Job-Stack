@@ -15,6 +15,8 @@ export async function POST(request: NextRequest) {
     const your_name = formData.get("your_name") as string;
     const email = formData.get("email") as string;
     const occupation = formData.get("occupation") as string;
+    const phone = formData.get("phone") as string;
+    const website_url = formData.get("website_url") as string;
     const location = formData.get("location") as string;
     const education = formData.get("education") as string;
     const experience = formData.get("experience") as string;
@@ -41,6 +43,10 @@ export async function POST(request: NextRequest) {
 
     // Generate URL for database
     const fileUrl = `/assets/resumes/${fileName}`;
+
+    if(!your_name || !email || !occupation || !location || !experience || !education || !resume || !skills || !phone || !website_url || !description) {
+      return NextResponse.json({ message: "Atleast one input field is required" }, { status: 400 });
+    }
 
     await prisma.user.update({
       where: { id: userId },
@@ -69,6 +75,8 @@ export async function POST(request: NextRequest) {
           location,
           education,
           experience,
+          phoneNumber: phone,
+          website: website_url,
           skills,
           resumeUrl: fileUrl,
           description,
@@ -78,8 +86,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         candidate: updateCandidate,
         message: "Personal Details Updated Successfully",
-      });
-      
+      }, { status: 200 });
+
     } else {
       const CreateCandidate = await prisma.profile.create({
         data: {
@@ -91,6 +99,8 @@ export async function POST(request: NextRequest) {
           education,
           experience,
           skills,
+          phoneNumber: phone,
+          website: website_url,
           resumeUrl: fileUrl,
           description,
         },
@@ -99,7 +109,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         candidate: CreateCandidate,
         message: "Personal Details Updated Successfully",
-      });
+      }, { status: 200 });
     }
   } catch (error) {
     console.log(error);

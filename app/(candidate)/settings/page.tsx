@@ -18,6 +18,8 @@ interface PersonalDetails {
     location: string;
     education: string;
     experience: string;
+    phone: string;
+    website_url: string;
     skills: string[];
     resume: File | null;
     description: string;
@@ -49,6 +51,7 @@ const page = () => {
         "Android Developer"
     ];
 
+    const [btnText, setBtnText] = useState("Save Changes");
     const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
         your_name: "",
         email: "",
@@ -57,6 +60,8 @@ const page = () => {
         education: "",
         experience: "",
         skills: [],
+        phone: "",
+        website_url: "",
         resume: null,
         description: "",
         userId: ""
@@ -71,7 +76,8 @@ const page = () => {
         }
     }, [session?.user?.id]);
 
-    const { your_name, email, occupation, location, education, experience, skills, resume, description, userId } = personalDetails;
+    const { your_name, email, occupation, location, education, experience, skills, resume, phone,
+        website_url, description, userId } = personalDetails;
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -91,8 +97,8 @@ const page = () => {
         }
     };
 
-
     const handleUpdatePersonalDetails = async () => {
+        setBtnText("Saving...");
         try {
             const formData = new FormData();
             formData.append("your_name", your_name);
@@ -101,6 +107,8 @@ const page = () => {
             formData.append("location", location);
             formData.append("education", education);
             formData.append("experience", experience);
+            formData.append("phone", phone);
+            formData.append("website_url", website_url);
             formData.append("description", description);
             formData.append("userId", userId);
 
@@ -112,11 +120,27 @@ const page = () => {
                 formData.append("resume", resume);
             }
 
-            dispatch(candidatePersonalDetails(formData));
+            const result = dispatch(candidatePersonalDetails(formData));
+            if (result) {
+                setBtnText("Success!");
+                setTimeout(() => setBtnText("Save Changes"), 2000);
+            }
+            else {
+                setTimeout(() => setBtnText("Save Changes"), 2000);
+            }
         } catch (error) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        if (success || error) {
+            const timer = setTimeout(() => {
+                dispatch(resetStatus());
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [success, error]);
 
     return (
         <>
@@ -200,6 +224,18 @@ const page = () => {
                                 <input className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700" placeholder="Experience" id="experience" type="text" name="experience" onChange={handleInputChange} value={experience} />
                             </div>
                             <div className='flex flex-col gap-1.5'>
+                                <label htmlFor='phone' className="form-label font-medium">Phone Number :
+                                    <span className="text-red-600">*</span>
+                                </label>
+                                <input className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700" placeholder="Phone Number" id="phone" type="text" name="phone" onChange={handleInputChange} value={phone} />
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
+                                <label htmlFor='website_url' className="form-label font-medium">Website URL :
+                                    <span className="text-red-600">*</span>
+                                </label>
+                                <input className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700" placeholder="Website URL" id="website_url" type="text" name="website_url" onChange={handleInputChange} value={website_url} />
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
                                 <SkillsSelectComponent
                                     skills={personalDetails.skills}
                                     handleSkillsChange={(selected: string[]) =>
@@ -222,8 +258,18 @@ const page = () => {
                                 <textarea className='border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700' name="description" id="description" onChange={handleInputChange} value={description}></textarea>
                             </div>
                         </div>
-                        <button onClick={handleUpdatePersonalDetails} type="button" className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5">
-                            Save Changes
+                        {error && (
+                            <div className="text-sm font-semibold text-red-600 my-3">
+                                {error}
+                            </div>
+                        )}
+                        {success && (
+                            <div className="text-sm font-semibold text-green-600 my-3">
+                                {success}
+                            </div>
+                        )}
+                        <button disabled={loading} onClick={handleUpdatePersonalDetails} type="button" className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5">
+                            {btnText}
                         </button>
                     </form>
                 </div>
