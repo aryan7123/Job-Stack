@@ -12,111 +12,95 @@ export async function POST(request: NextRequest) {
 
     const resume = formData.get("resume") as File | null;
     const userId = formData.get("userId") as string;
-    const your_name = formData.get("your_name") as string;
-    const email = formData.get("email") as string;
-    const occupation = formData.get("occupation") as string;
-    const phone = formData.get("phone") as string;
-    const website_url = formData.get("website_url") as string;
-    const location = formData.get("location") as string;
-    const education = formData.get("education") as string;
-    const experience = formData.get("experience") as string;
+
+    if (!userId) {
+      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+    }
+
+    const updateData: any = {};
+
+    // Update user basic info if present
+    const your_name = formData.get("your_name") as string | null;
+    const email = formData.get("email") as string | null;
+    if (your_name || email) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          ...(your_name && { name: your_name }),
+          ...(email && { email }),
+        },
+      });
+    }
+
+    // Process resume if present
+    let fileUrl: string | undefined = undefined;
+    if (resume) {
+      const timestamp = Date.now();
+      const extension = path.extname(resume.name);
+      const fileName = `resume_${timestamp}${extension}`;
+
+      const assetsDir = path.join(process.cwd(), "public", "assets", "resumes");
+      const filePath = path.join(assetsDir, fileName);
+
+      if (!fs.existsSync(assetsDir)) {
+        fs.mkdirSync(assetsDir, { recursive: true });
+      }
+
+      const arrayBuffer = await resume.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      fs.writeFileSync(filePath, buffer);
+
+      fileUrl = `/assets/resumes/${fileName}`;
+      updateData.resumeUrl = fileUrl;
+    }
+
+    // Collect optional fields
+    const occupation = formData.get("occupation") as string | null;
+    const location = formData.get("location") as string | null;
+    const education = formData.get("education") as string | null;
+    const experience = formData.get("experience") as string | null;
+    const phone = formData.get("phone") as string | null;
+    const website_url = formData.get("website_url") as string | null;
+    const description = formData.get("description") as string | null;
     const skills = formData.getAll("skills") as string[];
-    const description = formData.get("description") as string;
 
-    const timestamp = Date.now();
-    const extension = path.extname(resume.name);
-    const fileName = `resume_${timestamp}${extension}`;
+    if (occupation) updateData.occupation = occupation;
+    if (location) updateData.location = location;
+    if (education) updateData.education = education;
+    if (experience) updateData.experience = experience;
+    if (phone) updateData.phoneNumber = phone;
+    if (website_url) updateData.website = website_url;
+    if (description) updateData.description = description;
+    if (skills.length > 0) updateData.skills = skills;
 
-    // Define paths
-    const assetsDir = path.join(process.cwd(), "public", "assets", "resumes");
-    const filePath = path.join(assetsDir, fileName);
-
-    // Create directory if it doesn't exist
-    if (!fs.existsSync(assetsDir)) {
-      fs.mkdirSync(assetsDir, { recursive: true });
-    }
-
-    // Convert file to buffer and save
-    const arrayBuffer = await resume.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    fs.writeFileSync(filePath, buffer);
-
-    // Generate URL for database
-    const fileUrl = `/assets/resumes/${fileName}`;
-
-    if(!your_name || !email || !occupation || !location || !experience || !education || !resume || !skills || !phone || !website_url || !description) {
-      return NextResponse.json({ message: "Atleast one input field is required" }, { status: 400 });
-    }
-
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        name: your_name,
-        email,
-      },
+    const existingProfile = await prisma.profile.findUnique({
+      where: { userId },
     });
 
-    const exisitingProfile = await prisma.profile.findUnique({
-      where: {
-        userId: userId,
-      },
-    });
-
-    if (exisitingProfile) {
-      const updateCandidate = await prisma.profile.update({
-        where: {
-          userId: userId,
-        },
-        data: {
-          user: {
-            connect: { id: userId },
-          },
-          occupation,
-          location,
-          education,
-          experience,
-          phoneNumber: phone,
-          website: website_url,
-          skills,
-          resumeUrl: fileUrl,
-          description,
-        }
+    let candidate;
+    if (existingProfile) {
+      candidate = await prisma.profile.update({
+        where: { userId },
+        data: updateData,
       });
-
-      return NextResponse.json({
-        candidate: updateCandidate,
-        message: "Personal Details Updated Successfully",
-      }, { status: 200 });
-
     } else {
-      const CreateCandidate = await prisma.profile.create({
+      candidate = await prisma.profile.create({
         data: {
-          user: {
-            connect: { id: userId },
-          },
-          occupation,
-          location,
-          education,
-          experience,
-          skills,
-          phoneNumber: phone,
-          website: website_url,
-          resumeUrl: fileUrl,
-          description,
+          user: { connect: { id: userId } },
+          ...updateData,
         },
       });
-
-      return NextResponse.json({
-        candidate: CreateCandidate,
-        message: "Personal Details Updated Successfully",
-      }, { status: 200 });
     }
+
+    return NextResponse.json({
+      candidate,
+      message: "Personal Details Updated Successfully",
+    }, { status: 200 });
+
   } catch (error) {
-    console.log(error);
+    console.log("Update error:", error);
     return NextResponse.json(
-      {
-        message: "Something went wrong",
-      },
+      { message: "Something went wrong" },
       { status: 400 }
     );
   }
