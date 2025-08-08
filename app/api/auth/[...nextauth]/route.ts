@@ -32,13 +32,13 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Incorrect password');
         }
 
-        console.log("Authorized user:", user);
-
+        // Ensure the role exists — assume 'user' if missing
         return {
           id: user.id.toString(),
           email: user.email,
           name: user.name,
           avatar: user.avatar ?? null,
+          role: user.role || 'user', // 'admin', 'employer', or 'user'
         };
       },
     }),
@@ -51,6 +51,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.avatar = user.avatar ?? null;
+        token.role = user.role; // Store role in token
       }
       return token;
     },
@@ -58,6 +59,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id;
         session.user.avatar = token.avatar ?? null;
+        session.user.role = token.role; // Make role available in client
       }
       return session;
     },

@@ -16,11 +16,12 @@ const page = () => {
 
   const [formData, setFormData] = useState({
     email: "",
+    role: "",
     password: "",
   });
   const [btnText, setBtnText] = useState("Login");
 
-  const { email, password } = formData;
+  const { email, password, role } = formData;
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -44,7 +45,7 @@ const page = () => {
         password,
       });
       if(!signInResult?.error) {
-        router.push('/profile');
+        router.push(`/profile/${role}`);
       }
     } catch (error) {
       setBtnText("Try Again");
@@ -94,6 +95,20 @@ const page = () => {
                 onChange={handleInputChange}
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
+            </div>
+            <div className="flex flex-col gap-2.5 mb-3">
+              <label
+                htmlFor="role"
+                className="text-base font-bold text-[#161e2d]"
+              >
+                Role:
+              </label>
+              <select name="role" id="role" value={role} className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300" onChange={handleInputChange}>
+                <option defaultValue="Select Role">Select Role</option>
+                <option value="user">User</option>
+                <option value="employer">Employer</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
             <div className="flex flex-col gap-2.5 mb-3">
               <label

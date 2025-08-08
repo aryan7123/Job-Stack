@@ -7,47 +7,48 @@ import { compare } from "bcryptjs";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
-    const { email, password } = body;
-
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    const isPasswordValid = await compare(password, user.password);
+    const { email, password, role } = body;
 
     if (!email) {
       return NextResponse.json({ message: "Email is empty" }, { status: 400 });
-    } else if (!password) {
+    }
+    if (!password) {
+      return NextResponse.json({ message: "Password is empty" }, { status: 400 });
+    }
+    if (!role) {
       return NextResponse.json(
-        { message: "Password is empty" },
+        { message: "Please select at least one role" },
         { status: 400 }
       );
-    } else if (!user) {
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email, role },
+    });
+
+    if (!user) {
       return NextResponse.json(
-        { message: "Email Address does not exists" },
+        { message: "Email Address does not exist" },
         { status: 400 }
       );
-    } else if (!isPasswordValid) {
+    }
+
+    const isPasswordValid = await compare(password, user.password);
+
+    if (!isPasswordValid) {
       return NextResponse.json(
         { message: "Incorrect Password" },
         { status: 400 }
       );
-    } else {
-      return NextResponse.json(
-        { message: "Login Successful" },
-        { status: 200 }
-      );
     }
+
+    return NextResponse.json({ message: "Login Successful" }, { status: 200 });
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
-      {
-        message: "Something went wrong",
-      },
+      { message: "Something went wrong" },
       { status: 400 }
     );
   }
 }
+
