@@ -1,6 +1,51 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { useSession } from 'next-auth/react';
+import { passwordUpdate } from '@/app/store/features/candidates/passwordSlice';
 
 const Passwords = () => {
+    const { data: session } = useSession();
+    const dispatch = useDispatch();
+    const { error, success, loading } = useSelector(state => state.candidatePassword);
+
+    const [passwords, setPasswords] = useState({
+        old_password: "",
+        new_password: "",
+        retype_password: "",
+        userId: ""
+    });
+
+    const { old_password, new_password, retype_password, userId } = passwords;
+
+    const handleInputChange = (
+        e: React.ChangeEvent<
+            HTMLInputElement
+        >
+    ) => {
+        const { name, value } = e.target;
+        setPasswords((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    useEffect(() => {
+        if (session?.user?.id) {
+            setPasswords((prev) => ({
+                ...prev,
+                userId: session.user.id,
+            }));
+        }
+    }, [session?.user?.id]);
+
+    const handleUpdatePassword = async() => {
+        try {
+            const result = dispatch(passwordUpdate(passwords));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <form className="bg-white shadow-sm p-6 mt-14 rounded-md">
@@ -17,6 +62,8 @@ const Passwords = () => {
                         id="old_password"
                         type="password"
                         name="old_password"
+                        value={old_password}
+                        onChange={handleInputChange}
                     />
                 </div>
                 <div className="flex flex-col gap-1.5 mb-3">
@@ -29,6 +76,8 @@ const Passwords = () => {
                         id="new_password"
                         type="password"
                         name="new_password"
+                        value={new_password}
+                        onChange={handleInputChange}
                     />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -41,10 +90,23 @@ const Passwords = () => {
                         id="retype_password"
                         type="password"
                         name="retype_password"
+                        value={retype_password}
+                        onChange={handleInputChange}
                     />
                 </div>
+                {error && (
+                    <div className="text-sm font-semibold text-red-600 my-3">
+                        {error}
+                    </div>
+                )}
+                {success && (
+                    <div className="text-sm font-semibold text-green-600 my-3">
+                        {success}
+                    </div>
+                )}
                 <button
                     type="button"
+                    onClick={handleUpdatePassword}
                     className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
                 >
                     Save Changes

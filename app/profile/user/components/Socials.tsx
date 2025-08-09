@@ -7,7 +7,7 @@ import { FiFacebook } from "react-icons/fi";
 const Socials = () => {
     const { data: session } = useSession();
     const dispatch = useDispatch();
-    const { error, success, loading } = useSelector((state) => state.candidate);
+    const { error, success, loading } = useSelector((state) => state.candidateSocial);
 
     const [socialLinks, setSocialLinks] = useState({
         twitter: "",
@@ -128,7 +128,7 @@ const Socials = () => {
                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                             </svg>
                             <input
-                                className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent mt-2 ps-12"
+                                className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent mt-2 ps-12 font-medium"
                                 placeholder="Instagram Profile Name"
                                 id="instagram"
                                 type="text"
@@ -165,7 +165,7 @@ const Socials = () => {
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                             <input
-                                className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent mt-2 ps-12"
+                                className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent mt-2 ps-12 font-medium"
                                 placeholder="Linkedin Profile Name"
                                 id="linkedin"
                                 type="text"
@@ -187,7 +187,7 @@ const Socials = () => {
                         <div className="form-icon relative">
                             <FiFacebook className="size-4 absolute top-5 start-4" />
                             <input
-                                className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent mt-2 ps-12"
+                                className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent mt-2 ps-12 font-medium"
                                 placeholder="Facebook url"
                                 id="facebook"
                                 type="text"
