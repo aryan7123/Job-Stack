@@ -5,7 +5,7 @@ export const candidatePersonalDetails = createAsyncThunk(
   "candidate/personalDetails",
   async (formData: FormData, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/api/personal-details", formData);
+      const res = await axios.post("/api/update-personal-details", formData);
       return res.data;
     } catch (error) {
       return rejectWithValue(
