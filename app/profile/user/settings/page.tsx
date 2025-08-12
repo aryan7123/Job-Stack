@@ -16,6 +16,7 @@ import {
     resetStatus,
 } from "@/app/store/features/candidates/personalDetails";
 import Socials from "../components/Socials";
+import Loader from "@/app/components/Loader";
 interface PersonalDetails {
     your_name: string;
     email: string;
@@ -167,6 +168,8 @@ const page = () => {
             return () => clearTimeout(timer);
         }
     }, [success, error]);
+
+    if(loading) return <Loader />;
 
     return (
         <>
