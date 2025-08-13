@@ -34,7 +34,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String  @default("user")
+  role      String   @default("user")
   avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -67,17 +67,20 @@ model Profile {
 }
 
 model Company {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  email       String
-  password    String
-  founded     String?
-  founder     String?
-  photos      String[]
-  location    String?
-  logoUrl     String?
-  website     String?
-  description String?
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String
+  password     String
+  industry     String?
+  companySize  String?
+  yearFounded  String?
+  founder      String?
+  photos       String[]
+  headquarters String?
+  companyLogo  String?
+  specialties  String[]
+  website      String?
+  description  String?
 }
 
 model Job {
