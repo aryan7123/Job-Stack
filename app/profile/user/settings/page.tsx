@@ -17,6 +17,7 @@ import {
 } from "@/app/store/features/candidates/personalDetails";
 import Socials from "../components/Socials";
 import Loader from "@/app/components/Loader";
+import axios from "axios";
 interface PersonalDetails {
     your_name: string;
     email: string;
@@ -72,6 +73,10 @@ const page = () => {
         description: "",
         userId: "",
     });
+    const [clearBtn, setClearBtn] = useState(false);
+    const [promptBtnText, setPromptBtnText] = useState("Generate");
+    const [prompt, setPrompt] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
 
     useEffect(() => {
         if (session?.user?.id) {
@@ -96,6 +101,34 @@ const page = () => {
         description,
         userId,
     } = personalDetails;
+
+    const handlePromptChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPrompt(e.target.value);
+    }
+
+    const handleClearImage = () => {
+        setPromptBtnText("Generate");
+        setPrompt("");
+        setAvatarUrl("");
+        setClearBtn(false);
+    }
+
+    const handleGenerateAvatar = async () => {
+        setPromptBtnText("Generating...");
+        try {
+            const req = await axios.post("/api/generate-avatar", { prompt });
+            if (req.data.image) {
+                setAvatarUrl(req.data.image);
+                setClearBtn(true);
+            }
+        } catch (error) {
+            setPromptBtnText("Generate");
+            console.log(error);
+        }
+        finally {
+            setPromptBtnText("Generate");
+        }
+    }
 
     const handleInputChange = (
         e: React.ChangeEvent<
@@ -169,7 +202,7 @@ const page = () => {
         }
     }, [success, error]);
 
-    if(loading) return <Loader />;
+    if (loading) return <Loader />;
 
     return (
         <>
@@ -178,12 +211,6 @@ const page = () => {
             <section className="w-full bg-white">
                 <div className="max-w-6xl mx-auto px-5 md:px-0 py-24">
                     <div className="relative text-transparent">
-                        <input
-                            type="file"
-                            name="background"
-                            id="background"
-                            className="hidden"
-                        />
                         <div className="relative shrink-0">
                             <Image
                                 src={"/assets/bg5-BQCe0yqf.jpg"}
@@ -194,18 +221,8 @@ const page = () => {
                                 quality={100}
                                 priority
                             />
-                            <label
-                                htmlFor="background"
-                                className="absolute inset-0 cursor-pointer"
-                            ></label>
                         </div>
                         <div className="absolute -bottom-12 left-3 flex items-end gap-2 w-full">
-                            <input
-                                type="file"
-                                name="profile"
-                                id="profile"
-                                className="hidden"
-                            />
                             <Image
                                 src="/assets/01--4QesCJS.jpg"
                                 width={100}
@@ -215,18 +232,51 @@ const page = () => {
                                 quality={100}
                                 priority
                             />
-                            <label
-                                htmlFor="profile"
-                                className="absolute inset-0 cursor-pointer"
-                            ></label>
                             <div className="text-gray-800 text-lg font-semibold w-full">
                                 {session?.user?.name}
                             </div>
                         </div>
                     </div>
+                    <form encType="multipart/form-data" className="bg-white shadow-sm p-6 mt-28 rounded-md">
+                        <h3 className="text-xl mb-6 font-semibold text-gray-800">
+                            Generate AI Avatars
+                        </h3>
+                        <div className="w-full flex flex-col items-start justify-start">
+                            <input type="text" name="avatar" id="avatar" value={prompt} onChange={handlePromptChange} placeholder="Write Your Prompt..." className="border w-[inherit] border-slate-100 rounded-sm p-2 focus:outline-emerald-700" />
+                            {avatarUrl && (
+                                <Image
+                                    className="object-cover rounded-full my-2"
+                                    src={avatarUrl}
+                                    alt="Generated Avatar"
+                                    width={100}
+                                    height={100}
+                                    priority
+                                />
+                            )}
+                            <div className="flex items-center gap-3">
+                                <button
+                                    type="button"
+                                    disabled={promptBtnText === "Generating..." ? true : false}
+                                    onClick={handleGenerateAvatar}
+                                    className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
+                                >
+                                    {promptBtnText}
+                                </button>
+                                {clearBtn && (
+                                    <button
+                                        type="button"
+                                        onClick={handleClearImage}
+                                        className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-red-600 hover:bg-red-700 text-white rounded-md mt-5"
+                                    >
+                                        Clear
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </form>
                     <form
                         encType="multipart/form-data"
-                        className="bg-white shadow-sm p-6 mt-28 rounded-md"
+                        className="bg-white shadow-sm p-6 mt-14 rounded-md"
                     >
                         <h3 className="text-xl mb-6 font-semibold text-gray-800">
                             Personal Details
