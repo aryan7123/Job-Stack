@@ -75,8 +75,10 @@ const page = () => {
     });
     const [clearBtn, setClearBtn] = useState(false);
     const [promptBtnText, setPromptBtnText] = useState("Generate");
+    const [uploadBtnText, setUploadBtnText] = useState("Upload");
     const [prompt, setPrompt] = useState("");
     const [avatarUrl, setAvatarUrl] = useState("");
+    const [responseMessage, setResponseMessage] = useState("");
 
     useEffect(() => {
         if (session?.user?.id) {
@@ -116,17 +118,35 @@ const page = () => {
     const handleGenerateAvatar = async () => {
         setPromptBtnText("Generating...");
         try {
-            const req = await axios.post("/api/generate-avatar", { prompt });
-            if (req.data.image) {
-                setAvatarUrl(req.data.image);
+            const res = await axios.post("/api/generate-avatar", { prompt });
+            setResponseMessage(res.data.message);
+            if (res.data.image) {
+                setAvatarUrl(res.data.image);
                 setClearBtn(true);
             }
         } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                setResponseMessage(error.response.data.message);
+            } else {
+                setResponseMessage("Something went wrong");
+            }
+        } finally {
             setPromptBtnText("Generate");
+        }
+    };
+
+    const handleUploadAvatar = async () => {
+        setPromptBtnText("Uploading...");
+        try {
+            const req = await axios.post("/api/upload-avatar", { avatarUrl, userId });
+            console.log(req.data);
+            setResponseMessage(req.data.message);
+        } catch (error) {
+            setPromptBtnText("Upload");
             console.log(error);
         }
         finally {
-            setPromptBtnText("Generate");
+            setPromptBtnText("Upload");
         }
     }
 
@@ -243,6 +263,9 @@ const page = () => {
                         </h3>
                         <div className="w-full flex flex-col items-start justify-start">
                             <input type="text" name="avatar" id="avatar" value={prompt} onChange={handlePromptChange} placeholder="Write Your Prompt..." className="border w-[inherit] border-slate-100 rounded-sm p-2 focus:outline-emerald-700" />
+                            {responseMessage && (
+                                <span className="text-red-400 font-medium text-sm mt-3">{responseMessage}</span>
+                            )}
                             {avatarUrl && (
                                 <Image
                                     className="object-cover rounded-full my-2"
@@ -254,14 +277,25 @@ const page = () => {
                                 />
                             )}
                             <div className="flex items-center gap-3">
-                                <button
-                                    type="button"
-                                    disabled={promptBtnText === "Generating..." ? true : false}
-                                    onClick={handleGenerateAvatar}
-                                    className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
-                                >
-                                    {promptBtnText}
-                                </button>
+                                {avatarUrl ? (
+                                    <button
+                                        type="button"
+                                        disabled={uploadBtnText === "Uploading..." ? true : false}
+                                        onClick={handleUploadAvatar}
+                                        className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
+                                    >
+                                        {uploadBtnText}
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        disabled={promptBtnText === "Generating..." ? true : false}
+                                        onClick={handleGenerateAvatar}
+                                        className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
+                                    >
+                                        {promptBtnText}
+                                    </button>
+                                )}
                                 {clearBtn && (
                                     <button
                                         type="button"
