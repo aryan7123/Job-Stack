@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react';
 
 import {
     DropdownMenu,
@@ -27,6 +28,7 @@ import { CiUser, CiSettings, CiMenuBurger } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
 
 const Navbar = () => {
+    const { data: session, status } = useSession();
     const [stickyNavbar, setStickyNavbar] = useState(false);
 
     useEffect(() => {
@@ -47,22 +49,26 @@ const Navbar = () => {
         <>
             <nav className={`w-full ${stickyNavbar ? "bg-white shadow" : "bg-emerald-600/5 shadow-none"} sticky transition-all ease-in-out duration-300 top-0 left-0 z-[99] md:px-0 px-5 py-5`}>
                 <div className='max-w-6xl mx-auto flex items-center justify-between'>
-                    <Image
-                        className="object-cover md:block hidden"
-                        src="/logo.png"
-                        alt="jobstack"
-                        width={140}
-                        height={100}
-                        priority
-                    />
-                    <Image
-                        className="object-cover md:hidden block"
-                        src="/logo-2.png"
-                        alt="jobstack"
-                        width={50}
-                        height={50}
-                        priority
-                    />
+                    <Link href={'/'}>
+                        <Image
+                            className="object-cover md:block hidden"
+                            src="/logo.png"
+                            alt="jobstack"
+                            width={140}
+                            height={100}
+                            priority
+                        />
+                    </Link>
+                    <Link href={'/'}>
+                        <Image
+                            className="object-cover md:hidden block"
+                            src="/logo-2.png"
+                            alt="jobstack"
+                            width={50}
+                            height={50}
+                            priority
+                        />
+                    </Link>
                     <div className='md:flex hidden items-center justify-center gap-6'>
                         <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Home
@@ -94,13 +100,17 @@ const Navbar = () => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-44" align="start">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem className="group flex cursor-pointer items-center gap-2 font-medium text-sm text-gray-800 hover:text-emerald-600 transition-colors">
-                                        <CiUser size={16} className='text-inherit' />
-                                        Profile
+                                    <DropdownMenuItem className="cursor-pointer font-medium text-sm text-gray-800 hover:text-emerald-600 transition-colors">
+                                        <Link className='flex items-center gap-2' href={session?.user?.role === "candidate" ? "/candidate/profile" : "/employer/profile"}>
+                                            <CiUser size={16} className='text-inherit' />
+                                            <span>Profile</span>
+                                        </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem className="group flex cursor-pointer items-center gap-2 font-medium text-sm text-gray-800 hover:text-emerald-600 transition-colors">
-                                        <CiSettings size={16} className='text-inherit' />
-                                        Settings
+                                    <DropdownMenuItem className="cursor-pointer font-medium text-sm text-gray-800 hover:text-emerald-600 transition-colors">
+                                        <Link className='flex items-center gap-2' href={session?.user?.role === "candidate" ? "/candidate/settings" : "/employer/settings"}>
+                                            <CiSettings size={16} className='text-inherit' />
+                                            <span>Settings</span>
+                                        </Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
