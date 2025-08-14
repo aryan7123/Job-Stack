@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser, resetStatus } from "../store/features/signupSlice";
+import { registerUser, resetStatus } from "../store/features/candidates/signupSlice";
 
 const page = () => {
   const dispatch = useDispatch();
@@ -17,9 +17,8 @@ const page = () => {
     your_name: "",
     email: "",
     password: "",
-    role: "",
     confirm_password: "",
-    terms_conditions: false,
+    terms_conditions: false
   });
 
   const [btnText, setBtnText] = useState("Register");
@@ -28,8 +27,7 @@ const page = () => {
     email,
     password,
     confirm_password,
-    role,
-    terms_conditions,
+    terms_conditions
   } = formData;
 
   const handleInputChange = (
@@ -50,7 +48,7 @@ const page = () => {
       const result = await dispatch(registerUser(formData)).unwrap();
       if (result) {
         setBtnText("Success!");
-        setTimeout(() => router.push("/login"), 1000);
+        setTimeout(() => router.push("/candidate-login"), 1000);
       }
     } catch (error) {
       setBtnText("Try Again");
@@ -117,20 +115,6 @@ const page = () => {
                 placeholder="Email"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
-            </div>
-            <div className="flex flex-col gap-2.5 mb-3">
-              <label
-                htmlFor="role"
-                className="text-base font-bold text-[#161e2d]"
-              >
-                Role:
-              </label>
-              <select name="role" id="role" value={role} className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300" onChange={handleInputChange}>
-                <option defaultValue="Select Role">Select Role</option>
-                <option value="user">User</option>
-                <option value="employer">Employer</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
             <div className="flex flex-col gap-2.5 mb-3">
               <label
@@ -203,7 +187,7 @@ const page = () => {
               type="button"
               onClick={handleRegisterUser}
               disabled={loading}
-              className={`w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 
+              className={`w-full cursor-pointer mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 
               ${
                 loading
                   ? "bg-gray-400 cursor-not-allowed"

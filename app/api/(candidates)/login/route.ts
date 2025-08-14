@@ -7,7 +7,7 @@ import { compare } from "bcryptjs";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password, role } = body;
+    const { email, password } = body;
 
     if (!email) {
       return NextResponse.json({ message: "Email is empty" }, { status: 400 });
@@ -15,15 +15,9 @@ export async function POST(request: NextRequest) {
     if (!password) {
       return NextResponse.json({ message: "Password is empty" }, { status: 400 });
     }
-    if (!role) {
-      return NextResponse.json(
-        { message: "Please select at least one role" },
-        { status: 400 }
-      );
-    }
 
     const user = await prisma.user.findUnique({
-      where: { email, role },
+      where: { email },
     });
 
     if (!user) {
