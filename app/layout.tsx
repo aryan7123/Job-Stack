@@ -12,7 +12,9 @@ const jakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Job Stack",
   description: "Job Board & Job Portal Application",
-  icons: "favicon-DonRq76O.ico"
+  icons: {
+    icon: "/favicon-DonRq76O.ico",
+  }
 };
 
 export default function RootLayout({
@@ -21,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jakartaSans.variable}>
-      <body className="antialiased font-sans">
+    <html lang="en" className={`${jakartaSans.variable}`}>
+      <body className={`antialiased ${jakartaSans.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

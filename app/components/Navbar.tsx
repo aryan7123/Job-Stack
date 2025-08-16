@@ -28,7 +28,7 @@ import { CiUser, CiSettings, CiMenuBurger } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
 
 const Navbar = () => {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const [stickyNavbar, setStickyNavbar] = useState(false);
 
     useEffect(() => {
@@ -59,7 +59,7 @@ const Navbar = () => {
                             priority
                         />
                     </Link>
-                    <Link href={'/'}>
+                    <Link href={'/'} className='md:mr-0 mr-auto'>
                         <Image
                             className="object-cover md:hidden block"
                             src="/logo-2.png"
