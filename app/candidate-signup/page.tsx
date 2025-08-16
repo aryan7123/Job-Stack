@@ -203,7 +203,7 @@ const page = () => {
               </span>
               <Link
                 className="text-[#161e2d] font-semibold text-sm"
-                href="/login"
+                href="/candidate-login"
               >
                 Sign In
               </Link>

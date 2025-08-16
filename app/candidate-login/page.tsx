@@ -133,7 +133,7 @@ const page = () => {
               </span>
               <Link
                 className="text-[#161e2d] font-semibold text-sm"
-                href="/signup"
+                href="/candidate-signup"
               >
                 Sign Up
               </Link>

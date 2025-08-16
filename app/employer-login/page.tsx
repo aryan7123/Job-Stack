@@ -16,8 +16,8 @@ const page = () => {
             height={100}
             priority
           />
-          <h3 className="text-center my-3 font-bold text-[#161e2d] text-3xl">
-            Login Form
+          <h3 className="text-center my-4 font-bold text-[#161e2d] text-3xl">
+            Employer Login Form
           </h3>
           <form className="w-full mt-3">
             <div className="flex flex-col gap-2.5 mb-3">
@@ -62,7 +62,7 @@ const page = () => {
               </span>
               <Link
                 className="text-[#161e2d] font-semibold text-sm"
-                href="/signup"
+                href="/employer-signup"
               >
                 Sign Up
               </Link>
