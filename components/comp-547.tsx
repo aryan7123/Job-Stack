@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
-export default function MultipleFileComponent() {
+export default function MultipleFileComponent({ handleFileSelect }) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024
   const maxFiles = 6
@@ -46,7 +46,9 @@ export default function MultipleFileComponent() {
         className="border-input data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]"
       >
         <input
-          {...getInputProps()}
+          {...getInputProps({
+            onChange: handleFileSelect,
+          })}
           className="sr-only"
           aria-label="Upload image file"
         />

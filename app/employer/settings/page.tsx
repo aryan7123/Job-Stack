@@ -38,10 +38,11 @@ const page = () => {
     photos: [],
   });
 
+  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties } = employerDetails;
+
   const handleInputChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+      HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setEmployerDetails((prev) => ({
@@ -60,6 +61,16 @@ const page = () => {
     }
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const selectedFiles = Array.from(e.target.files);
+
+    setEmployerDetails((prev) => ({
+      ...prev,
+      photos: prev.photos ? [...prev.photos, ...selectedFiles] : selectedFiles,
+    }));
+  };
+
   return (
     <>
       <Navbar />
@@ -72,13 +83,15 @@ const page = () => {
             </h3>
             <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="your_name" className="form-label font-medium">
+                <label htmlFor="company_name" className="form-label font-medium">
                   Company Name :<span className="text-red-600">*</span>
                 </label>
                 <input
                   className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700"
                   placeholder="Company Name"
                   id="company_name"
+                  value={name}
+                  onChange={handleInputChange}
                   type="text"
                   name="company_name"
                 />
@@ -93,22 +106,26 @@ const page = () => {
                   id="email"
                   type="email"
                   name="email"
+                  value={email}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="occupation" className="form-label font-medium">
+                <label htmlFor="industry" className="form-label font-medium">
                   Industry :<span className="text-red-600">*</span>
                 </label>
                 <input
                   className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700"
                   placeholder="Industry"
                   id="industry"
-                  type="email"
+                  type="text"
                   name="industry"
+                  value={industry}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="location" className="form-label font-medium">
+                <label htmlFor="companySize" className="form-label font-medium">
                   Company Size :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -117,10 +134,12 @@ const page = () => {
                   id="companySize"
                   type="text"
                   name="companySize"
+                  value={companySize}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="education" className="form-label font-medium">
+                <label htmlFor="yearFounded" className="form-label font-medium">
                   Year Founded :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -129,10 +148,12 @@ const page = () => {
                   id="yearFounded"
                   type="text"
                   name="yearFounded"
+                  value={yearFounded}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="experience" className="form-label font-medium">
+                <label htmlFor="headquarters" className="form-label font-medium">
                   Headquarters :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -141,10 +162,12 @@ const page = () => {
                   id="headquarters"
                   type="text"
                   name="headquarters"
+                  value={headquarters}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="phone" className="form-label font-medium">
+                <label htmlFor="founder" className="form-label font-medium">
                   Founder :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -152,11 +175,13 @@ const page = () => {
                   placeholder="Founder"
                   id="founder"
                   type="text"
+                  value={founder}
+                  onChange={handleInputChange}
                   name="founder"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="phone" className="form-label font-medium">
+                <label htmlFor="specialties" className="form-label font-medium">
                   Specialties :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -165,10 +190,12 @@ const page = () => {
                   id="specialties"
                   type="text"
                   name="specialties"
+                  value={specialties}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="phone" className="form-label font-medium">
+                <label htmlFor="companyLogo" className="form-label font-medium">
                   Company Logo :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -184,10 +211,11 @@ const page = () => {
                   type="file"
                   accept=".jpg,.jpeg,.png"
                   name="companyLogo"
+                  onChange={handleFileChange}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="website_url" className="form-label font-medium">
+                <label htmlFor="website" className="form-label font-medium">
                   Website URL :<span className="text-red-600">*</span>
                 </label>
                 <input
@@ -196,6 +224,8 @@ const page = () => {
                   id="website"
                   type="text"
                   name="website"
+                  onChange={handleInputChange}
+                  value={website}
                 />
               </div>
             </div>
@@ -208,6 +238,8 @@ const page = () => {
                   className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700"
                   name="description"
                   id="description"
+                  value={description}
+                  onChange={handleInputChange}
                 ></textarea>
               </div>
             </div>
@@ -232,7 +264,7 @@ const page = () => {
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Photos
             </h3>
-            <MultipleFileComponent />
+            <MultipleFileComponent handleFileSelect={handleFileSelect} />
           </form>
         </div>
       </section>
