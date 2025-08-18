@@ -1,8 +1,65 @@
-import React from 'react'
+'use client';
+
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from "next/navigation"
+
+import { registerEmployer, resetStatus } from '../store/features/employers/signupSlice'
+import { useDispatch, useSelector } from "react-redux"
 
 const page = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { error, loading, success } = useSelector((state) => state.employerSignup);
+  const [formData, setFormData] = useState({
+    your_name: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+    terms_conditions: false
+  });
+
+  const {
+    your_name,
+    email,
+    password,
+    confirm_password,
+    terms_conditions
+  } = formData;
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleRegisterEmployer = async() => {
+    try {
+      const result = await dispatch(registerEmployer(formData)).unwrap();
+      if(result) {
+        setTimeout(() => router.push("/employer-login"), 1000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        dispatch(resetStatus());
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, error, dispatch]);
+
   return (
     <>
       <section className='w-full h-screen flex items-center justify-center relative overflow-hidden bg-center bg-no-repeat bg-cover bg-[url("/banner/bg3-BPJFnXM6.jpg")]'>
@@ -31,6 +88,8 @@ const page = () => {
                 type="text"
                 name="your_name"
                 id="your_name"
+                value={your_name}
+                onChange={handleInputChange}
                 placeholder="Your Name"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
@@ -46,6 +105,8 @@ const page = () => {
                 type="email"
                 name="email"
                 id="email"
+                value={email}
+                onChange={handleInputChange}
                 placeholder="Email"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
@@ -61,6 +122,8 @@ const page = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
+                onChange={handleInputChange}
                 placeholder="Password"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
@@ -76,6 +139,8 @@ const page = () => {
                 type="password"
                 name="confirm_password"
                 id="confirm_password"
+                value={confirm_password}
+                onChange={handleInputChange}
                 placeholder="Confirm Your Password"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
@@ -85,6 +150,8 @@ const page = () => {
                 className="size-4 cursor-pointer appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2"
                 id="terms_conditions"
                 type="checkbox"
+                checked={terms_conditions}
+                onChange={handleInputChange}
                 name="terms_conditions"
               />
               <label
@@ -101,7 +168,18 @@ const page = () => {
                 </Link>
               </label>
             </div>
+            {error && (
+              <div className="text-sm font-semibold text-red-600 my-3">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="text-sm font-semibold text-green-600 my-3">
+                {success}
+              </div>
+            )}
             <button
+              onClick={handleRegisterEmployer}
               type="button"
               className={`w-full mt-1.5 rounded-md bg-emerald-600 hover:bg-emerald-700 cursor-pointer py-2 px-5 transition-colors duration-500 text-white font-semibold text-base text-center`}
             >
