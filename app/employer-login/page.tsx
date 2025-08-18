@@ -1,8 +1,62 @@
-import React from 'react'
+'use client';
+
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { signIn } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginEmployer, resetStatus } from '../store/features/employers/loginSlice';
+
 const page = () => {
+  const dispatch = useDispatch();
+  const { error, loading, success } = useSelector((state) => state.employerLogin);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const { email, password } = formData;
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLoginEmployer = async () => {
+    try {
+      await dispatch(loginEmployer(formData)).unwrap();
+
+      const signInResult = await signIn("employer-credentials", {
+        email,
+        password,
+        redirect: true,
+        callbackUrl: "/employer/profile",
+      });
+
+      if (signInResult?.error) {
+        console.error("Login failed:", signInResult.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        dispatch(resetStatus());
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, error, dispatch]);
+
   return (
     <>
       <section className='w-full h-screen flex items-center justify-center relative overflow-hidden bg-center bg-no-repeat bg-cover bg-[url("/banner/bg3-BPJFnXM6.jpg")]'>
@@ -28,6 +82,8 @@ const page = () => {
                 Email:
               </label>
               <input
+                value={email}
+                onChange={handleInputChange}
                 type="email"
                 name="email"
                 id="email"
@@ -45,12 +101,25 @@ const page = () => {
               <input
                 type="password"
                 name="password"
+                value={password}
+                onChange={handleInputChange}
                 id="password"
                 placeholder="Password"
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
             </div>
+            {error && (
+              <div className="text-sm font-semibold text-red-600 my-3">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="text-sm font-semibold text-green-600 my-3">
+                {success}
+              </div>
+            )}
             <button
+              onClick={handleLoginEmployer}
               type="button"
               className="w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 bg-emerald-600 text-white font-semibold tetx-base hover:bg-emerald-700 text-center cursor-pointer"
             >

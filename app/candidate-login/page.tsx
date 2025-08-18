@@ -36,7 +36,7 @@ const page = () => {
     try {
       const result = await dispatch(loginUser(formData)).unwrap();
       setBtnText("Success!");
-      const signInResult = await signIn('credentials', {
+      const signInResult = await signIn("candidate-credentials", {
         email,
         password,
         redirect: true,
