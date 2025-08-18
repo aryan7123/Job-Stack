@@ -4,17 +4,23 @@ import { NextResponse } from "next/server";
 export default withAuth(
   function middleware(req) {
     const { pathname } = req.nextUrl;
+    const token = req.nextauth.token;
 
-    // Debug log to confirm which path is being used
     console.log("MIDDLEWARE PATHNAME:", pathname);
 
-    // Redirect logged-in candidates away from auth pages
-    if (pathname.startsWith("/candidate-login") && req.nextauth.token?.role === "candidate") {
+    // 🚫 Prevent cross-role login
+    if (pathname.startsWith("/employer-login") && token?.role === "candidate") {
       return NextResponse.redirect(new URL("/candidate/profile", req.url));
     }
+    if (pathname.startsWith("/candidate-login") && token?.role === "employer") {
+      return NextResponse.redirect(new URL("/employer/profile", req.url));
+    }
 
-    // Redirect logged-in employers away from auth pages
-    if (pathname.startsWith("/employer-login") && req.nextauth.token?.role === "employer") {
+    // 🚫 Redirect logged-in users away from their login page
+    if (pathname.startsWith("/candidate-login") && token?.role === "candidate") {
+      return NextResponse.redirect(new URL("/candidate/profile", req.url));
+    }
+    if (pathname.startsWith("/employer-login") && token?.role === "employer") {
       return NextResponse.redirect(new URL("/employer/profile", req.url));
     }
   },
@@ -23,7 +29,7 @@ export default withAuth(
       async authorized({ token, req }) {
         const { pathname } = req.nextUrl;
 
-        // Public routes (accessible without login)
+        // ✅ Public routes (no login needed)
         if (
           pathname.startsWith("/candidate-login") ||
           pathname.startsWith("/employer-login") ||
@@ -33,23 +39,18 @@ export default withAuth(
           return true;
         }
 
-        // Candidate protected pages
+        // 🔒 Candidate protected pages
         if (pathname.startsWith("/candidate")) {
           return token?.role === "candidate";
         }
 
-        // Employer protected pages
+        // 🔒 Employer protected pages
         if (pathname.startsWith("/employer")) {
           return token?.role === "employer";
         }
 
-        return false; // Block anything else without auth
+        return false;
       },
-    },
-
-    // 👇 This makes sure NextAuth points to the right API route for each role
-    pages: {
-      signIn: "/candidate-login", // default if no match
     },
   }
 );

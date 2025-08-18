@@ -42,3 +42,5 @@ next-env.d.ts
 
 /public/assets/resumes/
 /public/assets/avatar/
+/public/assets/employer/logo
+/public/assets/employer/photos
