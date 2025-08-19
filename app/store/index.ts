@@ -8,6 +8,7 @@ import passwordReducer from './features/candidates/passwordSlice';
 import candidateProfileReducer from './features/candidates/profileDetails';
 import employerSignupReducer from './features/employers/signupSlice';
 import employerLoginReducer from "./features/employers/loginSlice";
+import employerDetailsReducer from './features/employers/employerDetails';
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
     candidatePassword: passwordReducer,
     candidateProfile: candidateProfileReducer,
     employerSignup: employerSignupReducer,
-    employerLogin: employerLoginReducer
+    employerLogin: employerLoginReducer,
+    employerDetails: employerDetailsReducer
   },
 });
 

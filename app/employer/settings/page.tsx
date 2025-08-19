@@ -38,7 +38,7 @@ const page = () => {
     photos: [],
   });
 
-  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties } = employerDetails;
+  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties, companyLogo } = employerDetails;
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -50,6 +50,16 @@ const page = () => {
       [name]: value,
     }));
   };
+
+  const handleSpecialties = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmployerDetails((prev) => ({
+      ...prev,
+      specialties: e.target.value
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+    }))
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -71,13 +81,37 @@ const page = () => {
     }));
   };
 
+  const handleSubmit = async() => {
+    try {
+      const formData = new FormData();
+
+      if(name) formData.append("name", name);
+      if (email) formData.append("email", email);
+      if(industry) formData.append("industry", industry);
+      if(companySize) formData.append("companySize", companySize);
+      if(yearFounded) formData.append("yearFounded", yearFounded);
+      if(founder) formData.append("founder", founder);
+      if(headquarters) formData.append("headquarters", headquarters);
+      if(website) formData.append("website", website);
+      if(description) formData.append("description", description);
+      if(companyLogo) formData.append("companyLogo", companyLogo);
+      if(specialties.length > 0) {
+        specialties.forEach((special) => {
+          formData.append("specialties", special);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <Navbar />
 
       <section className='w-full bg-white'>
         <div className="max-w-6xl mx-auto px-5 md:px-0 py-24">
-          <form className="bg-white shadow-sm p-6 rounded-md">
+          <form encType='multipart/form-data' className="bg-white shadow-sm p-6 rounded-md">
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Employer Details
             </h3>
@@ -190,8 +224,8 @@ const page = () => {
                   id="specialties"
                   type="text"
                   name="specialties"
-                  value={specialties}
-                  onChange={handleInputChange}
+                  value={specialties.join(", ")}
+                  onChange={handleSpecialties}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -254,6 +288,7 @@ const page = () => {
               </div>
             )} */}
             <button
+              onClick={handleSubmit}
               type="button"
               className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
             >
