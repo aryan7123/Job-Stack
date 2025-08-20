@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const employerDetails = createAsyncThunk(
+export const updateEmployerDetails = createAsyncThunk(
   "employer/employerDetails",
   async (formData: FormData, { rejectWithValue }) => {
     try {
@@ -31,16 +31,16 @@ const candidateSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(employerDetails.pending, (state) => {
+      .addCase(updateEmployerDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(employerDetails.fulfilled, (state, action) => {
+      .addCase(updateEmployerDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.employer = action.payload.employer || null;
         state.success = action.payload.message || "Employers Details Updated Successfully";
       })
-      .addCase(employerDetails.rejected, (state, action) => {
+      .addCase(updateEmployerDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to update the details";
         state.success = null;

@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
-export default function MultipleFileComponent({ handleFileSelect }) {
+export default function MultipleFileComponent({ handleFileSelect, handleUploadPhotos }) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024
   const maxFiles = 6
@@ -81,6 +81,7 @@ export default function MultipleFileComponent({ handleFileSelect }) {
       )}
 
       <button
+        onClick={handleUploadPhotos}
         type="button"
         className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
       >

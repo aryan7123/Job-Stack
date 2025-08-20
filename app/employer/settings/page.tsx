@@ -4,6 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import MultipleFileComponent from '@/components/comp-547';
+import { useSession } from 'next-auth/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateEmployerDetails, resetStatus } from '@/app/store/features/employers/employerDetails';
+import axios from 'axios';
 
 interface EmployerDetails {
   employerId?: string;
@@ -22,6 +26,9 @@ interface EmployerDetails {
 }
 
 const page = () => {
+  const { data: session } = useSession();
+  const dispatch = useDispatch();
+  const { error, loading, success } = useSelector((state) => state.employerDetails);
   const [employerDetails, setEmployerDetails] = useState<EmployerDetails>({
     employerId: "",
     name: "",
@@ -35,10 +42,10 @@ const page = () => {
     description: "",
     specialties: [],
     companyLogo: null,
-    photos: [],
+    photos: [] as File[],
   });
 
-  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties, companyLogo } = employerDetails;
+  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties, companyLogo, employerId } = employerDetails;
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -81,29 +88,89 @@ const page = () => {
     }));
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     try {
       const formData = new FormData();
 
-      if(name) formData.append("name", name);
+      if (name) formData.append("name", name);
       if (email) formData.append("email", email);
-      if(industry) formData.append("industry", industry);
-      if(companySize) formData.append("companySize", companySize);
-      if(yearFounded) formData.append("yearFounded", yearFounded);
-      if(founder) formData.append("founder", founder);
-      if(headquarters) formData.append("headquarters", headquarters);
-      if(website) formData.append("website", website);
-      if(description) formData.append("description", description);
-      if(companyLogo) formData.append("companyLogo", companyLogo);
-      if(specialties.length > 0) {
+      if (industry) formData.append("industry", industry);
+      if (companySize) formData.append("companySize", companySize);
+      if (yearFounded) formData.append("yearFounded", yearFounded);
+      if (founder) formData.append("founder", founder);
+      if (headquarters) formData.append("headquarters", headquarters);
+      if (website) formData.append("website", website);
+      if (description) formData.append("description", description);
+      if (companyLogo) formData.append("companyLogo", companyLogo);
+      if (employerId) formData.append("employerId", employerId);
+      if (specialties.length > 0) {
         specialties.forEach((special) => {
           formData.append("specialties", special);
         });
       }
+
+      const result = dispatch(updateEmployerDetails(formData));
+      console.log(result);
+      return result;
     } catch (error) {
       console.log(error);
     }
   }
+
+  const handleUploadPhotos = async () => {
+    // Use employerDetails state instead of direct variables
+    if (!employerDetails.employerId) {
+      console.error("Employer ID is missing");
+      return;
+    }
+
+    // Check if photos exist and have length
+    if (!employerDetails.photos || employerDetails.photos.length === 0) {
+      console.error("No photos selected");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("employerId", employerDetails.employerId);
+
+      // Use employerDetails.photos instead of photos
+      for (const photo of employerDetails.photos) {
+        formData.append("photos", photo);
+      }
+
+      const response = await fetch("/api/upload-photos", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+    
+      if (response.ok) {
+        console.log("Upload success:", result);
+      } else {
+        console.error("Upload failed:", result.message);
+      }
+
+      // Optional: Clear photos after successful upload
+      setEmployerDetails(prev => ({
+        ...prev,
+        photos: []
+      }));
+
+    } catch (error: any) {
+      console.error("Upload failed:", error.response?.data || error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      setEmployerDetails((prev) => ({
+        ...prev,
+        employerId: session.user.id,
+      }));
+    }
+  }, [session?.user?.id]);
 
   return (
     <>
@@ -117,17 +184,17 @@ const page = () => {
             </h3>
             <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="company_name" className="form-label font-medium">
+                <label htmlFor="name" className="form-label font-medium">
                   Company Name :<span className="text-red-600">*</span>
                 </label>
                 <input
                   className="border border-slate-100 rounded-sm mt-2 p-2 focus:outline-emerald-700"
                   placeholder="Company Name"
-                  id="company_name"
+                  id="name"
                   value={name}
                   onChange={handleInputChange}
                   type="text"
-                  name="company_name"
+                  name="name"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -277,7 +344,7 @@ const page = () => {
                 ></textarea>
               </div>
             </div>
-            {/* {error && (
+            {error && (
               <div className="text-sm font-semibold text-red-600 my-3">
                 {error}
               </div>
@@ -286,7 +353,7 @@ const page = () => {
               <div className="text-sm font-semibold text-green-600 my-3">
                 {success}
               </div>
-            )} */}
+            )}
             <button
               onClick={handleSubmit}
               type="button"
@@ -299,7 +366,7 @@ const page = () => {
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Photos
             </h3>
-            <MultipleFileComponent handleFileSelect={handleFileSelect} />
+            <MultipleFileComponent handleFileSelect={handleFileSelect} handleUploadPhotos={handleUploadPhotos} />
           </form>
         </div>
       </section>
