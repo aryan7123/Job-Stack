@@ -1,15 +1,15 @@
 "use client"
 
 import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react"
-
 import {
   formatBytes,
   useFileUpload,
 } from "@/hooks/use-file-upload"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { useState } from "react"
 
-export default function MultipleFileComponent({ handleFileSelect, handleUploadPhotos }) {
+export default function MultipleFileComponent({ employerId }) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024
   const maxFiles = 6
@@ -33,6 +33,38 @@ export default function MultipleFileComponent({ handleFileSelect, handleUploadPh
     maxFiles,
   })
 
+  const [uploading, setUploading] = useState(false)
+
+  const handleUploadPhotos = async () => {
+    if (files.length === 0) return
+    setUploading(true)
+
+    try {
+      const formData = new FormData();
+
+      formData.append("employerId", employerId);
+      files.forEach((fileObj) => {
+        formData.append("photos", fileObj.file)
+      })
+
+      const res = await fetch("/api/upload-photos", {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await res.json()
+      console.log("Uploaded:", data)
+
+      if (data.success) {
+        clearFiles();
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setUploading(false)
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2">
       {/* Drop area */}
@@ -46,9 +78,7 @@ export default function MultipleFileComponent({ handleFileSelect, handleUploadPh
         className="border-input data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]"
       >
         <input
-          {...getInputProps({
-            onChange: handleFileSelect,
-          })}
+          {...getInputProps()}
           className="sr-only"
           aria-label="Upload image file"
         />
@@ -63,7 +93,12 @@ export default function MultipleFileComponent({ handleFileSelect, handleUploadPh
           <p className="text-muted-foreground text-xs">
             SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
           </p>
-          <Button type="button" variant="outline" className="mt-4" onClick={openFileDialog}>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-4"
+            onClick={openFileDialog}
+          >
             <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
             Select images
           </Button>
@@ -82,10 +117,11 @@ export default function MultipleFileComponent({ handleFileSelect, handleUploadPh
 
       <button
         onClick={handleUploadPhotos}
+        disabled={uploading}
         type="button"
-        className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
+        className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5 disabled:opacity-50"
       >
-        Upload
+        {uploading ? "Uploading..." : "Upload"}
       </button>
 
       {/* File list */}

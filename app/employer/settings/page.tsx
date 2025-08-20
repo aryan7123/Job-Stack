@@ -6,8 +6,7 @@ import Footer from '@/app/components/Footer';
 import MultipleFileComponent from '@/components/comp-547';
 import { useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateEmployerDetails, resetStatus } from '@/app/store/features/employers/employerDetails';
-import axios from 'axios';
+import { updateEmployerDetails } from '@/app/store/features/employers/employerDetails';
 
 interface EmployerDetails {
   employerId?: string;
@@ -78,16 +77,6 @@ const page = () => {
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const selectedFiles = Array.from(e.target.files);
-
-    setEmployerDetails((prev) => ({
-      ...prev,
-      photos: prev.photos ? [...prev.photos, ...selectedFiles] : selectedFiles,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
@@ -116,52 +105,6 @@ const page = () => {
       console.log(error);
     }
   }
-
-  const handleUploadPhotos = async () => {
-    // Use employerDetails state instead of direct variables
-    if (!employerDetails.employerId) {
-      console.error("Employer ID is missing");
-      return;
-    }
-
-    // Check if photos exist and have length
-    if (!employerDetails.photos || employerDetails.photos.length === 0) {
-      console.error("No photos selected");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("employerId", employerDetails.employerId);
-
-      // Use employerDetails.photos instead of photos
-      for (const photo of employerDetails.photos) {
-        formData.append("photos", photo);
-      }
-
-      const response = await fetch("/api/upload-photos", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-    
-      if (response.ok) {
-        console.log("Upload success:", result);
-      } else {
-        console.error("Upload failed:", result.message);
-      }
-
-      // Optional: Clear photos after successful upload
-      setEmployerDetails(prev => ({
-        ...prev,
-        photos: []
-      }));
-
-    } catch (error: any) {
-      console.error("Upload failed:", error.response?.data || error.message);
-    }
-  };
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -366,7 +309,7 @@ const page = () => {
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Photos
             </h3>
-            <MultipleFileComponent handleFileSelect={handleFileSelect} handleUploadPhotos={handleUploadPhotos} />
+            <MultipleFileComponent employerId={employerId} />
           </form>
         </div>
       </section>

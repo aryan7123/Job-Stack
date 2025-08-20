@@ -1,72 +1,50 @@
-"use server";
+import { NextResponse, NextRequest } from "next/server"
+import { prisma } from "@/app/lib/prisma"
+import path from "path"
+import { promises as fs } from "fs"
 
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
-
-import fs from "fs";
-import path from "path";
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const formData = await request.formData();
-    
-    const photos = formData.getAll("photos") as File[];
+    const formData = await req.formData();
+
     const employerId = formData.get("employerId") as string;
+    const files = formData.getAll("photos") as File[]
 
-    if (!photos || photos.length === 0) {
-      return NextResponse.json(
-        { message: "No photos uploaded" },
-        { status: 400 }
-      );
+    if (!files || files.length === 0) {
+      return NextResponse.json({ success: false, error: "No files uploaded" }, { status: 400 })
     }
 
-    const fileUrls: string[] = [];
+    const uploadedPaths: string[] = []
 
-    for (const photo of photos) {
-      const timestamp = Date.now();
-      const extension = path.extname(photo.name);
-      const fileName = `employer_${timestamp}_${photo.name}`;
+    for (const file of files) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const filename = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
+      const uploadDir = path.join(process.cwd(), "public", "assets", "employer", "photos");
+      const filepath = path.join(uploadDir, filename);
 
-      const assetsDir = path.join(
-        process.cwd(),
-        "public",
-        "assets",
-        "employer",
-        "photos"
-      );
-      const filePath = path.join(assetsDir, fileName);
+      // Ensure uploads folder exists
+      await fs.mkdir(uploadDir, { recursive: true });
 
-      if (!fs.existsSync(assetsDir)) {
-        fs.mkdirSync(assetsDir, { recursive: true });
-      }
+      // Save file
+      await fs.writeFile(filepath, buffer);
 
-      const arrayBuffer = await photo.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      fs.writeFileSync(filePath, buffer);
-
-      const fileUrl = `/assets/employer/photos/${fileName}`;
-      fileUrls.push(fileUrl);
+      // Store public path
+      uploadedPaths.push(`/assets/employer/photos/${filename}`);
     }
 
-    // Directly update the photos property
+    // Example DB save (you can customize Employer / Candidate model)
     const employer = await prisma.company.update({
-      where: { id: employerId },
-      data: {
-        photos: {
-          push: fileUrls, // Prisma lets you push into a String[] field
-        },
+      where: {
+        id: employerId
       },
+      data: {
+        photos: uploadedPaths
+      }
     });
 
-    return NextResponse.json(
-      { employer, message: "Photos Uploaded Successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ success: true, employer })
   } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 400 }
-    );
+    console.error("Upload error:", error)
+    return NextResponse.json({ success: false, error: "Upload failed" }, { status: 500 })
   }
 }
