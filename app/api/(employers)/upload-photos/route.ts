@@ -22,29 +22,27 @@ export async function POST(req: NextRequest) {
       const uploadDir = path.join(process.cwd(), "public", "assets", "employer", "photos");
       const filepath = path.join(uploadDir, filename);
 
-      // Ensure uploads folder exists
       await fs.mkdir(uploadDir, { recursive: true });
 
-      // Save file
       await fs.writeFile(filepath, buffer);
 
-      // Store public path
       uploadedPaths.push(`/assets/employer/photos/${filename}`);
     }
 
-    // Example DB save (you can customize Employer / Candidate model)
     const employer = await prisma.company.update({
       where: {
         id: employerId
       },
       data: {
-        photos: uploadedPaths
+        photos: {
+          push: uploadedPaths
+        }
       }
     });
 
     return NextResponse.json({ success: true, employer })
   } catch (error) {
     console.error("Upload error:", error)
-    return NextResponse.json({ success: false, error: "Upload failed" }, { status: 500 })
+    return NextResponse.json({ success: false, error: "Upload failed" }, { status: 400 })
   }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react"
+import { ImageIcon, UploadIcon, XIcon } from "lucide-react"
 import {
   formatBytes,
   useFileUpload,
@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useState } from "react"
+import axios from "axios"
 
 export default function MultipleFileComponent({ employerId }) {
   const maxSizeMB = 5
@@ -15,7 +16,7 @@ export default function MultipleFileComponent({ employerId }) {
   const maxFiles = 6
 
   const [
-    { files, isDragging, errors },
+    { files, isDragging },
     {
       handleDragEnter,
       handleDragLeave,
@@ -33,10 +34,14 @@ export default function MultipleFileComponent({ employerId }) {
     maxFiles,
   })
 
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleUploadPhotos = async () => {
-    if (files.length === 0) return
+    if (files.length === 0) {
+      setMessage("Please select a file to upload");
+      return
+    }
     setUploading(true)
 
     try {
@@ -47,18 +52,16 @@ export default function MultipleFileComponent({ employerId }) {
         formData.append("photos", fileObj.file)
       })
 
-      const res = await fetch("/api/upload-photos", {
-        method: "POST",
-        body: formData,
-      })
-
-      const data = await res.json()
-      console.log("Uploaded:", data)
-
-      if (data.success) {
+      const res = await axios.post("/api/upload-photos", formData);
+      if (res.data.success) {
+        setMessage("File Uploaded Successfully");
         clearFiles();
       }
+      else {
+        setMessage(res.data.message);
+      }
     } catch (err) {
+      setUploading(false)
       console.error(err)
     } finally {
       setUploading(false)
@@ -105,14 +108,8 @@ export default function MultipleFileComponent({ employerId }) {
         </div>
       </div>
 
-      {errors.length > 0 && (
-        <div
-          className="text-destructive flex items-center gap-1 text-xs"
-          role="alert"
-        >
-          <AlertCircleIcon className="size-3 shrink-0" />
-          <span>{errors[0]}</span>
-        </div>
+      {message && (
+        <p className={`${message === "File Uploaded Successfully" ? "text-green-600" : "text-red-600"} mt-2 font-semibold text-sm`}>{message}</p>
       )}
 
       <button
