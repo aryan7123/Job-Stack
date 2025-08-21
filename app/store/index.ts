@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+
 import userReducer from "./features/candidates/signupSlice";
 import loginReducer from "./features/candidates/loginSlice";
 import candidateReducer from './features/candidates/personalDetails';
@@ -9,6 +10,7 @@ import candidateProfileReducer from './features/candidates/profileDetails';
 import employerSignupReducer from './features/employers/signupSlice';
 import employerLoginReducer from "./features/employers/loginSlice";
 import employerDetailsReducer from './features/employers/employerDetails';
+import employerProfileReducer from './features/employers/employerProfile';
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +22,8 @@ export const store = configureStore({
     candidateProfile: candidateProfileReducer,
     employerSignup: employerSignupReducer,
     employerLogin: employerLoginReducer,
-    employerDetails: employerDetailsReducer
+    employerDetails: employerDetailsReducer,
+    employerProfile: employerProfileReducer
   },
 });
 
