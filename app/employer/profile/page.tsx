@@ -1,5 +1,6 @@
 'use client';
 
+import { RootState } from '@/app/store';
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
@@ -10,11 +11,12 @@ import Link from 'next/link';
 
 const page = () => {
   const [employerId, setEmployerId] = useState<string>("");
-  
+
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const { error, loading } = useSelector(state => state.employerProfile);
-
+  const { employer, error, loading } = useSelector(
+    (state: RootState) => state.employerProfile
+  );
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -31,9 +33,8 @@ const page = () => {
     <>
       <Navbar />
 
-      <section className='relative w-full py-24 bg-center bg-cover bg-no-repeat'>
+      <section className={`relative w-full py-24 bg-center bg-cover bg-no-repeat bg-[url(${employer?.photos[0]})]`}>
         <div className='absolute inset-0 bg-emerald-900/80'></div>
-
       </section>
 
       <Footer />

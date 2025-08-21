@@ -3,10 +3,14 @@ import axios from "axios";
 
 export const fetchProfileDetails = createAsyncThunk(
   "employer/fetchProfileDetails",
-  async (employerId, { rejectWithValue }) => {
+  async (employerId: string | undefined, { rejectWithValue }) => {
     try {
+      if (!employerId) {
+        return rejectWithValue({ message: "Employer ID is required" });
+      }
+
       const res = await axios.post("/api/employer-profile-details", { employerId });
-      return res.data;
+      return res.data.employer;
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { message: "Something went wrong" }
@@ -35,11 +39,11 @@ const employerSlice = createSlice({
       })
       .addCase(fetchProfileDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.employer = action.payload.employer || null;
+        state.employer = action.payload;
       })
       .addCase(fetchProfileDetails.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to fetch the details";
+        state.error = action.payload;
       });
   },
 });
