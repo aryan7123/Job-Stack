@@ -24,6 +24,7 @@ const employerSlice = createSlice({
   initialState: {
     employer: null,
     loading: false,
+    initialLoading: true,
     error: null,
   },
   reducers: {
@@ -31,19 +32,24 @@ const employerSlice = createSlice({
       state.error = null;
     },
   },
-  extraReducers(builder) {
+  extraReducers: (builder) => {
     builder
       .addCase(fetchProfileDetails.pending, (state) => {
+        if (!state.employer) {
+          state.initialLoading = true;
+        }
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchProfileDetails.fulfilled, (state, action) => {
-        state.loading = false;
         state.employer = action.payload;
+        state.loading = false;
+        state.initialLoading = false;
       })
       .addCase(fetchProfileDetails.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.initialLoading = false;
+        state.error = action.error.message || "Something went wrong";
       });
   },
 });
