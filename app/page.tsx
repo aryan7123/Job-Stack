@@ -6,6 +6,8 @@ import { FaBriefcase, FaSearch, FaDesktop, FaStopwatch, FaCameraRetro, FaPlay } 
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosCheckmarkCircleOutline, IoIosMail } from "react-icons/io";
 import Link from "next/link";
+import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
 
 export default function Home() {
   const categories = [
@@ -23,6 +25,7 @@ export default function Home() {
 
   return (
     <>
+      <Navbar />
       <section className="w-full relative">
         <div className="absolute inset-0 bg-emerald-600/5 pointer-events-none"></div>
         <div className="relative py-24 w-full bg-gradient-to-b from-emerald-600/20 dark:from-emerald-600/40 via-emerald-600/10 to-transparent">
@@ -306,6 +309,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 }
