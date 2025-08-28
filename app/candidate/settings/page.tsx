@@ -182,7 +182,7 @@ const page = () => {
                   type="text"
                   name="your_name"
                   onChange={handleInputChange}
-                  value={your_name}
+                  value={your_name ?? session?.user?.name ?? ""}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -196,7 +196,7 @@ const page = () => {
                   type="email"
                   name="email"
                   onChange={handleInputChange}
-                  value={email}
+                  value={email ?? session?.user?.email ?? ""}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -335,9 +335,10 @@ const page = () => {
             <button
               onClick={handleUpdatePersonalDetails}
               type="button"
+              disabled={isPending}
               className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
             >
-              Save Changes
+             {isPending ? "Saving..." : "Save Changes"}
             </button>
           </form>
 

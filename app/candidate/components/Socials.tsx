@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { FiFacebook } from "react-icons/fi";
 
+import { useUpdateSocial } from '@/app/queries/candidates/update-social';
+
 const Socials = () => {
     const { data: session } = useSession();
-
+    const { mutate, isPending, isSuccess, isError, data, error } = useUpdateSocial(session?.user?.id);
     const [socialLinks, setSocialLinks] = useState({
         twitter: "",
         instagram: "",
@@ -12,15 +14,6 @@ const Socials = () => {
         facebook: "",
         userId: ""
     });
-
-    useEffect(() => {
-        if (session?.user?.id) {
-            setSocialLinks((prev) => ({
-                ...prev,
-                userId: session.user.id,
-            }));
-        }
-    }, [session?.user?.id]);
 
     const { twitter, instagram, linkedin, facebook, userId } = socialLinks;
 
@@ -38,13 +31,7 @@ const Socials = () => {
 
     const handleUpdateSocialLinks = async () => {
         try {
-            const formData = new FormData();
-
-            if(userId) formData.append("userId", userId);
-            if(twitter) formData.append("twitter", twitter);
-            if(instagram) formData.append("instagram", instagram);
-            if(linkedin) formData.append("linkedin", linkedin);
-            if(facebook) formData.append("facebook", facebook);
+            mutate(socialLinks);
         } catch (error) {
             console.log(error);
         }
@@ -192,12 +179,23 @@ const Socials = () => {
                         <p className="text-slate-400 mt-1">Add your Youtube url.</p>
                     </div>
                 </div>
+                {isError && (
+                    <div className="text-sm font-semibold text-red-600 my-3">
+                        {(error as Error).message}
+                    </div>
+                )}
+                {isSuccess && data?.message && (
+                    <div className="text-sm font-semibold text-green-600 my-3">
+                        {data.message}
+                    </div>
+                )}
                 <button
                     type="button"
+                    disabled={isPending}
                     onClick={handleUpdateSocialLinks}
                     className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
                 >
-                    Save Changes
+                    {isPending ? "Saving..." : "Save Changes"}
                 </button>
             </form>
         </>
