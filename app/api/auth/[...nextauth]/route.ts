@@ -2,18 +2,22 @@ import NextAuth from "next-auth";
 import { candidateAuthOptions } from "@/lib/auth/candidateAuth";
 import { employerAuthOptions } from "@/lib/auth/employerAuth";
 
-// Merge both configs but avoid collisions
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
-    ...candidateAuthOptions.providers, // candidate credentials
-    ...employerAuthOptions.providers,  // employer credentials
+    ...candidateAuthOptions.providers,
+    ...employerAuthOptions.providers,
   ],
-  session: { strategy: "jwt" },
-
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60,
+  },
   callbacks: {
     async jwt({ token, user }) {
-      // Merge logic from both auth configs
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -22,7 +26,6 @@ const handler = NextAuth({
       }
       return token;
     },
-
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
@@ -34,7 +37,7 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: "/login",
+    signIn: "/candidate-login",
   },
 });
 
