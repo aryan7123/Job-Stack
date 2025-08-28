@@ -9,9 +9,9 @@ export function useRegisterCandidate() {
   return useMutation({
     mutationFn: registerCandidate,
     onSuccess: () => {
-        setTimeout(() => {
-            router.push("/candidate-login");
-        }, 2000);
-    }
+      setTimeout(() => {
+        router.push("/candidate-login");
+      }, 2000);
+    },
   });
 }
