@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { useUpdatePassword } from '@/app/queries/candidates/update-password';
 
 const Passwords = () => {
     const { data: session } = useSession();
+    const { mutate, isError, error, data, isPending, isSuccess } = useUpdatePassword(session?.user?.id);
 
     const [passwords, setPasswords] = useState({
         old_password: "",
         new_password: "",
         retype_password: "",
-        userId: ""
     });
 
-    const { old_password, new_password, retype_password, userId } = passwords;
+    const { old_password, new_password, retype_password } = passwords;
 
     const handleInputChange = (
         e: React.ChangeEvent<
@@ -27,20 +28,11 @@ const Passwords = () => {
 
     const handleUpdatePassword = async () => {
         try {
-
+            mutate(passwords);
         } catch (error) {
             console.log(error);
         }
     }
-
-    useEffect(() => {
-        if (session?.user?.id) {
-            setPasswords((prev) => ({
-                ...prev,
-                userId: session.user.id,
-            }));
-        }
-    }, [session?.user?.id]);
 
     return (
         <>
@@ -90,12 +82,23 @@ const Passwords = () => {
                         onChange={handleInputChange}
                     />
                 </div>
+                {isError && (
+                    <div className="text-sm font-semibold text-red-600 my-3">
+                        {(error as Error).message}
+                    </div>
+                )}
+                {isSuccess && data?.message && (
+                    <div className="text-sm font-semibold text-green-600 my-3">
+                        {data.message}
+                    </div>
+                )}
                 <button
                     type="button"
+                    disabled={isPending}
                     onClick={handleUpdatePassword}
                     className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
                 >
-                    Save Changes
+                    {isPending ? "Saving..." : "Save Changes"}
                 </button>
             </form>
         </>
