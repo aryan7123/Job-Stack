@@ -48,6 +48,10 @@ const page = () => {
     description: "",
     userId: "",
   });
+  const [photos, setPhotos] = useState({
+    profile_picture: null,
+    background: null
+  });
 
   const occupations = [
     "Web Designer",
@@ -69,12 +73,9 @@ const page = () => {
     location,
     education,
     experience,
-    skills,
-    resume,
     phone,
     website_url,
-    description,
-    userId,
+    description
   } = personalDetails;
 
   const handleInputChange = (
@@ -89,22 +90,35 @@ const page = () => {
     }));
   };
 
+  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) { 
+      const file = e.target.files[0]; 
+      setPersonalDetails((prev) => ({ ...prev, resume: file, })); 
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
 
     if (files && files[0]) {
-      const file = files[0];
-
-      setPersonalDetails((prev) => ({
+      setPhotos((prev) => ({
         ...prev,
-        [name]: file,
+        [name]: files[0],
       }));
     }
-  };
+  }
 
   const handleUpdatePersonalDetails = async () => {
     try {
       mutate(personalDetails);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleUploadPhotos = async () => {
+    try {
+      
     } catch (error) {
       console.log(error);
     }
@@ -161,7 +175,7 @@ const page = () => {
               </label>
               <Input type='file' name='background' onChange={handleFileChange} />
             </div>
-            <button type="button" className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5">Upload</button>
+            <button onClick={handleUploadPhotos} type="button" className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5">Upload</button>
           </form>
           <form
             encType="multipart/form-data"
@@ -305,7 +319,7 @@ const page = () => {
                 <label htmlFor="resume" className="form-label font-medium">
                   Select Resume :<span className="text-red-600">*</span>
                 </label>
-                <Input type='file' name='resume' onChange={handleFileChange} />
+                <Input type='file' name='resume' onChange={handleResumeChange} />
               </div>
             </div>
             <div className="grid grid-cols-1 mt-4">
@@ -338,7 +352,7 @@ const page = () => {
               disabled={isPending}
               className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
             >
-             {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? "Saving..." : "Save Changes"}
             </button>
           </form>
 
