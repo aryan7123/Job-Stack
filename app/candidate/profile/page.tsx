@@ -57,7 +57,7 @@ const page = () => {
               </div>
               <div className="flex flex-col mt-14">
                 <span className="text-gray-800 text-base sm:text-lg font-semibold">
-                  {session?.user?.name}
+                  {data?.candidate.user?.name}
                 </span>
                 <span className="text-slate-400 text-sm font-medium">
                   {data?.candidate.occupation}
