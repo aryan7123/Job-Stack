@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
                     user: {
                         select: {
                             name: true,
-                            email: true
+                            email: true,
+                            avatar: true
                         }
                     }
                 }

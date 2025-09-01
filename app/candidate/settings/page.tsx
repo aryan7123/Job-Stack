@@ -93,9 +93,9 @@ const page = () => {
   };
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) { 
-      const file = e.target.files[0]; 
-      setPersonalDetails((prev) => ({ ...prev, resume: file, })); 
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setPersonalDetails((prev) => ({ ...prev, resume: file, }));
     }
   };
 
@@ -134,34 +134,7 @@ const page = () => {
 
       <section className="w-full bg-white">
         <div className="max-w-6xl mx-auto px-5 md:px-0 py-24">
-          <div className="relative text-transparent">
-            <div className="relative shrink-0">
-              <Image
-                src={"/assets/bg5-BQCe0yqf.jpg"}
-                width={1024}
-                height={256}
-                className="object-cover rounded-xl w-full h-64"
-                alt="profile-banner"
-                quality={100}
-                priority
-              />
-            </div>
-            <div className="absolute -bottom-12 left-3 flex items-end gap-2 w-full">
-              <Image
-                src="/assets/01--4QesCJS.jpg"
-                width={100}
-                height={100}
-                className="object-cover rounded-full size-28"
-                alt="profile-banner"
-                quality={100}
-                priority
-              />
-              <div className="text-gray-800 text-lg font-semibold w-full">
-                {session?.user?.name}
-              </div>
-            </div>
-          </div>
-          <form encType="multipart/form-data" className="bg-white shadow-sm p-6 mt-28 rounded-md">
+          <form encType="multipart/form-data" className="bg-white shadow-sm p-6 rounded-md">
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Your Profile Picture
             </h3>
@@ -177,7 +150,20 @@ const page = () => {
               </label>
               <Input type='file' name='background' onChange={handleFileChange} />
             </div>
-            <button onClick={handleUploadPhotos} type="button" className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5">Upload</button>
+            {mutation.isError && (
+              <div className="text-sm font-semibold text-red-600 my-3">
+                {(mutation.error as Error).message}
+              </div>
+            )}
+
+            {mutation.isSuccess && mutation.data?.message && (
+              <div className="text-sm font-semibold text-green-600 my-3">
+                {mutation.data.message}
+              </div>
+            )}
+            <button onClick={handleUploadPhotos} disabled={mutation.isPending} type="button" className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5">
+              {mutation.isPending ? "Uploading..." : "Upload"}
+            </button>
           </form>
           <form
             encType="multipart/form-data"

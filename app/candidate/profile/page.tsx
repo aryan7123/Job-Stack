@@ -32,7 +32,7 @@ const page = () => {
             {/* Banner Image */}
             <div className="relative">
               <Image
-                src="/assets/bg5-BQCe0yqf.jpg"
+                src={data?.candidate?.background || "/assets/bg5-BQCe0yqf.jpg"}
                 width={1024}
                 height={256}
                 className="object-cover rounded-xl w-full h-40 sm:h-56 md:h-64"
@@ -46,7 +46,7 @@ const page = () => {
             <div className="absolute -bottom-14 left-4 sm:left-6 flex flex-wrap items-center gap-4">
               <div className="shrink-0">
                 <Image
-                  src="/assets/01--4QesCJS.jpg"
+                  src={data?.candidate.user?.avatar || "/assets/01--4QesCJS.jpg"}
                   width={100}
                   height={100}
                   className="object-cover rounded-full size-24 sm:size-28"

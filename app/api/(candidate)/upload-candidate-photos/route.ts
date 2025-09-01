@@ -15,7 +15,14 @@ export async function POST(request: NextRequest) {
 
     if (!userId) {
       return NextResponse.json(
-        { error: "User ID is required" },
+        { success: false, error: "User ID is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!profile_picture || !background) {
+      return NextResponse.json(
+        { success: false, error: "Please upload at least one file" },
         { status: 400 }
       );
     }
@@ -96,11 +103,12 @@ export async function POST(request: NextRequest) {
       success: true,
       user: updatedUser,
       profile: updatedProfile,
+      message: "Profile Updated Successfully",
     });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { success: false, error: "Internal server error" },
       { status: 500 }
     );
   }
