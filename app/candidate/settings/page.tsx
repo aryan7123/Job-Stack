@@ -14,6 +14,7 @@ import Passwords from '../components/Passwords';
 
 import SkillsSelectComponent from '@/components/ui/comp-235';
 import { useUpdateProfile } from '@/app/queries/candidates/update-profile';
+import { useUpdateCandidatePhotos } from '@/app/queries/candidates/upload-photos';
 
 interface PersonalDetails {
   your_name: string;
@@ -33,6 +34,7 @@ interface PersonalDetails {
 const page = () => {
   const { data: session, status } = useSession();
   const { mutate, data, isError, isPending, error, isSuccess } = useUpdateProfile(session?.user?.id);
+  const mutation = useUpdateCandidatePhotos(session?.user?.id);
 
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     your_name: "",
@@ -118,7 +120,7 @@ const page = () => {
 
   const handleUploadPhotos = async () => {
     try {
-      
+      mutation.mutate(photos);
     } catch (error) {
       console.log(error);
     }

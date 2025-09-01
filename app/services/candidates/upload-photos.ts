@@ -1,7 +1,3 @@
-import axios, { AxiosError } from "axios";
-
-type ApiError = { error: string };
-
 export async function updateCandidatePhotos(
   data: {
     profile_picture: File | null;
@@ -12,14 +8,22 @@ export async function updateCandidatePhotos(
   try {
     const formData = new FormData();
 
-    if(data.profile_picture) formData.append("profile_picture", data.profile_picture);
-    if(data.background) formData.append("background", data.background);
-    if(userId) formData.append("userId", userId);
+    if (data.profile_picture) formData.append("profile_picture", data.profile_picture);
+    if (data.background) formData.append("background", data.background);
+    if (userId) formData.append("userId", userId);
 
-    const res = await axios.post("/api/candidate-profile", formData);
-    return res.data;
+    const res = await fetch("/api/upload-candidate-photos", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || "Something went wrong");
+    }
+
+    return await res.json();
   } catch (error: any) {
-    const axiosErr = error as AxiosError<ApiError>;
-    throw new Error(axiosErr.response?.data?.error || "Something went wrong");
+    throw new Error(error.message || "Something went wrong");
   }
 }
