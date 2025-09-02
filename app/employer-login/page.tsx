@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useLoginEmployer } from '../queries/employers/login';
 
 const page = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const page = () => {
     password: ""
   });
   const { email, password } = formData;
+  const { mutate, isError, isPending, isSuccess, error, data } = useLoginEmployer(email, password);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -24,7 +26,7 @@ const page = () => {
 
   const handleLoginEmployer = async () => {
     try {
-
+      mutate(formData);
     } catch (error) {
       console.log(error);
     }
@@ -81,12 +83,24 @@ const page = () => {
                 className="rounded text-sm font-semibold p-2 border border-[#e4e4e4] focus:outline-1 outline-emerald-300"
               />
             </div>
+            {isError && (
+              <div className="text-sm font-semibold text-red-600 my-3">
+                {(error as Error).message}
+              </div>
+            )}
+
+            {isSuccess && data?.message && (
+              <div className="text-sm font-semibold text-green-600 my-3">
+                {data.message}
+              </div>
+            )}
             <button
               onClick={handleLoginEmployer}
               type="button"
+              disabled={isPending}
               className="w-full mt-1.5 rounded-md py-2 px-5 transition-colors duration-500 bg-emerald-600 text-white font-semibold tetx-base hover:bg-emerald-700 text-center cursor-pointer"
             >
-              Login
+              {isPending ? "Redirecting..." : "Login"}
             </button>
             <div className="flex items-center justify-center gap-2 mt-3">
               <span className="text-slate-400 text-sm font-semibold">
