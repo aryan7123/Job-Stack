@@ -6,6 +6,7 @@ import Footer from '@/components/ui/Footer';
 
 import { useSession } from 'next-auth/react';
 import MultipleFileComponent from '@/components/ui/comp-547';
+import { useUpdateEmployerProfile } from '@/app/queries/employers/update-profile';
 
 interface EmployerDetails {
   employerId?: string;
@@ -43,6 +44,7 @@ const page = () => {
   });
 
   const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties, employerId } = employerDetails;
+  const { mutate, isPending, isSuccess, isError, data, error } = useUpdateEmployerProfile(session?.user?.id);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -77,7 +79,7 @@ const page = () => {
 
   const handleSubmit = () => {
     try {
-      
+      mutate(employerDetails);
     } catch (error) {
       console.log(error);
     }
@@ -255,22 +257,23 @@ const page = () => {
                 ></textarea>
               </div>
             </div>
-            {/* {error && (
+            {isError && (
               <div className="text-sm font-semibold text-red-600 my-3">
-                {error}
+                {(error as Error).message}
               </div>
             )}
-            {success && (
+            {isSuccess && data?.message && (
               <div className="text-sm font-semibold text-green-600 my-3">
-                {success}
+                {data.message}
               </div>
-            )} */}
+            )}
             <button
               onClick={handleSubmit}
               type="button"
+              disabled={isPending}
               className="py-2 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md mt-5"
             >
-              Save Changes
+            {isPending ? "Saving..." : "Save Changes"}
             </button>
           </form>
           <form encType='multipart/form-data' className='bg-white shadow-sm p-6 rounded-md mt-10'>

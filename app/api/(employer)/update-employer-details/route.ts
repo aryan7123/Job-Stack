@@ -91,13 +91,14 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
+      sucess: true,
       employer,
       message: "Employer Details Updated Successfully",
-    }, { status: 200 });
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
-      { message: "Something went wrong" },
+      { error: "Something went wrong" },
       { status: 400 }
     );
   }
