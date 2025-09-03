@@ -28,7 +28,6 @@ const page = () => {
   const { data: session } = useSession();
 
   const [employerDetails, setEmployerDetails] = useState<EmployerDetails>({
-    employerId: "",
     name: "",
     email: "",
     industry: "",
@@ -43,8 +42,9 @@ const page = () => {
     photos: [] as File[],
   });
 
-  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties, employerId } = employerDetails;
+  const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties } = employerDetails;
   const { mutate, isPending, isSuccess, isError, data, error } = useUpdateEmployerProfile(session?.user?.id);
+  const employerId = session?.user?.id;
 
   const handleInputChange = (
     e: React.ChangeEvent<
