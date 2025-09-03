@@ -72,6 +72,22 @@ export async function POST(request: NextRequest) {
     if (description) updateData.description = description;
     if (specialties.length > 0) updateData.specialties = specialties;
 
+    if (
+      !industry &&
+      !companySize &&
+      !yearFounded &&
+      !founder &&
+      !headquarters &&
+      !website &&
+      !description &&
+      !specialties
+    ) {
+      return NextResponse.json(
+        { error: "Please fill up at least one field" },
+        { status: 400 }
+      );
+    }
+
     const existingEmployer = await prisma.company.findUnique({
       where: { id: employerId },
     });

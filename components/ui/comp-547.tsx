@@ -52,7 +52,7 @@ export default function MultipleFileComponent({ employerId }) {
         formData.append("photos", fileObj.file)
       })
 
-      const res = await axios.post("/api/upload-photos", formData);
+      const res = await axios.post("/api/upload-employer-photos", formData);
       if (res.data.success) {
         setMessage("File Uploaded Successfully");
         clearFiles();
