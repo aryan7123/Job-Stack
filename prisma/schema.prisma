@@ -13,22 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum JobType {
-  full_time
-  part_time
-  contract
-  remote
-  internship
-}
-
-enum ApplicationStatus {
-  pending
-  reviewed
-  shortlisted
-  rejected
-  hired
-}
-
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
@@ -42,7 +26,6 @@ model User {
   profile Profile?
 
   applications JobApplication[]
-  postedJobs   Job[]
 }
 
 model Profile {
@@ -80,22 +63,28 @@ model Company {
   specialties  String[]
   website      String?
   description  String?
+
+  jobs         Job[]
 }
 
 model Job {
-  id           String           @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  companyId    String           @db.ObjectId
-  company      User             @relation(fields: [companyId], references: [id])
-  location     String
-  type         JobType
-  salaryMin    Int?
-  salaryMax    Int?
-  description  String
-  requirements String[]
-  postedAt     DateTime         @default(now())
-  isActive     Boolean          @default(true)
-  applications JobApplication[]
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  companyId     String           @db.ObjectId
+  company       Company          @relation(fields: [companyId], references: [id])
+  location      String
+  categories    String
+  industry      String
+  type          String
+  salaryMin     Int?
+  salaryMax     Int?
+  description   String
+  experience    String
+  qualification String
+  postedAt      DateTime         @default(now())
+  isActive      Boolean          @default(true)
+
+  applications  JobApplication[]
 }
 
 model JobApplication {
@@ -107,5 +96,5 @@ model JobApplication {
   resumeUrl   String?
   coverLetter String?
   appliedAt   DateTime          @default(now())
-  status      ApplicationStatus
+  status      String
 }

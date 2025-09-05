@@ -48,6 +48,7 @@ const page = () => {
                         <div className='flex items-center gap-3'>
                             <button type="button" className='text-white cursor-pointer rounded-md px-4 py-2 text-sm font-semibold transition-colors duration-500 bg-emerald-600 hover:bg-emerald-700'>Follow</button>
                             <button type="button" className='text-emerald-500 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold transition-colors duration-500 bg-emerald-600/5 border-emerald-600/10 hover:border-emerald-600 hover:bg-emerald-600 hover:text-white'>See Jobs</button>
+                            <Link href="/employer/job-post" type="button" className='text-white cursor-pointer rounded-md px-4 py-2 text-sm font-semibold transition-colors duration-500 bg-emerald-600 hover:bg-emerald-700'>Post a Job</Link>
                         </div>
                     </div>
                 </div>
