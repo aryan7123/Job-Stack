@@ -102,7 +102,7 @@ const page = () => {
                     </div>
                     <div className='mt-5'>
                         <h5 className='text-slate-400 font-medium mb-1'>Company Size</h5>
-                        <span className='font-medium'>{employer?.companySize}+</span>
+                        <span className='font-medium'>{employer?.companySize}</span>
                     </div>
                     <div className='mt-5'>
                         <h5 className='text-slate-400 font-medium mb-1'>Industry</h5>
