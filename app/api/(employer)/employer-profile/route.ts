@@ -13,10 +13,11 @@ export async function POST(request: NextRequest) {
       where: { id: body.employerId },
     });
 
-    return NextResponse.json({
-      message: "Employer Details Fetched Successfully",
-      employer,
-    });
+    if (!employer) {
+      return NextResponse.json({ error: "Employer not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(employer);
   } catch (error) {
     return NextResponse.json(
       { error: "Invalid JSON or request body" },

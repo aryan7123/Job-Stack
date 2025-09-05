@@ -14,12 +14,16 @@ const page = () => {
     const { data: employer, isPending, error } = useEmployerProfile(session?.user?.id);
 
     if (isPending) return <Loader />
+    if (error) return <p>Error: {(error as Error).message}</p>;
 
     return (
         <>
             <Navbar />
 
-            <section className={`relative w-full py-24 bg-center bg-cover bg-no-repeat`} style={{ backgroundImage: `url(${employer?.photos[0]})` }}>
+            <section
+                className="relative w-full py-24 bg-center bg-cover bg-no-repeat"
+                style={{ backgroundImage: `url(${employer?.photos?.[0] || "/default-bg.jpg"})` }}
+            >
                 <div className="absolute inset-0 bg-emerald-900/80 z-0"></div>
                 <div className="relative z-10 px-5 sm:px-6 lg:px-8">
                     <div className='max-w-6xl mx-auto flex md:flex-row flex-col md:items-center md:justify-between md:gap-0 gap-5 bg-white rounded-md p-6 shadow-sm shadow-gray-200'>
@@ -106,7 +110,7 @@ const page = () => {
                     </div>
                     <div className='mt-5'>
                         <h5 className='text-slate-400 font-medium mb-1'>Specialties</h5>
-                        <span className='font-medium'>{employer?.specialties.join(", ")}</span>
+                        <span className='font-medium'>{employer?.specialties?.join(", ")}</span>
                     </div>
                 </div>
             </section>
