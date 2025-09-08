@@ -12,7 +12,7 @@ export function useLoginEmployer(email: string, password: string) {
         email,
         password,
         redirect: true,
-        callbackUrl: "/employer/profile",
+        callbackUrl: "/employer/settings",
         role: "employer"
       });
     },
