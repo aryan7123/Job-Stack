@@ -9,6 +9,9 @@ import { useSession } from 'next-auth/react';
 import Loader from '@/components/ui/Loader';
 import Link from 'next/link';
 
+import { formatDistanceToNow } from "date-fns";
+import { IoMdTime } from "react-icons/io";
+
 const page = () => {
     const { data: session } = useSession();
     const { data: employer, isPending, error } = useEmployerProfile(session?.user?.id);
@@ -78,6 +81,47 @@ const page = () => {
                                 </div>
                             ))}
                         </div>
+                        {employer?.jobs.length > 0 && (
+                            <div className='mt-10'>
+                                <h5 className='text-2xl font-semibold'>Recent Openings</h5>
+                                <div className='grid lg:grid-cols-2 grid-cols-1 gap-6 mt-5'>
+                                    {employer?.jobs.map((post, index: React.Key) => (
+                                        <div key={index} className='relative overflow-hidden rounded-md shadow-sm cursor-pointer transition-transform duration-500 hover:scale-105'>
+                                            <div className='p-6'>
+                                                <h4 className='text-lg font-semibold mb-2'>{post.title}</h4>
+                                                <div className="flex items-center gap-1">
+                                                    <IoMdTime className='text-emerald-600' />
+                                                    <span className='text-slate-400 text-sm'>
+                                                        {formatDistanceToNow(post.postedAt, { addSuffix: true })}
+                                                    </span>
+                                                </div>
+                                                <div className='flex items-center justify-between mt-4'>
+                                                    <div className='bg-emerald-600/5 text-emerald-600 text-xs font-bold px-2.5 py-0.5 rounded h-5'>
+                                                        {post.type}
+                                                    </div>
+                                                    <span className='text-slate-400 text-sm'>$ {post.salary}/mo</span>
+                                                </div>
+                                            </div>
+                                            <div className='border-t border-gray-100 p-6'>
+                                                <div className='flex items-center gap-4'>
+                                                    <Image
+                                                        src={employer?.companyLogo}
+                                                        alt={employer?.name}
+                                                        width={100}
+                                                        height={100}
+                                                        className='bg-white rounded-md p-2 size-10 shadow-md'
+                                                    />
+                                                    <div className='flex flex-col gap-0.5'>
+                                                        <h5 className='font-semibold mb-0'>{employer?.name}</h5>
+                                                        <span className='text-slate-400'>{post.location}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
@@ -93,14 +137,18 @@ const page = () => {
                         <h5 className='text-slate-400 font-medium mb-1'>Email Address</h5>
                         <Link className='font-medium' href={`mailto:${employer?.email}`} target='_blank'>{employer?.email}</Link>
                     </div>
-                    <div className='mt-5'>
-                        <h5 className='text-slate-400 font-medium mb-1'>Founder</h5>
-                        <span className='font-medium'>{employer?.founder}</span>
-                    </div>
-                    <div className='mt-5'>
-                        <h5 className='text-slate-400 font-medium mb-1'>Founded</h5>
-                        <span className='font-medium'>{employer?.yearFounded}</span>
-                    </div>
+                    {employer?.founder && (
+                        <div className='mt-5'>
+                            <h5 className='text-slate-400 font-medium mb-1'>Founder</h5>
+                            <span className='font-medium'>{employer?.founder}</span>
+                        </div>
+                    )}
+                    {employer?.yearFounded && (
+                        <div className='mt-5'>
+                            <h5 className='text-slate-400 font-medium mb-1'>Founded</h5>
+                            <span className='font-medium'>{employer?.yearFounded}</span>
+                        </div>
+                    )}
                     <div className='mt-5'>
                         <h5 className='text-slate-400 font-medium mb-1'>Company Size</h5>
                         <span className='font-medium'>{employer?.companySize}</span>
