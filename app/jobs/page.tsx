@@ -2,8 +2,10 @@
 
 import React from 'react'
 
+import Image from 'next/image'
 import Footer from '@/components/ui/Footer'
 import Navbar from '@/components/ui/Navbar'
+import { formatDistanceToNow } from "date-fns";
 import { useFetchAllJobs } from '../queries/jobs/all-jobs';
 
 import {
@@ -15,6 +17,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Loader from '@/components/ui/Loader';
+import { MdOutlineLocationOn } from "react-icons/md";
 
 const categories = [
     "Web Designer",
@@ -35,7 +38,7 @@ const categories = [
 const page = () => {
     const { data, error, isFetching } = useFetchAllJobs();
 
-    if(isFetching) return <Loader />
+    if (isFetching) return <Loader />
 
     return (
         <>
@@ -83,14 +86,82 @@ const page = () => {
                                         <label className='font-semibold' htmlFor="">Location</label>
                                         <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
                                     </div>
+                                    <div className="flex flex-col gap-2 mt-3.5">
+                                        <label className='font-semibold' htmlFor="">Job Types</label>
+                                        <div className='flex flex-col gap-2 mt-2'>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
+                                                <span className="ms-1 text-slate-400">Full Time</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
+                                                <span className="ms-1 text-slate-400">Part Time</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
+                                                <span className="ms-1 text-slate-400">Internship</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
+                                                <span className="ms-1 text-slate-400">Contract</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-2 mt-3.5">
+                                        <label className='font-semibold' htmlFor="">Salary</label>
+                                        <div className='flex flex-col gap-2 mt-2'>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
+                                                <span className="ms-2 text-slate-400">10k - 15k</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
+                                                <span className="ms-2 text-slate-400">15k - 20k</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
+                                                <span className="ms-2 text-slate-400">more than 25k</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                         <div className='lg:col-span-8 md:col-span-6'>
                             <div className='grid grid-cols-1 gap-[30px]'>
                                 {data?.map((job, item: React.Key) => (
-                                    <div className='group relative overflow-hidden lg:flex justify-between items-center rounded shadow-sm hover:shadow-md shadow-gray-200 transition-all duration-500 p-5'>
-                                        
+                                    <div key={item} className='group relative overflow-hidden rounded shadow-sm hover:scale-105 shadow-gray-200 transition-transform duration-500 p-5 cursor-pointer'>
+                                        <span className="w-24 text-white p-1 text-center absolute ltr:-rotate-45 rtl:rotate-45 -start-[30px] top-3 bg-yellow-400 flex justify-center">
+                                            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 0 0 .6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0 0 46.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3zM664.8 561.6l36.1 210.3L512 672.7 323.1 772l36.1-210.3-152.8-149L417.6 382 512 190.7 606.4 382l211.2 30.7-152.8 148.9z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <div className='flex items-center gap-3 mb-6'>
+                                            <div className='size-14 flex items-center justify-center bg-white shadow-sm shadow-gray-200 rounded-md'>
+                                                <Image
+                                                    src={job?.company.companyLogo}
+                                                    alt={job?.title}
+                                                    width={100}
+                                                    height={100}
+                                                />
+                                            </div>
+                                            <h3 className='text-base font-semibold group-hover:text-emerald-600'>{job?.title}</h3>
+                                        </div>
+                                        <div className='flex items-center justify-between mb-3'>
+                                            <span className='bg-emerald-600/10 inline-block text-emerald-600 text-xs px-2.5 py-0.5 font-semibold rounded-full'>{job?.type}</span>
+                                            <span className='text-slate-400 text-sm'>{formatDistanceToNow(job?.postedAt, { addSuffix: true })}</span>
+                                        </div>
+                                        <div className='flex items-center justify-between'>
+                                            <div className='flex items-center gap-1 text-slate-400'>
+                                                <MdOutlineLocationOn />
+                                                <span>{job?.location}</span>
+                                            </div>
+                                            <span className='font-semibold text-sm'>${job?.salary}</span>
+                                        </div>
+                                        <button type="button" className='py-1 mt-3 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center rounded-md bg-emerald-600 hover:bg-emerald-700 border-emerald-600 hover:border-emerald-700 text-white w-full'>
+                                            Apply Now
+                                        </button>
                                     </div>
                                 ))}
                             </div>
