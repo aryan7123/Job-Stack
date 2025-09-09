@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 
 import Image from 'next/image'
 import Footer from '@/components/ui/Footer'
@@ -16,6 +16,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+
 import Loader from '@/components/ui/Loader';
 import { MdOutlineLocationOn } from "react-icons/md";
 
@@ -36,7 +37,8 @@ const categories = [
 ];
 
 const page = () => {
-    const { data, error, isFetching } = useFetchAllJobs();
+    const [page, setPage] = useState(1);
+    const { data, error, isFetching } = useFetchAllJobs(page);
 
     if (isFetching) return <Loader />
 
@@ -129,7 +131,7 @@ const page = () => {
                         </div>
                         <div className='lg:col-span-8 md:col-span-6'>
                             <div className='grid grid-cols-1 gap-[30px]'>
-                                {data?.map((job, item: React.Key) => (
+                                {data?.jobs?.map((job, item: React.Key) => (
                                     <div key={item} className='group relative overflow-hidden rounded shadow-sm hover:scale-105 shadow-gray-200 transition-transform duration-500 p-5 cursor-pointer'>
                                         <span className="w-24 text-white p-1 text-center absolute ltr:-rotate-45 rtl:rotate-45 -start-[30px] top-3 bg-yellow-400 flex justify-center">
                                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -165,6 +167,49 @@ const page = () => {
                                     </div>
                                 ))}
                             </div>
+                            <nav className='mx-auto text-center mt-6'>
+                                <ul className="inline-flex items-center justify-center -space-x-px">
+                                    <li>
+                                        <button
+                                            disabled={page === 1}
+                                            onClick={() => setPage((prev) => prev - 1)} type='button' className="size-[40px] inline-flex justify-center items-center text-slate-400 bg-white dark:bg-slate-900 rounded-s-3xl hover:text-white border border-gray-100 dark:border-gray-800 hover:border-emerald-600 dark:hover:border-emerald-600 hover:bg-emerald-600 dark:hover:bg-emerald-600">
+                                            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="text-[20px] rtl:rotate-180 rtl:-mt-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                <path d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+                                    {data?.totalPages > 1 && (
+                                        [...Array(data.totalPages)].map((_, index) => {
+                                            const pageNumber = index + 1;
+                                            return (
+                                                <li key={pageNumber}>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setPage(pageNumber)}
+                                                        className={`size-[40px] inline-flex justify-center items-center 
+                                                        ${page === pageNumber
+                                                                ? "bg-emerald-600 text-white border-emerald-600"
+                                                                : "text-slate-400 bg-white border border-gray-100 hover:border-emerald-600 hover:bg-emerald-600 hover:text-white"
+                                                            }`}
+                                                    >
+                                                        {pageNumber}
+                                                    </button>
+                                                </li>
+                                            );
+                                        })
+                                    )}
+                                    <li>
+                                        <button disabled={page === data.totalPages}
+                                            onClick={() => setPage((prev) => prev + 1)} type='button' className="size-[40px] inline-flex justify-center items-center text-slate-400 bg-white dark:bg-slate-900 rounded-e-3xl hover:text-white border border-gray-100 dark:border-gray-800 hover:border-emerald-600 dark:hover:border-emerald-600 hover:bg-emerald-600 dark:hover:bg-emerald-600">
+                                            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="text-[20px] rtl:rotate-180 rtl:-mt-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
