@@ -23,7 +23,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = React.use(params);
     const { data, error, isFetching } = useFetchJobDetails(id);
 
-    if(isFetching) return <Loader />
+    if (isFetching) return <Loader />
 
     return (
         <>
@@ -70,6 +70,16 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                                         <span className='text-slate-400 text-base'>{data?.details.location}</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div className='mt-6'>
+                                <h3 className='text-lg font-semibold'>Job Description</h3>
+                                <div className="mt-4 text-slate-400">
+                                    <p className='mt-4 text-slate-400 whitespace-pre-line'>{data?.details.description}</p>
+                                </div>
+                            </div>
+                            <div className='mt-6'>
+                                <h3 className='text-lg font-semibold'>Qualifications & Skills</h3>
+                                <p className='mt-4 text-slate-400 whitespace-pre-line'>{data?.details.qualification}</p>
                             </div>
                         </div>
                         <div className='lg:col-span-4 md:col-span-6'>
