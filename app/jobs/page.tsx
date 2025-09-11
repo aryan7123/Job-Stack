@@ -127,6 +127,7 @@ const page = () => {
                                             </label>
                                         </div>
                                     </div>
+                                    <button type="button" className='mt-6 bg-emerald-600 text-base text-white py-2 px-4 tracking-wide transition-colors duration-300 hover:bg-emerald-700 rounded cursor-pointer font-semibold'>Apply Filters</button>
                                 </form>
                             </div>
                         </div>
