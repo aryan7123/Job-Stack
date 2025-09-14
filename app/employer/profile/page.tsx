@@ -14,7 +14,7 @@ import { IoMdTime } from "react-icons/io";
 
 const page = () => {
     const { data: session } = useSession();
-    const { data: employer, isPending, error } = useEmployerProfile(session?.user?.id);
+    const { data: employer, isPending, error } = useEmployerProfile(session?.user?.id ?? "");
 
     if (isPending) return <Loader />
     if (error) return <p>Error: {(error as Error).message}</p>;
