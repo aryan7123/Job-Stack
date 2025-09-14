@@ -41,6 +41,47 @@ const page = () => {
     const [page, setPage] = useState(1);
     const { data, error, isFetching } = useFetchAllJobs(page);
 
+    const [searchTerm, setSearchTerm] = useState({
+        name: "",
+        location: "",
+    });
+    const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm({ ...searchTerm, [e.target.name]: e.target.value });
+    };
+
+    const handleCheckboxChange = (type: string) => {
+        setSelectedTypes((prev) =>
+            prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+        );
+    };
+
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCategory(e.target.value);
+    };
+
+    const filteredJobs = data?.jobs?.filter(
+        (job: { type: string; location: string; company: { name: string }; category: string }) => {
+            const matchesName =
+                searchTerm.name === "" ||
+                job.company.name.toLowerCase().includes(searchTerm.name.toLowerCase());
+
+            const matchesLocation =
+                searchTerm.location === "" ||
+                job.location.toLowerCase().includes(searchTerm.location.toLowerCase());
+
+            const matchesType =
+                selectedTypes.length === 0 || selectedTypes.includes(job.type);
+
+            const matchesCategory =
+                selectedCategory === "" || job.category === selectedCategory;
+
+            return matchesName && matchesLocation && matchesType && matchesCategory;
+        }
+    );
+
     if (isFetching) return <Loader />
 
     return (
@@ -73,12 +114,12 @@ const page = () => {
                             <div className='shadow-sm shadow-gray-200 p-6 rounded-md bg-white sticky top-20'>
                                 <form>
                                     <div className="flex flex-col gap-2">
-                                        <label className='font-semibold' htmlFor="">Search Company</label>
-                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
+                                        <label className='font-semibold' htmlFor="name">Search Company</label>
+                                        <input onChange={handleSearchChange} name='name' value={searchTerm.name} className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
-                                        <label className='font-semibold' htmlFor="">Categories</label>
-                                        <select className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' name="job_category" id="job_category">
+                                        <label className='font-semibold' htmlFor="category">Categories</label>
+                                        <select className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' name="category" id="category" value={selectedCategory} onChange={handleCategoryChange}>
                                             <option value="">Select Category</option>
                                             {categories.map((item, index) => (
                                                 <option key={index} value={item}>{item}</option>
@@ -86,28 +127,23 @@ const page = () => {
                                         </select>
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
-                                        <label className='font-semibold' htmlFor="">Location</label>
-                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
+                                        <label className='font-semibold' htmlFor="location">Location</label>
+                                        <input onChange={handleSearchChange} name='location' value={searchTerm.location} className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
                                         <label className='font-semibold' htmlFor="">Job Types</label>
                                         <div className='flex flex-col gap-2 mt-2'>
-                                            <label className="inline-flex items-center">
-                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
-                                                <span className="ms-1 text-slate-400">Full Time</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
-                                                <span className="ms-1 text-slate-400">Part Time</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
-                                                <span className="ms-1 text-slate-400">Internship</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="checkbox" />
-                                                <span className="ms-1 text-slate-400">Contract</span>
-                                            </label>
+                                            {["Full Time", "Part Time", "Internship", "Contract"].map((type) => (
+                                                <label key={type} className="inline-flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedTypes.includes(type)}
+                                                        onChange={() => handleCheckboxChange(type)}
+                                                        className="form-checkbox size-4 appearance-none rounded border border-gray-200 dark:border-gray-800 accent-green-600 checked:appearance-auto dark:accent-green-600 focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2"
+                                                    />
+                                                    <span className="ms-1 text-slate-400">{type}</span>
+                                                </label>
+                                            ))}
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
@@ -115,64 +151,67 @@ const page = () => {
                                         <div className='flex flex-col gap-2 mt-2'>
                                             <label className="inline-flex items-center">
                                                 <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
-                                                <span className="ms-2 text-slate-400">10k - 15k</span>
+                                                <span className="ms-2 text-slate-400">&lt;$500</span>
                                             </label>
                                             <label className="inline-flex items-center">
                                                 <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
-                                                <span className="ms-2 text-slate-400">15k - 20k</span>
+                                                <span className="ms-2 text-slate-400">$1000-$5000</span>
                                             </label>
                                             <label className="inline-flex items-center">
                                                 <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
-                                                <span className="ms-2 text-slate-400">more than 25k</span>
+                                                <span className="ms-2 text-slate-400">&gt;$5000</span>
                                             </label>
                                         </div>
                                     </div>
-                                    <button type="button" className='mt-6 bg-emerald-600 text-base text-white py-2 px-4 tracking-wide transition-colors duration-300 hover:bg-emerald-700 rounded cursor-pointer font-semibold'>Apply Filters</button>
                                 </form>
                             </div>
                         </div>
                         <div className='lg:col-span-8 md:col-span-6'>
                             <div className='grid grid-cols-1 gap-[30px]'>
-                                {data?.jobs?.map((job, item: React.Key) => (
-                                    <Link href={{
-                                        pathname: `/job-details/${job?.id}`,
-                                        query: {
-                                            title: job?.title
-                                        }
-                                    }} key={item} className='group relative overflow-hidden rounded shadow-sm hover:scale-105 shadow-gray-200 transition-transform duration-500 p-5 cursor-pointer'>
-                                        <span className="w-24 text-white p-1 text-center absolute ltr:-rotate-45 rtl:rotate-45 -start-[30px] top-3 bg-yellow-400 flex justify-center">
-                                            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 0 0 .6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0 0 46.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3zM664.8 561.6l36.1 210.3L512 672.7 323.1 772l36.1-210.3-152.8-149L417.6 382 512 190.7 606.4 382l211.2 30.7-152.8 148.9z">
-                                                </path>
-                                            </svg>
-                                        </span>
-                                        <div className='flex items-center gap-3 mb-6'>
-                                            <div className='size-14 flex items-center justify-center bg-white shadow-sm shadow-gray-200 rounded-md'>
-                                                <Image
-                                                    src={job?.company.companyLogo}
-                                                    alt={job?.title}
-                                                    width={100}
-                                                    height={100}
-                                                />
+                                {filteredJobs.length > 1 ? (
+                                    filteredJobs.map((job, item: React.Key) => (
+                                        <Link href={{
+                                            pathname: `/job-details/${job?.id}`,
+                                            query: {
+                                                title: job?.title
+                                            }
+                                        }} key={item} className='group relative overflow-hidden rounded shadow-sm hover:scale-105 shadow-gray-200 transition-transform duration-500 p-5 cursor-pointer'>
+                                            <span className="w-24 text-white p-1 text-center absolute ltr:-rotate-45 rtl:rotate-45 -start-[30px] top-3 bg-yellow-400 flex justify-center">
+                                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 0 0 .6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0 0 46.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3zM664.8 561.6l36.1 210.3L512 672.7 323.1 772l36.1-210.3-152.8-149L417.6 382 512 190.7 606.4 382l211.2 30.7-152.8 148.9z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <div className='flex items-center gap-3 mb-6'>
+                                                <div className='size-14 flex items-center justify-center bg-white shadow-sm shadow-gray-200 rounded-md'>
+                                                    <Image
+                                                        src={job?.company.companyLogo}
+                                                        alt={job?.title}
+                                                        width={100}
+                                                        height={100}
+                                                    />
+                                                </div>
+                                                <h3 className='text-base font-semibold group-hover:text-emerald-600'>{job?.title}</h3>
                                             </div>
-                                            <h3 className='text-base font-semibold group-hover:text-emerald-600'>{job?.title}</h3>
-                                        </div>
-                                        <div className='flex items-center justify-between mb-3'>
-                                            <span className='bg-emerald-600/10 inline-block text-emerald-600 text-xs px-2.5 py-0.5 font-semibold rounded-full'>{job?.type}</span>
-                                            <span className='text-slate-400 text-sm'>{formatDistanceToNow(job?.postedAt, { addSuffix: true })}</span>
-                                        </div>
-                                        <div className='flex items-center justify-between'>
-                                            <div className='flex items-center gap-1 text-slate-400'>
-                                                <MdOutlineLocationOn />
-                                                <span>{job?.location}</span>
+                                            <div className='flex items-center justify-between mb-3'>
+                                                <span className='bg-emerald-600/10 inline-block text-emerald-600 text-xs px-2.5 py-0.5 font-semibold rounded-full'>{job?.type}</span>
+                                                <span className='text-slate-400 text-sm'>{formatDistanceToNow(job?.postedAt, { addSuffix: true })}</span>
                                             </div>
-                                            <span className='font-semibold text-sm'>${job?.salary}</span>
-                                        </div>
-                                        <button type="button" className='py-1 mt-3 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center rounded-md bg-emerald-600 hover:bg-emerald-700 border-emerald-600 hover:border-emerald-700 text-white w-full'>
-                                            Apply Now
-                                        </button>
-                                    </Link>
-                                ))}
+                                            <div className='flex items-center justify-between'>
+                                                <div className='flex items-center gap-1 text-slate-400'>
+                                                    <MdOutlineLocationOn />
+                                                    <span>{job?.location}</span>
+                                                </div>
+                                                <span className='font-semibold text-sm'>${job?.salary}</span>
+                                            </div>
+                                            <button type="button" className='py-1 mt-3 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center rounded-md bg-emerald-600 hover:bg-emerald-700 border-emerald-600 hover:border-emerald-700 text-white w-full'>
+                                                Apply Now
+                                            </button>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <h3 className='text-slate-400 text-base'>No Jobs Found</h3>
+                                )}
                             </div>
                             <nav className='mx-auto text-center mt-6'>
                                 <ul className="inline-flex items-center justify-center -space-x-px">

@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
           salary: true,
           company: {
             select: {
+              name: true,
               companyLogo: true,
             },
           },
