@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
           location: true,
           postedAt: true,
           type: true,
+          categories: true,
           salary: true,
           company: {
             select: {

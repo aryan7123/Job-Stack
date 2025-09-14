@@ -45,6 +45,8 @@ const page = () => {
         name: "",
         location: "",
     });
+
+    const [selectedSalary, setSelectedSalary] = useState("");
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -56,14 +58,17 @@ const page = () => {
         setSelectedTypes((prev) =>
             prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
         );
-    };
+    }
+    const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedSalary(e.target.value);
+    }
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(e.target.value);
     };
 
     const filteredJobs = data?.jobs?.filter(
-        (job: { type: string; location: string; company: { name: string }; category: string }) => {
+        (job: { type: string; location: string; salary: string; company: { name: string }; categories: string }) => {
             const matchesName =
                 searchTerm.name === "" ||
                 job.company.name.toLowerCase().includes(searchTerm.name.toLowerCase());
@@ -76,11 +81,26 @@ const page = () => {
                 selectedTypes.length === 0 || selectedTypes.includes(job.type);
 
             const matchesCategory =
-                selectedCategory === "" || job.category === selectedCategory;
+                selectedCategory === "" || job.categories === selectedCategory;
 
-            return matchesName && matchesLocation && matchesType && matchesCategory;
+            const matchesSalary =
+                selectedSalary === "" ||
+                (selectedSalary === "<$500" && Number(job.salary) < 500) ||
+                (selectedSalary === "$1000-$5000" &&
+                    Number(job.salary) >= 1000 &&
+                    Number(job.salary) <= 5000) ||
+                (selectedSalary === ">$5000" && Number(job.salary) > 5000);
+
+            return matchesName && matchesLocation && matchesType && matchesCategory && matchesSalary;
         }
     );
+
+    const handleResetFilters = () => {
+        setSearchTerm({ name: "", location: "" });
+        setSelectedTypes([]);
+        setSelectedCategory("");
+        setSelectedSalary("");
+    };
 
     if (isFetching) return <Loader />
 
@@ -118,8 +138,8 @@ const page = () => {
                                         <input onChange={handleSearchChange} name='name' value={searchTerm.name} className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
-                                        <label className='font-semibold' htmlFor="category">Categories</label>
-                                        <select className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' name="category" id="category" value={selectedCategory} onChange={handleCategoryChange}>
+                                        <label className='font-semibold' htmlFor="categories">Categories</label>
+                                        <select className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' name="categories" id="categories" value={selectedCategory} onChange={handleCategoryChange}>
                                             <option value="">Select Category</option>
                                             {categories.map((item, index) => (
                                                 <option key={index} value={item}>{item}</option>
@@ -147,22 +167,44 @@ const page = () => {
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
-                                        <label className='font-semibold' htmlFor="">Salary</label>
+                                        <label className='font-semibold' htmlFor="salary">Salary</label>
                                         <div className='flex flex-col gap-2 mt-2'>
                                             <label className="inline-flex items-center">
-                                                <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
+                                                <input
+                                                    type="radio"
+                                                    name="salary"
+                                                    value="<$500"
+                                                    checked={selectedSalary === "<$500"}
+                                                    onChange={handleSalaryChange}
+                                                    className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2"
+                                                />
                                                 <span className="ms-2 text-slate-400">&lt;$500</span>
                                             </label>
                                             <label className="inline-flex items-center">
-                                                <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
+                                                <input
+                                                    type="radio"
+                                                    name="salary"
+                                                    value="$1000-$5000"
+                                                    checked={selectedSalary === "$1000-$5000"}
+                                                    onChange={handleSalaryChange}
+                                                    className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2"
+                                                />
                                                 <span className="ms-2 text-slate-400">$1000-$5000</span>
                                             </label>
                                             <label className="inline-flex items-center">
-                                                <input className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2" type="radio" name="radio-colors" />
+                                                <input
+                                                    type="radio"
+                                                    name="salary"
+                                                    value=">$5000"
+                                                    checked={selectedSalary === ">$5000"}
+                                                    onChange={handleSalaryChange}
+                                                    className="form-radio size-4 appearance-none rounded-full border border-gray-200 accent-green-600 checked:appearance-auto focus:border-green-300 focus:ring-0 focus:ring-offset-0 focus:ring-green-200 focus:ring-opacity-50 me-2"
+                                                />
                                                 <span className="ms-2 text-slate-400">&gt;$5000</span>
                                             </label>
                                         </div>
                                     </div>
+                                    <button type="button" className='py-1 mt-4 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center rounded-md bg-emerald-600 hover:bg-emerald-700 border-emerald-600 hover:border-emerald-700 text-white' onClick={handleResetFilters}>Reset Filters</button>
                                 </form>
                             </div>
                         </div>
