@@ -84,7 +84,12 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                 <h5 className='text-2xl font-semibold'>Recent Openings</h5>
                 <div className='grid lg:grid-cols-2 grid-cols-1 gap-6 mt-5'>
                   {employer?.jobs.map((post, index: React.Key) => (
-                    <div key={index} className='relative overflow-hidden rounded-md shadow-sm cursor-pointer transition-transform duration-500 hover:scale-105'>
+                    <Link href={{
+                      pathname: `/job-details/${post?.id}`,
+                      query: {
+                        title: post?.title
+                      }
+                    }} key={index} className='relative overflow-hidden rounded-md shadow-sm cursor-pointer transition-transform duration-500 hover:scale-105'>
                       <div className='p-6'>
                         <h4 className='text-lg font-semibold mb-2'>{post.title}</h4>
                         <div className="flex items-center gap-1">
@@ -115,7 +120,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -138,7 +143,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                   <div className='flex flex-col gap-2'>
                     <label htmlFor="email" className='text-sm font-medium'>Your Email:</label>
                     <div className='relative'>
-                      <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="size-4 absolute top-3 start-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                      <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="size-4 absolute top-3 start-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                       <input className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent !ps-11" placeholder="Email :" type="email" name="email" />
                     </div>
                   </div>
