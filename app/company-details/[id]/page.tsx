@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react'
+import React, { useState } from 'react'
 
 import Footer from '@/components/ui/Footer'
 import Navbar from '@/components/ui/Navbar'
@@ -15,6 +15,16 @@ import { IoMdTime } from "react-icons/io";
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
   const { data: employer, isPending, error } = useEmployerProfile(id);
+  const [comments, setComments] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
+  const { name, email, message } = comments;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setComments({ ...comments, [e.target.name]: e.target.value });
+  }
 
   if (isPending) return <Loader />
 
@@ -135,7 +145,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                     <label htmlFor="name" className='text-sm font-medium'>Your Name:</label>
                     <div className='relative'>
                       <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="size-4 absolute top-3 start-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                      <input className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent !ps-11" placeholder="Name :" type="text" name="name" />
+                      <input className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent !ps-11" placeholder="Name :" type="text" name="name" onChange={handleChange} value={name} />
                     </div>
                   </div>
                 </div>
@@ -144,7 +154,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                     <label htmlFor="email" className='text-sm font-medium'>Your Email:</label>
                     <div className='relative'>
                       <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="size-4 absolute top-3 start-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                      <input className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent !ps-11" placeholder="Email :" type="email" name="email" />
+                      <input className="w-full py-2 px-3 text-[14px] border border-gray-200 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 rounded h-10 outline-none bg-transparent !ps-11" placeholder="Email :" type="email" name="email" onChange={handleChange} value={email} />
                     </div>
                   </div>
                 </div>
@@ -154,7 +164,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                   <label htmlFor="message" className='text-sm font-medium'>Your Message:</label>
                   <div className='relative'>
                     <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="size-4 absolute top-3 start-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    <textarea name="comments" className="w-full py-2 px-3 text-[14px] border border-gray-200 rounded h-24 outline-none bg-transparent !ps-11" placeholder="Message :"></textarea>
+                    <textarea name="message" className="w-full py-2 px-3 text-[14px] border border-gray-200 rounded h-24 outline-none bg-transparent !ps-11" placeholder="Message :" onChange={handleChange} value={message}></textarea>
                   </div>
                 </div>
               </div>
