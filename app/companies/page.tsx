@@ -22,7 +22,36 @@ import { FaIndustry } from "react-icons/fa";
 
 const page = () => {
     const [page, setPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState({
+        name: '',
+        location: '',
+        industry: ''
+    });
     const { data, error, isFetching } = useFetchAllEmployers(page);
+
+    const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setSearchTerm((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+
+    const filteredEmployers = data?.employers.filter((employer: { headquarters: string, name: string, industry: string }) => {
+        const matchesName = searchTerm.name === "" || employer.name.toLowerCase().includes(searchTerm.name.toLowerCase());
+        const matchesLocation = searchTerm.location === "" || employer.headquarters.toLowerCase().includes(searchTerm.location.toLowerCase());
+        const matchesIndustry = searchTerm.industry === "" || employer.industry.toLowerCase().includes(searchTerm.industry.toLowerCase());
+        
+        return matchesName && matchesLocation && matchesIndustry;
+    });
+
+    const resetFilters = () => {
+        setSearchTerm({
+            name: '',
+            location: '',
+            industry: ''
+        });
+    }
 
     if (isFetching) return <Loader />
 
@@ -56,20 +85,24 @@ const page = () => {
                             <div className='shadow-sm shadow-gray-200 p-6 rounded-md bg-white sticky top-20'>
                                 <form>
                                     <div className="flex flex-col gap-2">
-                                        <label className='font-semibold' htmlFor="">Search Company</label>
-                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
+                                        <label className='font-semibold' htmlFor="name">Search Company</label>
+                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" name='name' onChange={handleSearchTermChange} value={searchTerm.name} />
                                     </div>
                                     <div className="flex flex-col gap-2 mt-3.5">
-                                        <label className='font-semibold' htmlFor="">Location</label>
-                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" />
+                                        <label className='font-semibold' htmlFor="location">Location</label>
+                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" name='location' onChange={handleSearchTermChange} value={searchTerm.location} />
                                     </div>
-                                    <button type="button" className='mt-6 bg-emerald-600 text-base text-white py-2 px-4 tracking-wide transition-colors duration-300 hover:bg-emerald-700 rounded cursor-pointer font-semibold'>Apply Filters</button>
+                                    <div className="flex flex-col gap-2 mt-3.5">
+                                        <label className='font-semibold' htmlFor="industry">Industry</label>
+                                        <input className='w-full border border-gray-200 text-[14px] rounded outline-0 py-2 px-3' type="text" name='industry' onChange={handleSearchTermChange} value={searchTerm.industry} />
+                                    </div>
+                                    <button type="button" className='mt-6 bg-emerald-600 text-base text-white py-2 px-4 tracking-wide transition-colors duration-300 hover:bg-emerald-700 rounded cursor-pointer font-semibold' onClick={resetFilters}>Reset Filters</button>
                                 </form>
                             </div>
                         </div>
                         <div className='lg:col-span-8 md:col-span-6'>
                             <div className='grid grid-cols-1 gap-[30px]'>
-                                {data?.employers?.map((employer, item: React.Key) => (
+                                {filteredEmployers.map((employer, item: React.Key) => (
                                     <Link href={{
                                         pathname: `/company-details/${employer?.id}`,
                                         query: {

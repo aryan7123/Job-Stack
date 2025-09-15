@@ -59,6 +59,7 @@ const page = () => {
             prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
         );
     }
+    
     const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedSalary(e.target.value);
     }
