@@ -38,9 +38,9 @@ export async function POST(request: NextRequest) {
 
       const newComment = await prisma.company.update({
         where: { id: body.employerId },
-        data: { comments: updatedComments }
+        data: { comments: JSON.parse(JSON.stringify(updatedComments)) }
       });
-
+      
       return NextResponse.json({
         success: true,
         comment: newComment,
