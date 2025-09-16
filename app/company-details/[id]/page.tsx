@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 
 import Footer from '@/components/ui/Footer'
 import Navbar from '@/components/ui/Navbar'
@@ -11,10 +11,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatDistanceToNow } from "date-fns";
 import { IoMdTime } from "react-icons/io";
+import { useSendUserComment } from '@/app/queries/employers/send-comment';
 
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
-  const { data: employer, isPending, error } = useEmployerProfile(id);
+  const { data: employer, isPending } = useEmployerProfile(id);
+  const { mutate, isError, isSuccess, data, error, isPending: commentStatus } = useSendUserComment(id);
+
   const [comments, setComments] = useState({
     name: "",
     email: "",
@@ -24,6 +27,10 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setComments({ ...comments, [e.target.name]: e.target.value });
+  }
+
+  const handleSendComment = () => {
+    mutate(comments);
   }
 
   if (isPending) return <Loader />
@@ -168,7 +175,17 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                   </div>
                 </div>
               </div>
-              <button type="button" className='w-full mt-4 rounded cursor-pointer py-2 bg-emerald-600 text-base font-semibold text-white duration-300 transition-colors hover:bg-emerald-700'>Send Message</button>
+              {isError && (
+                <div className="text-sm font-semibold text-red-600 my-3">
+                  {(error as Error).message}
+                </div>
+              )}
+              {isSuccess && data?.message && (
+                <div className="text-sm font-semibold text-green-600 my-3">
+                  {data.message}
+                </div>
+              )}
+              <button disabled={commentStatus} onClick={handleSendComment} type="button" className='w-full mt-4 rounded cursor-pointer py-2 bg-emerald-600 text-base font-semibold text-white duration-300 transition-colors hover:bg-emerald-700'>{commentStatus ? "Sending..." : "Send Message"}</button>
             </form>
           </div>
         </div>

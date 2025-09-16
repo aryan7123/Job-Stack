@@ -6,9 +6,9 @@ export async function sendUserComment(data: {
   name: string;
   email: string;
   message: string;
-}) {
+}, employerId: string) {
   try {
-    const res = await axios.post("/api/send-comment", data);
+    const res = await axios.post("/api/send-comment", { data, employerId });
     return res.data;
   } catch (error: any) {
     const axiosErr = error as AxiosError<ApiError>;
