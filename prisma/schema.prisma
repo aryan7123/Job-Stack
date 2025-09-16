@@ -63,7 +63,7 @@ model Company {
   specialties  String[]
   website      String?
   description  String?
-  comments     Json?
+  comments     Json[]
 
   jobs         Job[]
 }
