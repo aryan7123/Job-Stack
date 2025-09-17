@@ -18,6 +18,7 @@ import {
 import { useFetchJobDetails } from '@/app/queries/jobs/job-details';
 import Loader from '@/components/ui/Loader';
 import { MdLocationPin } from 'react-icons/md';
+import Link from 'next/link';
 
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = React.use(params);
@@ -81,7 +82,12 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                                 <h3 className='text-lg font-semibold'>Qualifications & Skills</h3>
                                 <p className='mt-4 text-slate-400 whitespace-pre-line'>{data?.details.qualification}</p>
                             </div>
-                            <button type="button" className='mt-6 text-white rounded-md bg-emerald-600 text-base font-semibold tracking-wide py-2 px-4 transition-colors duration-500 hover:bg-emerald-700 cursor-pointer'>Apply Now</button>
+                            <Link href={{
+                                pathname: `/job-apply/${data?.details.id}`,
+                                query: {
+                                    title: data?.details.title
+                                }
+                            }} type="button" className='mt-6 text-white rounded-md bg-emerald-600 text-base font-semibold tracking-wide py-2 px-4 transition-colors duration-500 hover:bg-emerald-700 cursor-pointer'>Apply Now</Link>
                         </div>
                         <div className='lg:col-span-4 md:col-span-6'>
                             <div className='shadow-sm shadow-gray-200 rounded-md bg-white sticky top-20'>
@@ -134,7 +140,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                                             <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="size-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                             <div className="ms-4">
                                                 <p className="font-medium">Date Posted:</p>
-                                                <span className="text-emerald-600 font-medium text-sm">{formatDistanceToNow(data?.details.postedAt, {addSuffix: true})}</span>
+                                                <span className="text-emerald-600 font-medium text-sm">{formatDistanceToNow(data?.details.postedAt, { addSuffix: true })}</span>
                                             </div>
                                         </li>
                                     </ul>
