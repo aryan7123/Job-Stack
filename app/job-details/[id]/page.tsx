@@ -82,12 +82,14 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                                 <h3 className='text-lg font-semibold'>Qualifications & Skills</h3>
                                 <p className='mt-4 text-slate-400 whitespace-pre-line'>{data?.details.qualification}</p>
                             </div>
-                            <Link href={{
-                                pathname: `/job-apply/${data?.details.id}`,
-                                query: {
-                                    title: data?.details.title
-                                }
-                            }} type="button" className='mt-6 text-white rounded-md bg-emerald-600 text-base font-semibold tracking-wide py-2 px-4 transition-colors duration-500 hover:bg-emerald-700 cursor-pointer'>Apply Now</Link>
+                            <div className='mt-6'>
+                                <Link href={{
+                                    pathname: `/job-apply/${data?.details.id}`,
+                                    query: {
+                                        title: data?.details.title
+                                    }
+                                }} className='text-white rounded-md bg-emerald-600 text-base font-semibold tracking-wide py-2 px-4 transition-colors duration-500 hover:bg-emerald-700 cursor-pointer'>Apply Now</Link>
+                            </div>
                         </div>
                         <div className='lg:col-span-4 md:col-span-6'>
                             <div className='shadow-sm shadow-gray-200 rounded-md bg-white sticky top-20'>
