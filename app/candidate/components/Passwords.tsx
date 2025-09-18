@@ -4,7 +4,9 @@ import { useUpdatePassword } from '@/app/queries/candidates/update-password';
 
 const Passwords = () => {
     const { data: session } = useSession();
-    const { mutate, isError, error, data, isPending, isSuccess } = useUpdatePassword(session?.user?.id);
+    
+    const userId = session?.user?.id ?? "";
+    const { mutate, isError, error, data, isPending, isSuccess } = useUpdatePassword(userId);
 
     const [passwords, setPasswords] = useState({
         old_password: "",
