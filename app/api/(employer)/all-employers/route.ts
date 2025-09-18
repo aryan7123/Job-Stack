@@ -34,8 +34,9 @@ export async function GET(req: NextRequest) {
       totalEmployers,
       totalPages: Math.ceil(totalEmployers / limit),
       currentPage: page,
-    });
+    }, { status: 200 });
   } catch (error) {
     console.log(error);
+    return NextResponse.json({ error: "Failed to fetch employers" }, { status: 400 });
   }
 }
