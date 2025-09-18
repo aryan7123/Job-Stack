@@ -2,17 +2,15 @@ import { prisma } from "./prisma"
 
 export async function testDatabaseConnection() {
   try {
-    await prisma.$connect()
-    console.log("✅ Database connected successfully")
+    await prisma.$connect();
 
-    const userCount = await prisma.user.count()
-    console.log(`📊 Current user count: ${userCount}`)
+    const userCount = await prisma.user.count();
 
-    return { success: true, message: "Database connection successful" }
+    return { success: true, message: "Database connection successful" };
   } catch (error) {
-    console.error("❌ Database connection failed:", error)
-    return { success: false, error: error.message }
+    console.error("❌ Database connection failed:", error);
+    return { success: false, error: error instanceof Error ? error.message : String(error) };
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
