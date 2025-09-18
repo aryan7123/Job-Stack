@@ -6,7 +6,10 @@ import { useUpdateSocial } from '@/app/queries/candidates/update-social';
 
 const Socials = () => {
     const { data: session } = useSession();
-    const { mutate, isPending, isSuccess, isError, data, error } = useUpdateSocial(session?.user?.id);
+    
+    const sessionId = session?.user?.id ?? "";
+    const { mutate, isPending, isSuccess, isError, data, error } = useUpdateSocial(sessionId);
+
     const [socialLinks, setSocialLinks] = useState({
         twitter: "",
         instagram: "",
