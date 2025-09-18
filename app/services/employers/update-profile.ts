@@ -33,7 +33,7 @@ export async function updateEmployerProfile(
     if (data.description) formData.append("description", data.description);
     if (data.companyLogo) formData.append("companyLogo", data.companyLogo);
     if (employerId) formData.append("employerId", employerId);
-    if (data.specialties.length > 0) {
+    if (data.specialties && data.specialties.length > 0) {
       data.specialties.forEach((special) => {
         formData.append("specialties", special);
       });

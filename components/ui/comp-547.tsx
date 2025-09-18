@@ -10,7 +10,7 @@ import Image from "next/image"
 import { useState } from "react"
 import axios from "axios"
 
-export default function MultipleFileComponent({ employerId }) {
+export default function MultipleFileComponent(employerId: string) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024
   const maxFiles = 6
@@ -49,7 +49,9 @@ export default function MultipleFileComponent({ employerId }) {
 
       formData.append("employerId", employerId);
       files.forEach((fileObj) => {
-        formData.append("photos", fileObj.file)
+        if (fileObj.file instanceof File) {
+          formData.append("photos", fileObj.file)
+        }
       })
 
       const res = await axios.post("/api/upload-employer-photos", formData);
@@ -132,7 +134,7 @@ export default function MultipleFileComponent({ employerId }) {
               <div className="flex items-center gap-3 overflow-hidden">
                 <div className="bg-accent aspect-square shrink-0 rounded">
                   <Image
-                    src={file.preview}
+                    src={file.preview ?? ""}
                     width={100}
                     height={100}
                     quality={100}
