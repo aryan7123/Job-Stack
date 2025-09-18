@@ -20,6 +20,14 @@ import { useFetchAllEmployers } from '../queries/employers/all-employers';
 import { MdOutlineLocationOn } from 'react-icons/md';
 import { FaIndustry } from "react-icons/fa";
 
+interface Employers {
+    id: string;
+    name: string;
+    companyLogo: string;
+    industry: string;
+    headquarters: string;
+}
+
 const page = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState({
@@ -103,7 +111,7 @@ const page = () => {
                         {filteredEmployers?.length > 0 ? (
                             <div className='lg:col-span-8 md:col-span-6'>
                                 <div className='grid grid-cols-1 gap-[30px]'>
-                                    {filteredEmployers.map((employer, item: React.Key) => (
+                                    {filteredEmployers.map((employer: Employers, item: React.Key) => (
                                         <Link href={{
                                             pathname: `/company-details/${employer?.id}`,
                                             query: {

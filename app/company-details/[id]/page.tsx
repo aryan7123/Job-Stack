@@ -13,6 +13,15 @@ import { formatDistanceToNow } from "date-fns";
 import { IoMdTime } from "react-icons/io";
 import { useSendUserComment } from '@/app/queries/employers/send-comment';
 
+interface Post {
+  id: string;
+  title: string;
+  type: string;
+  salary: number;
+  location: string;
+  postedAt: string;
+}
+
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
   const { data: employer, isPending } = useEmployerProfile(id);
@@ -100,7 +109,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
               <div className='mt-10'>
                 <h5 className='text-2xl font-semibold'>Recent Openings</h5>
                 <div className='grid lg:grid-cols-2 grid-cols-1 gap-6 mt-5'>
-                  {employer?.jobs.map((post, index: React.Key) => (
+                  {employer?.jobs.map((post: Post, index: React.Key) => (
                     <Link href={{
                       pathname: `/job-details/${post?.id}`,
                       query: {
