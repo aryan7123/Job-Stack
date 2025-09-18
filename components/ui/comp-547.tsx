@@ -10,7 +10,7 @@ import Image from "next/image"
 import { useState } from "react"
 import axios from "axios"
 
-export default function MultipleFileComponent(employerId: string) {
+export default function MultipleFileComponent({ employerId }: { employerId: string }) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024
   const maxFiles = 6
