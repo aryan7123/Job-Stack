@@ -17,8 +17,9 @@ import { useCandidateProfile } from '@/app/queries/candidates/candidate';
 
 const page = () => {
   const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
 
-  const { isPending, data, error } = useCandidateProfile(session?.user?.id);
+  const { isPending, data, error } = useCandidateProfile(userId);
 
   if (isPending) return <Loader />;
 

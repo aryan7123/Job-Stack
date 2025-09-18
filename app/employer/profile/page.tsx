@@ -12,6 +12,14 @@ import Link from 'next/link';
 import { formatDistanceToNow } from "date-fns";
 import { IoMdTime } from "react-icons/io";
 
+interface Post {
+    title: string;
+    postedAt: string;
+    salary: string;
+    location: string;
+    type: string;
+}
+
 const page = () => {
     const { data: session } = useSession();
     const { data: employer, isPending, error } = useEmployerProfile(session?.user?.id ?? "");
@@ -85,7 +93,7 @@ const page = () => {
                             <div className='mt-10'>
                                 <h5 className='text-2xl font-semibold'>Recent Openings</h5>
                                 <div className='grid lg:grid-cols-2 grid-cols-1 gap-6 mt-5'>
-                                    {employer?.jobs.map((post, index: React.Key) => (
+                                    {employer?.jobs.map((post: Post, index: React.Key) => (
                                         <div key={index} className='relative overflow-hidden rounded-md shadow-sm cursor-pointer transition-transform duration-500 hover:scale-105'>
                                             <div className='p-6'>
                                                 <h4 className='text-lg font-semibold mb-2'>{post.title}</h4>

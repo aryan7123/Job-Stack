@@ -43,8 +43,9 @@ const page = () => {
   });
 
   const { name, email, industry, companySize, yearFounded, founder, headquarters, website, description, specialties } = employerDetails;
-  const { mutate, isPending, isSuccess, isError, data, error } = useUpdateEmployerProfile(session?.user?.id);
-  const employerId = session?.user?.id;
+  const employerId = session?.user?.id ?? "";
+
+  const { mutate, isPending, isSuccess, isError, data, error } = useUpdateEmployerProfile(employerId);
 
   const handleInputChange = (
     e: React.ChangeEvent<

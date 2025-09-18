@@ -33,8 +33,10 @@ interface PersonalDetails {
 
 const page = () => {
   const { data: session, status } = useSession();
-  const { mutate, data, isError, isPending, error, isSuccess } = useUpdateProfile(session?.user?.id);
-  const mutation = useUpdateCandidatePhotos(session?.user?.id);
+  const userId = session?.user?.id ?? "";
+
+  const { mutate, data, isError, isPending, error, isSuccess } = useUpdateProfile(userId);
+  const mutation = useUpdateCandidatePhotos(userId);
 
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     your_name: "",

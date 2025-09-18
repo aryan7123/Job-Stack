@@ -68,7 +68,7 @@ const page = () => {
   });
 
   const { job_title, location, job_category, industry, job_type, salary, experience, qualification, description } = jobDetails;
-  const employerId = session?.user?.id;
+  const employerId = session?.user?.id ?? "";
 
   const { mutate, isPending, data, isError, isSuccess, error } = usePostJob(employerId);
 

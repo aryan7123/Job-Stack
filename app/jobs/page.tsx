@@ -21,6 +21,20 @@ import Loader from '@/components/ui/Loader';
 import { MdOutlineLocationOn } from "react-icons/md";
 import Link from 'next/link'
 
+interface Jobs {
+    id: string;
+    title: string;
+    type: string;
+    location: string;
+    salary: string;
+    postedAt: string;
+    company: {
+        name: string;
+        companyLogo: string;
+    };
+    categories: string;
+}
+
 const categories = [
     "Web Designer",
     "Web Developer",
@@ -213,7 +227,7 @@ const page = () => {
                             <div className='lg:col-span-8 md:col-span-6'>
                                 <div className='grid grid-cols-1 gap-[30px]'>
                                     {filteredJobs.length > 1 ? (
-                                        filteredJobs.map((job, item: React.Key) => (
+                                        filteredJobs.map((job: Jobs, item: React.Key) => (
                                             <Link href={{
                                                 pathname: `/job-details/${job?.id}`,
                                                 query: {
