@@ -39,8 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-
-/public/assets/resumes/
-/public/assets/candidates/
-/public/assets/employer/
