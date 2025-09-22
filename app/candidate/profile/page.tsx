@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import Sidebar from '../components/Sidebar';
 import Loader from '@/components/ui/Loader';
 
 import { MdOutlineAttachEmail, MdOutlinePermPhoneMsg, MdOutlineLocationOn, MdMenuBook } from "react-icons/md";
@@ -14,21 +13,23 @@ import { FaFacebookF, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useCandidateProfile } from '@/app/queries/candidates/candidate';
+import Header from '../components/Header';
 
 const page = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id ?? "";
 
-  const { isPending, data, error } = useCandidateProfile(userId);
+  const { isPending, data } = useCandidateProfile(userId);
 
   if (isPending) return <Loader />;
 
   return (
     <>
-      <Navbar />
+      <Sidebar />
+      <Header />
 
-      <section className="w-full">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <section className="w-full relative">
+        <div className="max-w-6xl mx-auto md:pl-36 md:pt-36 px-6 pt-36">
           <div className="relative">
             {/* Banner Image */}
             <div className="relative">
@@ -70,7 +71,7 @@ const page = () => {
       </section>
 
       <section className='w-full relative'>
-        <div className="w-[inherit] md:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="w-[inherit] md:max-w-6xl mx-auto md:pl-36 md:pt-20 px-6 pt-24 pb-16">
           <div className="relative">
             <h3 className='text-gray-800 text-2xl font-semibold mb-4'>Summary</h3>
             <p className="text-slate-400 selection:bg-emerald-600 selection:text-white break-words leading-relaxed">
@@ -227,8 +228,6 @@ const page = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </>
   )
 }
