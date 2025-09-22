@@ -11,15 +11,11 @@ export async function sendJobApplication(data: {
   try {
     const formData = new FormData();
 
-    formData.append("userId", data.userId ?? "");
-    formData.append("jobId", data.jobId ?? "");
-    
-    if (data.cover_letter) {
-      formData.append("cover_letter", data.cover_letter);
-    }
-    if (data.resume) {
-      formData.append("resume", data.resume);
-    }
+    if (data.userId) formData.append("userId", data.userId);
+    if (data.jobId) formData.append("jobId", data.jobId);
+
+    if (data.cover_letter) formData.append("cover_letter", data.cover_letter);
+    if (data.resume) formData.append("resume", data.resume);
 
     const res = await axios.post("/api/send-application", formData);
     return res.data;

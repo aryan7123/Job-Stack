@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, use } from 'react';
+import React, { useState } from 'react';
 import Footer from '@/components/ui/Footer';
 import Navbar from '@/components/ui/Navbar';
 
@@ -26,7 +26,7 @@ interface JobApplyPageProps {
 
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
     const { data: session } = useSession();
-    const { id } = use(params);
+    const { id } = React.use(params);
     const [jobApplication, setJobApplication] = useState<JobApplyPageProps>({
         cover_letter: null,
         resume: null,
