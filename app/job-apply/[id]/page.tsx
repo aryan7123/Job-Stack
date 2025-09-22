@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { use } from 'react';
 import Footer from '@/components/ui/Footer';
 import Navbar from '@/components/ui/Navbar';
 
@@ -14,12 +14,44 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useSession } from 'next-auth/react';
+import { useSendJobApplication } from '@/app/queries/applications/send-application';
+
+interface JobApplyPageProps {
+    cover_letter: File | null;
+    resume: File | null;
+    userId: string | undefined;
+    jobId: string | undefined;
+}
 
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
+    const { data: session } = useSession();
     const { id } = React.use(params);
+    const [jobApplication, setJobApplication] = React.useState<JobApplyPageProps>({
+        cover_letter: null,
+        resume: null,
+        userId: "",
+        jobId: "",
+    });
+    const { mutate, isPending, error, isSuccess, data, isError } = useSendJobApplication();
 
     const searchParams = useSearchParams();
-    const title = searchParams.get("title");
+    const jobTitle = searchParams.get("title");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setJobApplication({
+            ...jobApplication,
+            [e.target.name]: e.target.type === 'file' ? e.target.files ? e.target.files[0] : null : e.target.value
+        });
+    }
+
+    const handleSendApplication = () => {
+        mutate({
+            ...jobApplication,
+            userId: session?.user?.id,
+            jobId: id
+        });
+    }
 
     return (
         <>
@@ -28,7 +60,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
             <section className='w-full relative py-32 bg-top bg-no-repeat bg-cover bg-[url("/banner/bg-CyJjcuYR.jpg")]'>
                 <div className="absolute inset-0 bg-emerald-900/90 z-0"></div>
                 <div className='relative z-10 flex items-center justify-center text-white md:text-3xl text-2xl tracking-wide font-semibold'>
-                    {title}
+                    {jobTitle}
                 </div>
 
                 <Breadcrumb className='w-[inherit] absolute bottom-5 z-10 flex items-center justify-center'>
@@ -51,31 +83,28 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                             <h3 className='text-2xl font-semibold mb-4'>Application Form</h3>
                             <div className="grid grid-cols-1">
                                 <div className="mb-4 flex flex-col gap-2">
-                                    <label className="font-semibold" htmlFor='title'>Title</label>
-                                    <input id="title" name='title' className="border border-slate-100 w-full text-sm p-2 outline-0" type="text" value={title ?? ""} readOnly />
-                                </div>
-                                <div className="mb-4 flex flex-col gap-2">
-                                    <label className="font-semibold" htmlFor="name">Your Name:</label>
-                                    <input id="name" name='name' className="border border-slate-100 w-full text-sm p-2 outline-0" placeholder="Harry" type="text" />
-                                </div>
-                                <div className="mb-4 flex flex-col gap-2">
-                                    <label className="font-semibold" htmlFor="email">Email Address:</label>
-                                    <input id="email" name='email' className="border border-slate-100 w-full text-sm p-2 outline-0" placeholder="name@example.com" type="email" />
-                                </div>
-                                <div className="mb-4 flex flex-col gap-2">
-                                    <label className="font-semibold" htmlFor="phone">Phone No.:</label>
-                                    <input id="phone" name='phone' className="border border-slate-100 w-full text-sm p-2 outline-0" placeholder="+458 854-8965" type="tel" />
-                                </div>
-                                <div className="mb-4 flex flex-col gap-2">
                                     <label htmlFor="cover_letter" className="font-semibold">Cover Letter:</label>
-                                    <input className="relative border border-slate-100 file:h-10 file:-mx-3 file:-my-2 file:cursor-pointer file:rounded-none file:border-0 file:px-3 file:text-neutral-700 bg-clip-padding px-3 py-1.5 file:me-3 mt-1" id="cover_letter" name='cover_letter' type="file" />
+                                    <input className="relative border border-slate-100 file:h-10 file:-mx-3 file:-my-2 file:cursor-pointer file:rounded-none file:border-0 file:px-3 file:text-neutral-700 bg-clip-padding px-3 py-1.5 file:me-3 mt-1" id="cover_letter" name='cover_letter' type="file" onChange={handleChange} />
                                 </div>
                                 <div className="mb-4 flex flex-col gap-2">
                                     <label className="font-semibold" htmlFor="resume">Upload Resume:</label>
-                                    <input className="relative border border-slate-100 file:h-10 file:-mx-3 file:-my-2 file:cursor-pointer file:rounded-none file:border-0 file:px-3 file:text-neutral-700 bg-clip-padding px-3 py-1.5 file:me-3 mt-1" id="resume" name='resume' type="file" />
+                                    <input className="relative border border-slate-100 file:h-10 file:-mx-3 file:-my-2 file:cursor-pointer file:rounded-none file:border-0 file:px-3 file:text-neutral-700 bg-clip-padding px-3 py-1.5 file:me-3 mt-1" id="resume" name='resume' type="file" onChange={handleChange} />
                                 </div>
+                                {isError && (
+                                    <div className="text-sm font-semibold text-red-600 my-3">
+                                        {(error as Error).message}
+                                    </div>
+                                )}
+
+                                {isSuccess && data?.message && (
+                                    <div className="text-sm font-semibold text-green-600 my-3">
+                                        {data.message}
+                                    </div>
+                                )}
                                 <div>
-                                    <button type="button" className="py-1 px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center rounded-md bg-emerald-600 hover:bg-emerald-700 border-emerald-600 hover:border-emerald-700 text-white">Send</button>
+                                    <button type="button" disabled={isPending} onClick={handleSendApplication} className="py-1 cursor-pointer px-5 inline-block font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center rounded-md bg-emerald-600 hover:bg-emerald-700 border-emerald-600 hover:border-emerald-700 text-white">
+                                        {isPending ? "Submitting..." : "Submit"}
+                                    </button>
                                 </div>
                             </div>
                         </form>
