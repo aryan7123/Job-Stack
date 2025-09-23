@@ -5,8 +5,6 @@ import { useSession } from "next-auth/react";
 import Image from 'next/image';
 
 import { Input } from '@/components/ui/input';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
 import Loader from '@/components/ui/Loader';
 
 import Socials from '../components/Socials';
@@ -15,6 +13,7 @@ import Passwords from '../components/Passwords';
 import SkillsSelectComponent from '@/components/ui/comp-235';
 import { useUpdateProfile } from '@/app/queries/candidates/update-profile';
 import { useUpdateCandidatePhotos } from '@/app/queries/candidates/upload-photos';
+import { AppSidebar } from '../components/Sidebar';
 
 interface PersonalDetails {
   your_name: string;
@@ -37,6 +36,11 @@ const page = () => {
 
   const { mutate, data, isError, isPending, error, isSuccess } = useUpdateProfile(userId);
   const mutation = useUpdateCandidatePhotos(userId);
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const handleShowSidebar = () => {
+    setShowSidebar(!showSidebar);
+  }
 
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     your_name: "",
@@ -132,10 +136,10 @@ const page = () => {
 
   return (
     <>
-      <Navbar />
+      <AppSidebar showSidebar={showSidebar} handleShowSidebar={handleShowSidebar} />
 
-      <section className="w-full bg-white">
-        <div className="max-w-6xl mx-auto px-5 md:px-0 py-24">
+      <section className="w-full bg-white md:mt-[-58%] mt-[-180%]">
+        <div className="max-w-6xl mx-auto md:pl-36 px-6 pb-20">
           <form encType="multipart/form-data" className="bg-white shadow-sm p-6 rounded-md">
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Your Profile Picture
@@ -350,8 +354,6 @@ const page = () => {
           <Passwords />
         </div>
       </section>
-
-      <Footer />
     </>
   )
 }
