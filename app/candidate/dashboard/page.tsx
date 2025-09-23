@@ -2,14 +2,21 @@
 
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useCandidateProfile } from '@/app/queries/candidates/candidate';
 import Loader from '@/components/ui/Loader';
+import { useRecentlyAppliedJobs } from '@/app/queries/applications/recently-applied';
 
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { MdBookmarkBorder, MdOutlinePendingActions } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa6";
 
 const Page = () => {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? '';
+
+  const { data, isLoading, isError, error } = useRecentlyAppliedJobs(userId);
+
+  if(isLoading) return <Loader />;
+
   return (
     <>
       <section className="w-full relative">
@@ -18,7 +25,7 @@ const Page = () => {
 
           {/* Heading with its own safe padding */}
           <div className="flex flex-col gap-3 mt-5 px-4 sm:px-0">
-            <h2 className="text-4xl font-semibold">Howdy, Aryan!!</h2>
+            <h2 className="text-4xl font-semibold">Howdy, {session?.user?.name}!!</h2>
             <span className="text-slate-400 text-sm font-medium">
               Ready to jump back in?
             </span>
@@ -66,6 +73,10 @@ const Page = () => {
                 <span className="text-[#202124] font-medium text-sm">Shortlisted Jobs</span>
               </div>
             </div>
+          </div>
+          <div className='w-[inherit] mt-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
+            <h3 className='text-xl font-semibold'>Jobs Applied Recently</h3>
+
           </div>
         </div>
       </section>

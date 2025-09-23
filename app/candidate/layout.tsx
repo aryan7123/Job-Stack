@@ -30,22 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {/* Sidebar */}
                 <Sidebar collapsible="icon" className="transition-transform">
                     {/* Mobile sidebar header */}
-                    <div className="w-full md:hidden flex items-center justify-between px-6 py-4 border-b border-[#ecedf2] shadow-md">
-                        <div className="flex items-center gap-2">
-                            <Image
-                                className="object-cover"
-                                src="/logo-2.png"
-                                alt="jobstack"
-                                width={50}
-                                height={50}
-                                priority
-                            />
-                            <h4 className="font-semibold text-xl">Job Stack</h4>
-                        </div>
-                        <IoCloseCircleOutline size={25} className="cursor-pointer" />
-                    </div>
-
-                    <SidebarContent className="py-10 md:py-28 px-6 md:px-8">
+                    <SidebarContent className="py-28 px-6 md:px-8">
                         <SidebarGroup className="p-0">
                             <SidebarGroupLabel className="hidden">Menu</SidebarGroupLabel>
                             <SidebarGroupContent>
