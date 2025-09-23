@@ -23,6 +23,7 @@ import { LuCircleUserRound, LuBriefcaseBusiness } from "react-icons/lu"
 import { PiReadCvLogo } from "react-icons/pi"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { MdMenu } from "react-icons/md"
 
 interface AppSidebarProps {
@@ -32,14 +33,16 @@ interface AppSidebarProps {
 
 export function AppSidebar({ showSidebar, handleShowSidebar }: AppSidebarProps) {
     const items = [
-        { icon: IoHomeOutline, label: "Dashboard" },
-        { icon: LuCircleUserRound, label: "My Profile" },
-        { icon: PiReadCvLogo, label: "My Resume" },
-        { icon: LuBriefcaseBusiness, label: "Applied Jobs" },
-        { icon: IoSettingsOutline, label: "Settings" },
-        { icon: IoIosLogOut, label: "Logout" },
-        { icon: RiDeleteBin6Line, label: "Delete Profile" },
-    ]
+        { icon: IoHomeOutline, label: "Dashboard", path: "/candidate/dashboard" },
+        { icon: LuCircleUserRound, label: "My Profile", path: "/candidate/profile" },
+        { icon: PiReadCvLogo, label: "My Resume", path: "/candidate/resume" },
+        { icon: LuBriefcaseBusiness, label: "Applied Jobs", path: "/candidate/applied-jobs" },
+        { icon: IoSettingsOutline, label: "Settings", path: "/candidate/settings" },
+        { icon: IoIosLogOut, label: "Logout", path: "/candidate/logout" },
+        { icon: RiDeleteBin6Line, label: "Delete Profile", path: "/candidate/delete-profile" },
+    ];
+
+    const pathname = usePathname();
 
     return (
         <>
@@ -67,7 +70,7 @@ export function AppSidebar({ showSidebar, handleShowSidebar }: AppSidebarProps) 
                         <MdMenu size={35} />
                     </SidebarTrigger>
                     <div className="hidden md:flex items-center justify-center gap-10">
-                        <Link href="" className='text-base font-semibold'>
+                        <Link href="/" className='text-base font-semibold'>
                             Home
                         </Link>
                         <Link href="" className="text-base font-semibold">
@@ -76,10 +79,10 @@ export function AppSidebar({ showSidebar, handleShowSidebar }: AppSidebarProps) 
                         <Link href="" className="text-base font-semibold">
                             Services
                         </Link>
-                        <Link href="" className="text-base font-semibold">
+                        <Link href="/companies" className="text-base font-semibold">
                             Companies
                         </Link>
-                        <Link href="" className="text-base font-semibold">
+                        <Link href="/jobs" className="text-base font-semibold">
                             Jobs
                         </Link>
                         <Link href="" className="text-base font-semibold">
@@ -113,15 +116,17 @@ export function AppSidebar({ showSidebar, handleShowSidebar }: AppSidebarProps) 
                     </div>
 
                     <SidebarContent className="py-10 md:py-28 px-6 md:px-8">
-                        <SidebarGroup>
+                        <SidebarGroup className="p-0">
                             <SidebarGroupLabel className="hidden">Menu</SidebarGroupLabel>
                             <SidebarGroupContent>
-                                <SidebarMenu>
+                                <SidebarMenu className="space-y-3">
                                     {items.map((item, idx) => (
                                         <SidebarMenuItem key={idx}>
-                                            <SidebarMenuButton className="flex items-center gap-3 px-3 py-4 rounded-md hover:bg-emerald-600 hover:text-white transition-all duration-300 cursor-pointer">
-                                                <item.icon className="shrink-0" />
-                                                <span className="font-medium">{item.label}</span>
+                                            <SidebarMenuButton className={`px-3 py-5 rounded-md ${pathname === item.path ? "bg-emerald-600 text-white hover:bg-emerald-600 hover:text-white" : "bg-transparent text-inherit hover:bg-emerald-600 hover:text-white"} transition-all duration-300 cursor-pointer`}>
+                                                <Link href={item.path} className="flex items-center gap-3">
+                                                    <item.icon className="shrink-0" />
+                                                    <span className="font-medium text-base">{item.label}</span>
+                                                </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                     ))}

@@ -36,11 +36,6 @@ const page = () => {
 
   const { mutate, data, isError, isPending, error, isSuccess } = useUpdateProfile(userId);
   const mutation = useUpdateCandidatePhotos(userId);
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const handleShowSidebar = () => {
-    setShowSidebar(!showSidebar);
-  }
 
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     your_name: "",
@@ -136,10 +131,9 @@ const page = () => {
 
   return (
     <>
-      <AppSidebar showSidebar={showSidebar} handleShowSidebar={handleShowSidebar} />
 
-      <section className="w-full bg-white md:mt-[-58%] mt-[-180%]">
-        <div className="max-w-6xl mx-auto md:pl-36 px-6 pb-20">
+      <section className="w-full bg-white">
+        <div className="max-w-6xl mx-auto md:pl-36 px-6 py-20">
           <form encType="multipart/form-data" className="bg-white shadow-sm p-6 rounded-md">
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Your Profile Picture

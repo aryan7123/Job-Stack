@@ -20,20 +20,12 @@ const page = () => {
 
   const { isPending, data } = useCandidateProfile(userId);
 
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const handleShowSidebar = () => {
-    setShowSidebar(!showSidebar);
-  }
-
   if (isPending) return <Loader />;
 
   return (
     <>
-      <AppSidebar showSidebar={showSidebar} handleShowSidebar={handleShowSidebar} />
-
-      <section className="w-full relative md:mt-[-45%] mt-[-180%]">
-        <div className="max-w-6xl mx-auto md:pl-36 px-6">
+      <section className="w-full relative">
+        <div className="max-w-6xl mx-auto md:pl-36 px-6 pt-16">
           <div className="relative">
             {/* Banner Image */}
             <div className="relative">

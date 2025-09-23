@@ -73,7 +73,7 @@ const Navbar = () => {
 
                     {/* CENTER: Nav Links (desktop only) */}
                     <div className="hidden md:flex flex-1 items-center justify-center gap-10">
-                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
+                        <Link href="/" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Home
                         </Link>
                         <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
@@ -82,7 +82,10 @@ const Navbar = () => {
                         <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Services
                         </Link>
-                        <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
+                        <Link href="/companies" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
+                            Companies
+                        </Link>
+                        <Link href="/jobs" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
                             Jobs
                         </Link>
                         <Link href="" className={`${stickyNavbar ? "text-emerald-600" : "text-gray-800"} text-base font-semibold`}>
@@ -142,10 +145,11 @@ const Navbar = () => {
                                     </SheetTitle>
                                 </SheetHeader>
                                 <div className="flex flex-col items-start gap-4 px-4 pb-6">
-                                    <Link href="" className="text-emerald-600 text-sm font-semibold">Home</Link>
+                                    <Link href="/" className="text-emerald-600 text-sm font-semibold">Home</Link>
                                     <Link href="" className="text-emerald-600 text-sm font-semibold">About Us</Link>
                                     <Link href="" className="text-emerald-600 text-sm font-semibold">Services</Link>
-                                    <Link href="" className="text-emerald-600 text-sm font-semibold">Jobs</Link>
+                                    <Link href="/companies" className="text-emerald-600 text-sm font-semibold">Companies</Link>
+                                    <Link href="/jobs" className="text-emerald-600 text-sm font-semibold">Jobs</Link>
                                     <Link href="" className="text-emerald-600 text-sm font-semibold">Contact Us</Link>
                                 </div>
                             </SheetContent>

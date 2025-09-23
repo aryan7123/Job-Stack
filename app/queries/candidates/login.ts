@@ -12,7 +12,7 @@ export function useLoginCandidate(email: string, password: string) {
         email,
         password,
         redirect: true,
-        callbackUrl: "/candidate/profile",
+        callbackUrl: "/candidate/dashboard",
         role: "candidate"
       });
     },
