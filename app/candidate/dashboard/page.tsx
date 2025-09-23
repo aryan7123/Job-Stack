@@ -1,19 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useSession } from 'next-auth/react';
 import Loader from '@/components/ui/Loader';
 import { useRecentlyAppliedJobs } from '@/app/queries/applications/recently-applied';
 
+import { formatDistanceToNow } from "date-fns";
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { MdBookmarkBorder, MdOutlinePendingActions } from "react-icons/md";
+import { IoLocationOutline } from "react-icons/io5";
+import { CiClock1 } from "react-icons/ci";
 import { FaRegBell } from "react-icons/fa6";
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Page = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id ?? '';
 
-  const { data, isLoading, isError, error } = useRecentlyAppliedJobs(userId);
+  const { data: applications, isLoading, isError, error } = useRecentlyAppliedJobs(userId);
 
   if(isLoading) return <Loader />;
 
@@ -74,10 +79,39 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className='w-[inherit] mt-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
-            <h3 className='text-xl font-semibold'>Jobs Applied Recently</h3>
-
-          </div>
+          {applications && applications.length > 0 && (
+            <div className='w-[inherit] mt-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
+              <h3 className='text-xl font-semibold'>Jobs Applied Recently</h3>
+              <div className='grid md:grid-cols-2 gap-6 mt-6'>
+                {applications.map((item, index: React.Key) => (
+                  <Link href={''} key={index} className='flex items-start gap-4 bg-white border border-[#ecedf2] rounded-md p-4 transition-transform duration-500 hover:scale-[1.02] cursor-pointer'>
+                    <Image
+                      src={item.job.company.companyLogo}
+                      alt={item.job.company.name}
+                      width={50}
+                      height={50}
+                      className='w-12 h-12 object-contain rounded-md'
+                      priority
+                      quality={100}
+                    />
+                    <div className='flex flex-col items-start justify-start'>
+                      <h3 className='md:text-base text-sm font-semibold'>{item.job.title}</h3>
+                      <div className='flex items-center gap-3 mt-2'>
+                        <div className='flex items-center gap-1'>
+                          <IoLocationOutline size={14} />
+                          <span className='text-sm text-slate-500 font-medium'>{item.job.location}</span>
+                        </div>
+                        <div className='flex items-center gap-1'>
+                          <CiClock1 size={14} />
+                          <span className='text-sm text-slate-500 font-medium'>{formatDistanceToNow(item.appliedAt)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>

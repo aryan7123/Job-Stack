@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
             company: {
               select: {
                 name: true,
+                industry: true,
                 companyLogo: true,
               },
             },
