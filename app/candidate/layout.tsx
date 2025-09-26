@@ -52,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Sidebar>
 
                 {/* Main Content */}
-                <div className="flex-1 flex flex-col">
+                <div className="flex flex-col">
                     {/* Header */}
                     <header className="w-full fixed bg-white shadow-md border-b border-[#ecedf2] top-0 left-0 z-[99] h-16 md:h-20">
                         <div className="flex items-center justify-between h-full px-6 md:px-[45px]">
