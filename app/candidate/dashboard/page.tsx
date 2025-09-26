@@ -98,7 +98,7 @@ const Page = () => {
             </div>
           </div>
           {applications && applications.length > 0 && (
-            <div className='w-[inherit] mt-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
+            <div className='w-[inherit] my-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
               <h3 className='text-xl font-semibold'>Jobs Applied Recently</h3>
               <div className='grid md:grid-cols-2 gap-6 mt-6'>
                 {applications.map((item: ApplicationsProps, index: React.Key) => (
