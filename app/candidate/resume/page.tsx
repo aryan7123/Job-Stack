@@ -29,12 +29,8 @@ const page = () => {
             {data?.candidate.resumeUrl && (
               <>
                 {/* Inline Preview */}
-                <div className="mt-4 w-full h-[600px] border">
-                  <iframe
-                    src={data.candidate.resumeUrl}
-                    className="w-full h-full"
-                    style={{ border: "none" }}
-                  />
+                <div className="mt-4 w-full">
+                  
                 </div>
 
                 <div className="flex items-center gap-3 mt-5">
