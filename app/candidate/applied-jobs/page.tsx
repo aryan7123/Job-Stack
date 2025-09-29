@@ -10,7 +10,7 @@ import { CiClock1 } from 'react-icons/ci';
 import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
-
+import Link from 'next/link';
 interface ApplicationsProps {
   appliedAt: string,
   status: string
@@ -59,7 +59,7 @@ const page = () => {
                 </thead>
                 <tbody>
                   {applications.map((item: ApplicationsProps, index: React.Key) => (
-                    <tr key={index} >
+                    <tr key={index} className='border-b border-[#ecedf2]'>
                       <td className='w-[500px] flex items-start justify-start gap-3 py-2.5'>
                         <Image
                           src={item.job?.company.companyLogo}
@@ -83,7 +83,12 @@ const page = () => {
                       <td className='w-[200px] text-slate-400 text-sm font-semibold'>{formatDistanceToNow(item?.appliedAt, { addSuffix: true })}</td>
                       <td className={`w-[150px] ${item?.status == "Pending" && "text-[#d93025]"} ${item?.status == "Active" && "text-[#f9ab00]"} ${item?.status == "Shortlisted" && "text-[#34a853]"} text-sm font-semibold`}>{item?.status}</td>
                       <td className='w-[180px] flex items-center gap-2'>
-                        <button type="button" className='bg-green-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-green-600'><FaEye /></button>
+                        <Link target='_blank' href={{
+                          pathname: `/job-details/${item.job?.id}`,
+                          query: {
+                            title: item.job?.title
+                          }
+                        }} type="button" className='bg-green-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-green-600'><FaEye /></Link>
                         <button type="button" className='bg-red-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-red-600'><FaTrashCan /></button>
                       </td>
                     </tr>
@@ -93,12 +98,20 @@ const page = () => {
 
               {/* Mobile view as cards */}
               <div className="md:hidden space-y-4">
-                <div className="border border-[#ecedf2] rounded-lg p-4 shadow-sm">
-                  <p><span className="font-semibold">Job Title:</span> INV001</p>
-                  <p><span className="font-semibold">Date Applied:</span> Paid</p>
-                  <p><span className="font-semibold">Status:</span> Credit Card</p>
-                  <p><span className="font-semibold">Action:</span> $250.00</p>
-                </div>
+                {applications.map((item: ApplicationsProps, index: React.Key) => (
+                  <div key={index} className="bg-white border border-[#ecedf2] rounded-lg p-4 shadow-sm">
+                    <p className='mb-2'><span className="font-semibold">Job Title:</span> {item.job?.title}</p>
+                    <p className='mb-2'><span className="font-semibold">Date Applied:</span> {formatDistanceToNow(item?.appliedAt, { addSuffix: true })}</p>
+                    <p className={`${item?.status == "Pending" && "text-[#d93025]"} ${item?.status == "Active" && "text-[#f9ab00]"} ${item?.status == "Shortlisted" && "text-[#34a853]"} text-sm font-semibold mb-2`}><span>Status:</span> {item?.status}</p>
+                    <div className='flex items-center gap-2'><Link target='_blank' href={{
+                      pathname: `/job-details/${item.job?.id}`,
+                      query: {
+                        title: item.job?.title
+                      }
+                    }} type="button" className='bg-green-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-green-600'><FaEye /></Link>
+                      <button type="button" className='bg-red-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-red-600'><FaTrashCan /></button></div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
