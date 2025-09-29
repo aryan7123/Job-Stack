@@ -1,5 +1,6 @@
 "use client"
 
+import { useSession, signOut } from "next-auth/react"
 import {
     Sidebar,
     SidebarContent,
@@ -38,11 +39,12 @@ export function AppSidebar({ showSidebar, handleShowSidebar }: AppSidebarProps) 
         { icon: PiReadCvLogo, label: "My Resume", path: "/candidate/resume" },
         { icon: LuBriefcaseBusiness, label: "Applied Jobs", path: "/candidate/applied-jobs" },
         { icon: IoSettingsOutline, label: "Settings", path: "/candidate/settings" },
-        { icon: IoIosLogOut, label: "Logout", path: "/candidate/logout" },
+        { icon: IoIosLogOut, label: "Logout", path: "/candidate-login" },
         { icon: RiDeleteBin6Line, label: "Delete Profile", path: "/candidate/delete-profile" },
     ];
 
     const pathname = usePathname();
+    const { data: session } = useSession();
 
     return (
         <>
@@ -122,12 +124,31 @@ export function AppSidebar({ showSidebar, handleShowSidebar }: AppSidebarProps) 
                                 <SidebarMenu className="space-y-3">
                                     {items.map((item, idx) => (
                                         <SidebarMenuItem key={idx}>
-                                            <SidebarMenuButton className={`px-3 py-5 rounded-md ${pathname === item.path ? "bg-emerald-600 text-white hover:bg-emerald-600 hover:text-white" : "bg-transparent text-inherit hover:bg-emerald-600 hover:text-white"} transition-all duration-300 cursor-pointer`}>
-                                                <Link href={item.path} className="flex items-center gap-3">
+                                            {item.path === "/candidate-login" ? (
+                                                <SidebarMenuButton
+                                                    onClick={() => signOut()}
+                                                    className={`px-3 py-5 rounded-md flex items-center gap-3 ${pathname === item.path
+                                                            ? "bg-emerald-600 text-white hover:bg-emerald-600 hover:text-white"
+                                                            : "bg-transparent text-inherit hover:bg-emerald-600 hover:text-white"
+                                                        } transition-all duration-300 cursor-pointer`}
+                                                >
                                                     <item.icon className="shrink-0" />
                                                     <span className="font-medium text-base">{item.label}</span>
-                                                </Link>
-                                            </SidebarMenuButton>
+                                                </SidebarMenuButton>
+                                            ) : (
+                                                <SidebarMenuButton
+                                                    asChild
+                                                    className={`px-3 py-5 rounded-md ${pathname === item.path
+                                                            ? "bg-emerald-600 text-white hover:bg-emerald-600 hover:text-white"
+                                                            : "bg-transparent text-inherit hover:bg-emerald-600 hover:text-white"
+                                                        } transition-all duration-300 cursor-pointer`}
+                                                >
+                                                    <Link href={item.path} className="flex items-center gap-3">
+                                                        <item.icon className="shrink-0" />
+                                                        <span className="font-medium text-base">{item.label}</span>
+                                                    </Link>
+                                                </SidebarMenuButton>
+                                            )}
                                         </SidebarMenuItem>
                                     ))}
                                 </SidebarMenu>
