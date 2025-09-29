@@ -28,12 +28,7 @@ const page = () => {
           <div className="w-full mt-10 rounded-md shadow-md bg-white border border-[#ecedf2] p-6">
             {data?.candidate.resumeUrl && (
               <>
-                {/* Inline Preview */}
-                <div className="mt-4 w-full">
-                  
-                </div>
-
-                <div className="flex items-center gap-3 mt-5">
+                <div className="flex items-center gap-3">
                   <Link
                     className="py-1 px-5 font-semibold tracking-wide border align-middle transition duration-500 ease-in-out text-base text-center bg-emerald-600 hover:bg-emerald-700 border-emerald-600 text-white rounded-md w-full flex items-center justify-center"
                     download
