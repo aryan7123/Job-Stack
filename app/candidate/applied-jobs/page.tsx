@@ -6,7 +6,6 @@ import Loader from '@/components/ui/Loader';
 import { useRecentlyAppliedJobs } from '@/app/queries/applications/recently-applied';
 import Image from 'next/image';
 import { IoLocationOutline } from 'react-icons/io5';
-import { CiClock1 } from 'react-icons/ci';
 import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
@@ -103,13 +102,15 @@ const page = () => {
                     <p className='mb-2'><span className="font-semibold">Job Title:</span> {item.job?.title}</p>
                     <p className='mb-2'><span className="font-semibold">Date Applied:</span> {formatDistanceToNow(item?.appliedAt, { addSuffix: true })}</p>
                     <p className={`${item?.status == "Pending" && "text-[#d93025]"} ${item?.status == "Active" && "text-[#f9ab00]"} ${item?.status == "Shortlisted" && "text-[#34a853]"} text-sm font-semibold mb-2`}><span>Status:</span> {item?.status}</p>
-                    <div className='flex items-center gap-2'><Link target='_blank' href={{
-                      pathname: `/job-details/${item.job?.id}`,
-                      query: {
-                        title: item.job?.title
-                      }
-                    }} type="button" className='bg-green-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-green-600'><FaEye /></Link>
-                      <button type="button" className='bg-red-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-red-600'><FaTrashCan /></button></div>
+                    <div className='flex items-center gap-2'>
+                      <Link target='_blank' href={{
+                        pathname: `/job-details/${item.job?.id}`,
+                        query: {
+                          title: item.job?.title
+                        }
+                      }} className='bg-green-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-green-600'><FaEye /></Link>
+                      <button type="button" className='bg-red-500 text-white p-2 rounded-md cursor-pointer text-sm duration-300 transition-colors hover:bg-red-600'><FaTrashCan /></button>
+                    </div>
                   </div>
                 ))}
               </div>
