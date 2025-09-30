@@ -31,7 +31,7 @@ const page = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id ?? '';
 
-  const { data: applications, isLoading, isError, error } = useRecentlyAppliedJobs(userId);
+  const { data: applications, isLoading } = useRecentlyAppliedJobs(userId);
 
   if (isLoading) return <Loader />;
 
@@ -59,13 +59,13 @@ const page = () => {
                 <tbody>
                   {applications.map((item: ApplicationsProps, index: React.Key) => (
                     <tr key={index} className='border-b border-[#ecedf2]'>
-                      <td className='w-[500px] flex items-start justify-start gap-3 py-2.5'>
+                      <td className='w-[500px] flex items-center justify-start gap-3 py-2.5'>
                         <Image
                           src={item.job?.company.companyLogo}
                           alt={item.job?.company.name}
-                          width={50}
-                          height={50}
-                          className='w-12 h-12 object-contain rounded-md'
+                          width={40}
+                          height={40}
+                          className='w-10 h-10 object-contain rounded-md'
                           priority
                           quality={100}
                         />
@@ -79,8 +79,8 @@ const page = () => {
                           </div>
                         </div>
                       </td>
-                      <td className='w-[200px] text-slate-400 text-sm font-semibold'>{formatDistanceToNow(item?.appliedAt, { addSuffix: true })}</td>
-                      <td className={`w-[150px] ${item?.status == "Pending" && "text-[#d93025]"} ${item?.status == "Active" && "text-[#f9ab00]"} ${item?.status == "Shortlisted" && "text-[#34a853]"} text-sm font-semibold`}>{item?.status}</td>
+                      <td className='w-[200px] text-slate-400 text-left text-sm font-semibold'>{formatDistanceToNow(item?.appliedAt, { addSuffix: true })}</td>
+                      <td className={`w-[150px] ${item?.status == "Pending" && "text-[#d93025]"} ${item?.status == "Active" && "text-[#f9ab00]"} ${item?.status == "Shortlisted" && "text-[#34a853]"} text-sm text-left font-semibold`}>{item?.status}</td>
                       <td className='w-[180px] flex items-center gap-2'>
                         <Link target='_blank' href={{
                           pathname: `/job-details/${item.job?.id}`,
@@ -98,7 +98,7 @@ const page = () => {
               {/* Mobile view as cards */}
               <div className="md:hidden space-y-4">
                 {applications.map((item: ApplicationsProps, index: React.Key) => (
-                  <div key={index} className="bg-white border border-[#ecedf2] rounded-lg p-4 shadow-sm">
+                  <div key={index} className="odd:bg-emerald-600/50 border odd:text-white border-[#ecedf2] rounded-lg p-4 shadow-sm">
                     <p className='mb-2'><span className="font-semibold">Job Title:</span> {item.job?.title}</p>
                     <p className='mb-2'><span className="font-semibold">Date Applied:</span> {formatDistanceToNow(item?.appliedAt, { addSuffix: true })}</p>
                     <p className={`${item?.status == "Pending" && "text-[#d93025]"} ${item?.status == "Active" && "text-[#f9ab00]"} ${item?.status == "Shortlisted" && "text-[#34a853]"} text-sm font-semibold mb-2`}><span>Status:</span> {item?.status}</p>

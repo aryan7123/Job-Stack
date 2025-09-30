@@ -36,7 +36,11 @@ const Page = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id ?? '';
 
-  const { data: applications, isLoading, isError, error } = useRecentlyAppliedJobs(userId);
+  const { data: applications, isLoading } = useRecentlyAppliedJobs(userId);
+
+  const pendingApplications = applications?.filter((item: { status: string; }) => item.status === "Pending");
+  const activeApplications = applications?.filter((item: { status: string; }) => item.status === "Active");
+  const shortlistedApplications = applications?.filter((item: { status: string; }) => item.status === "Shortlisted");
 
   if (isLoading) return <Loader />;
 
@@ -61,7 +65,7 @@ const Page = () => {
                 <LuBriefcaseBusiness size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#1967d2] text-3xl font-semibold">22</span>
+                <span className="text-[#1967d2] text-3xl font-semibold">{applications?.length > 10 ? `${applications?.length}` : `0${applications?.length}`}</span>
                 <span className="text-[#202124] font-medium text-sm">Applied</span>
               </div>
             </div>
@@ -72,7 +76,7 @@ const Page = () => {
                 <FaRegBell size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#d93025] text-3xl font-semibold">07</span>
+                <span className="text-[#d93025] text-3xl font-semibold">{pendingApplications?.length > 10 ? `${pendingApplications?.length}` : `0${pendingApplications?.length}`}</span>
                 <span className="text-[#202124] font-medium text-sm">Pending</span>
               </div>
             </div>
@@ -82,7 +86,7 @@ const Page = () => {
                 <MdOutlinePendingActions size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#f9ab00] text-3xl font-semibold">05</span>
+                <span className="text-[#f9ab00] text-3xl font-semibold">{activeApplications?.length > 10 ? `${activeApplications?.length}` : `0${activeApplications?.length}`}</span>
                 <span className="text-[#202124] font-medium text-sm">Active</span>
               </div>
             </div>
@@ -92,7 +96,7 @@ const Page = () => {
                 <MdBookmarkBorder size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#34a853] text-3xl font-semibold">09</span>
+                <span className="text-[#34a853] text-3xl font-semibold">{shortlistedApplications?.length > 10 ? `${shortlistedApplications?.length}` : `0${shortlistedApplications?.length}`}</span>
                 <span className="text-[#202124] font-medium text-sm">Shortlisted</span>
               </div>
             </div>
