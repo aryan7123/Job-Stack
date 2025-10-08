@@ -3,6 +3,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import Loader from '@/components/ui/Loader';
+import { FaTrashCan } from "react-icons/fa6";
 
 const page = () => {
   const { data: session } = useSession();
@@ -19,7 +20,13 @@ const page = () => {
             </span>
           </div>
           <div className='bg-white mt-10 shadow rounded-md w-[inherit] p-6'>
-            
+            <h3 className='text-2xl font-semibold mb-2'>Delete Account</h3>
+            <span className='text-slate-400 text-sm font-medium'>Do you want to delete the account? Please press below "Delete" button</span>
+            <br /><br />
+            <button type="button" className='bg-red-600 text-white flex items-center font-semibold gap-1.5 py-2 cursor-pointer px-4 rounded-md transition-colors duration-300 hover:bg-red-700'>
+              <FaTrashCan />
+              <span>Delete</span>
+            </button>
           </div>
         </div>
       </section>
