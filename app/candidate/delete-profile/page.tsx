@@ -2,12 +2,17 @@
 
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import Loader from '@/components/ui/Loader';
 import { FaTrashCan } from "react-icons/fa6";
+import { useCandidateDeleteProfile } from '@/app/queries/candidates/delete-profile';
 
 const page = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id ?? '';
+  const { mutate, isPending } = useCandidateDeleteProfile();
+
+  const handleDeleteProfile = () => {
+    mutate({ candidateId: userId });
+  }
 
   return (
     <>
@@ -23,9 +28,9 @@ const page = () => {
             <h3 className='text-2xl font-semibold mb-2'>Delete Account</h3>
             <span className='text-slate-400 text-sm font-medium'>Do you want to delete the account? Please press below "Delete" button</span>
             <br /><br />
-            <button type="button" className='bg-red-600 text-white flex items-center font-semibold gap-1.5 py-2 cursor-pointer px-4 rounded-md transition-colors duration-300 hover:bg-red-700'>
+            <button disabled={isPending} onClick={handleDeleteProfile} type="button" className='bg-red-600 text-white flex items-center font-semibold gap-1.5 py-2 cursor-pointer px-4 rounded-md transition-colors duration-300 hover:bg-red-700'>
               <FaTrashCan />
-              <span>Delete</span>
+              <span>{isPending ? "Deleting..." : "Delete"}</span>
             </button>
           </div>
         </div>
