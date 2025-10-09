@@ -4,15 +4,18 @@ import React from 'react';
 import { useSession } from 'next-auth/react';
 import { FaTrashCan } from "react-icons/fa6";
 import { useCandidateDeleteProfile } from '@/app/queries/candidates/delete-profile';
+import Loader from '@/components/ui/Loader';
 
 const page = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const userId = session?.user?.id ?? '';
   const { mutate, isPending } = useCandidateDeleteProfile();
 
   const handleDeleteProfile = () => {
     mutate({ candidateId: userId });
   }
+
+  if(status === "loading") return <Loader />
 
   return (
     <>
