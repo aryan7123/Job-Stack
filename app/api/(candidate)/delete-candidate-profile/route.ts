@@ -18,8 +18,14 @@ export async function POST(req: NextRequest) {
 
     await prisma.user.delete({
       where: {
-        id: deleteCandidateProfile.userId,
+        id: deleteCandidateProfile.userId
       },
+    });
+
+    await prisma.jobApplication.deleteMany({
+      where: {
+        userId: deleteCandidateProfile.userId
+      }
     });
 
     return NextResponse.json({
