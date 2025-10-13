@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
-
 import { useSession } from 'next-auth/react';
 import MultipleFileComponent from '@/components/ui/comp-547';
 import { useUpdateEmployerProfile } from '@/app/queries/employers/update-profile';
@@ -88,11 +85,9 @@ const page = () => {
 
   return (
     <>
-      <Navbar />
-
-      <section className='w-full bg-white'>
-        <div className="max-w-6xl mx-auto px-5 md:px-0 py-24">
-          <form encType='multipart/form-data' className="bg-white shadow-sm p-6 rounded-md">
+      <section className='w-full bg-white relative'>
+        <div className="px-5 sm:px-5 md:px-12 py-12">
+          <form encType='multipart/form-data' className="bg-white shadow-sm p-6 rounded-md w-full">
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Employer Details
             </h3>
@@ -277,7 +272,7 @@ const page = () => {
             {isPending ? "Saving..." : "Save Changes"}
             </button>
           </form>
-          <form encType='multipart/form-data' className='bg-white shadow-sm p-6 rounded-md mt-10'>
+          <form encType='multipart/form-data' className='bg-white shadow-sm p-6 rounded-md mt-10 w-full'>
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
               Upload Photos
             </h3>
@@ -285,8 +280,6 @@ const page = () => {
           </form>
         </div>
       </section>
-
-      <Footer />
     </>
   )
 }
