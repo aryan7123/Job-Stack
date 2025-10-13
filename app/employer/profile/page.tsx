@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react'
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import React from 'react';
 import Image from 'next/image';
 import { useEmployerProfile } from '@/app/queries/employers/employer';
 import { useSession } from 'next-auth/react';
@@ -29,8 +27,6 @@ const page = () => {
 
     return (
         <>
-            <Navbar />
-
             <section
                 className="relative w-full py-24 bg-center bg-cover bg-no-repeat"
                 style={{ backgroundImage: `url(${employer?.photos?.[0] || "/default-bg.jpg"})` }}
@@ -66,7 +62,7 @@ const page = () => {
             </section>
 
             <section className='relative w-full'>
-                <div className='max-w-6xl mx-auto md:px-0 px-5 mt-14'>
+                <div className='mt-12 px-5 sm:px-5 md:px-12'>
                     <iframe src={`https://www.google.com/maps?q=${encodeURIComponent(employer?.headquarters)}&output=embed`} width="600" height="450" className='border-0 w-full rounded-md' loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                     <div className='w-[inherit] mt-10'>
                         <h3 className='text-2xl font-semibold'>Overview</h3>
@@ -134,7 +130,7 @@ const page = () => {
                 </div>
             </section>
 
-            <section className='w-full bg-slate-50 mt-14'>
+            <section className='w-full bg-slate-50 mt-12'>
                 <div className='max-w-6xl mx-auto px-5 md:px-0 py-10'>
                     <h3 className='text-2xl font-semibold'>Company Details</h3>
                     <div className='mt-5'>
@@ -171,8 +167,6 @@ const page = () => {
                     </div>
                 </div>
             </section>
-
-            <Footer />
         </>
     )
 }
