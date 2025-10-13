@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState } from 'react'
-
-import Footer from '@/components/ui/Footer';
-import Navbar from '@/components/ui/Navbar';
 import { useSession } from 'next-auth/react';
 import { usePostJob } from '@/app/queries/jobs/add-jobs';
 
@@ -90,29 +87,32 @@ const page = () => {
 
   return (
     <>
-      <Navbar />
-
-      <section className='w-full relative py-32 bg-top bg-no-repeat bg-cover bg-[url("/banner/bg-CyJjcuYR.jpg")]'>
+      <section className='md:w-[78rem] w-screen relative py-32 bg-top bg-no-repeat bg-cover bg-[url("/banner/bg-CyJjcuYR.jpg")] overflow-hidden'>
         <div className="absolute inset-0 bg-emerald-900/90 z-0"></div>
+
         <div className='relative z-10 flex items-center justify-center text-white md:text-3xl text-2xl tracking-wide font-semibold'>
           Job Post
         </div>
 
-        <Breadcrumb className='w-[inherit] absolute bottom-5 z-10 flex items-center justify-center'>
+        <Breadcrumb className='w-full absolute bottom-5 z-10 flex items-center justify-center'>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className='text-base font-semibold text-white/50 transition-colors duration-500 hover:text-white'>Home</BreadcrumbLink>
+              <BreadcrumbLink href="/" className='text-base font-semibold text-white/50 transition-colors duration-500 hover:text-white'>
+                Home
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className='text-base font-semibold' />
             <BreadcrumbItem>
-              <BreadcrumbPage className='text-base font-semibold text-white'>Job Post</BreadcrumbPage>
+              <BreadcrumbPage className='text-base font-semibold text-white'>
+                Job Post
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </section>
 
       <section className='w-full bg-slate-50 py-24'>
-        <div className='px-5 md:px-0 flex justify-center mx-auto'>
+        <div className='px-5 sm:px-5 md:px-12 flex justify-center mx-auto'>
           <div className='w-full md:w-2/4 p-6 bg-white shadow-sm shadow-gray-200 rounded-md'>
             <form className='w-full text-left'>
               <h3 className='text-xl font-semibold mb-5'>Job Details</h3>
@@ -182,8 +182,6 @@ const page = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </>
   )
 }
