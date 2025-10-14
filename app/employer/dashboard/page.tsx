@@ -16,13 +16,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 interface JobsProps {
-  jobs: {
-    id: string;
-    title: string;
-    postedAt: Date;
-    type: string;
-    salary: string;
-    location: string;
+  id: string,
+  location: string,
+  postedAt: string,
+  type: string,
+  title: string,
+  salary: string,
+  company: {
+    name: string,
+    companyLogo: string
   }
 }
 
@@ -91,20 +93,20 @@ const Page = () => {
               </div>
             </div>
           </div>
-          {employer && employer.length > 0 && (
+          {employer.jobs && employer.jobs.length > 0 && (
             <div className='w-[inherit] my-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
               <h3 className='text-xl font-semibold'>Jobs Applied Recently</h3>
               <div className='grid md:grid-cols-2 gap-6 mt-6'>
                 {employer.jobs.map((item: JobsProps, index: React.Key) => (
                   <Link target='_blank' href={{
-                    pathname: `/job-details/${item.job?.id}`,
+                    pathname: `/job-details/${item?.id}`,
                     query: {
-                      title: item.job?.title
+                      title: item?.title
                     }
                   }} key={index} className='flex items-start gap-4 bg-white border border-[#ecedf2] rounded-md p-4 transition-transform duration-500 hover:scale-[1.02] cursor-pointer'>
                     <Image
-                      src={item.job?.company.companyLogo}
-                      alt={item.job?.company.name}
+                      src={employer.companyLogo}
+                      alt={employer.name}
                       width={50}
                       height={50}
                       className='w-12 h-12 object-contain rounded-md'
@@ -112,24 +114,23 @@ const Page = () => {
                       quality={100}
                     />
                     <div className='flex flex-col items-start justify-start'>
-                      <h3 className='md:text-base text-sm font-semibold'>{item.job?.title}</h3>
+                      <h3 className='md:text-base text-sm font-semibold'>{item?.title}</h3>
                       <div className='flex md:flex-row flex-col md:items-center items-start gap-3 mt-2'>
                         <div className='flex items-center gap-1'>
                           <IoLocationOutline size={14} />
-                          <span className='text-sm text-slate-500 font-medium'>{item.job?.location}</span>
+                          <span className='text-sm text-slate-500 font-medium'>{item?.location}</span>
                         </div>
                         <div className='flex items-center gap-1'>
                           <CiClock1 size={14} />
-                          <span className='text-sm text-slate-500 font-medium'>{formatDistanceToNow(item?.appliedAt)}</span>
+                          <span className='text-sm text-slate-500 font-medium'>{formatDistanceToNow(item?.postedAt)}</span>
                         </div>
                         <div className='flex items-center gap-1.5'>
                           <BsCashCoin size={14} />
-                          <span className='text-xs text-slate-500 font-medium'>{item.job?.salary}</span>
+                          <span className='text-xs text-slate-500 font-medium'>{item?.salary}</span>
                         </div>
                       </div>
                       <div className='flex items-center gap-3 mt-2'>
-                        <div className='bg-[#1967d226] text-[#1967d2] text-xs rounded-full px-4 py-2'>{item.job?.type}</div>
-                        <div className='bg-[#34a85326] text-[#34a853] text-xs rounded-full px-4 py-2'>{item?.status}</div>
+                        <div className='bg-[#1967d226] text-[#1967d2] text-xs rounded-full px-4 py-2'>{item?.type}</div>
                       </div>
                     </div>
                   </Link>
