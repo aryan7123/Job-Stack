@@ -85,7 +85,7 @@ const page = () => {
 
   return (
     <>
-      <section className='w-full bg-white relative'>
+      <section className='md:w-[78rem] w-screen bg-white relative'>
         <div className="px-5 sm:px-5 md:px-12 py-12">
           <form encType='multipart/form-data' className="bg-white shadow-sm p-6 rounded-md w-full">
             <h3 className="text-xl mb-6 font-semibold text-gray-800">
