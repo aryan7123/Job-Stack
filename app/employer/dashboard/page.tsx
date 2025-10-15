@@ -25,7 +25,8 @@ interface JobsProps {
   company: {
     name: string,
     companyLogo: string
-  }
+  },
+  applications: { id: string, status: string }[];
 }
 
 const Page = () => {
@@ -35,6 +36,7 @@ const Page = () => {
   const { data: employer, isPending } = useEmployerProfile(userId);
 
   const noOfPostedJobs = employer?.jobs?.length || "00";
+  const noOfApplications = employer?.jobs?.reduce((acc: number, job: JobsProps) => acc + (job.applications ? job.applications.length : 0), 0) || "00";
 
   if (isPending) return <Loader />
 
@@ -70,7 +72,7 @@ const Page = () => {
                 <FaRegBell size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#d93025] text-3xl font-semibold">00</span>
+                <span className="text-[#d93025] text-3xl font-semibold">{noOfApplications}</span>
                 <span className="text-[#202124] font-medium text-sm">Applications</span>
               </div>
             </div>

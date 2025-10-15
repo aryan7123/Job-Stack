@@ -23,6 +23,9 @@ export async function POST(request: NextRequest) {
             type: true,
             salary: true,
             location: true,
+            applications: {
+              select: { id: true, status: true}
+            }
           },
           orderBy: {
             postedAt: "desc",
