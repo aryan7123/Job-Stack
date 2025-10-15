@@ -34,6 +34,8 @@ const Page = () => {
 
   const { data: employer, isPending } = useEmployerProfile(userId);
 
+  const noOfPostedJobs = employer?.jobs?.length || "00";
+
   if (isPending) return <Loader />
 
   return (
@@ -57,7 +59,7 @@ const Page = () => {
                 <LuBriefcaseBusiness size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#1967d2] text-3xl font-semibold">00</span>
+                <span className="text-[#1967d2] text-3xl font-semibold">{noOfPostedJobs}</span>
                 <span className="text-[#202124] font-medium text-sm">Posted Jobs</span>
               </div>
             </div>
@@ -95,7 +97,7 @@ const Page = () => {
           </div>
           {employer.jobs && employer.jobs.length > 0 && (
             <div className='w-[inherit] my-10 bg-white shadow-md border border-[#ecedf2] rounded-md p-6'>
-              <h3 className='text-xl font-semibold'>Jobs Applied Recently</h3>
+              <h3 className='text-xl font-semibold'>Recently Posted Jobs</h3>
               <div className='grid md:grid-cols-2 gap-6 mt-6'>
                 {employer.jobs.map((item: JobsProps, index: React.Key) => (
                   <Link target='_blank' href={{
