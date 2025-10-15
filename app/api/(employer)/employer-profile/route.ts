@@ -29,8 +29,7 @@ export async function POST(request: NextRequest) {
           },
           orderBy: {
             postedAt: "desc",
-          },
-          take: 3,
+          }
         },
       },
     });

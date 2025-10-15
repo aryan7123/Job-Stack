@@ -82,7 +82,7 @@ const Page = () => {
                 <MdOutlinePendingActions size={40} />
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[#f9ab00] text-3xl font-semibold">00</span>
+                <span className="text-[#f9ab00] text-3xl font-semibold">{noOfPostedJobs}</span>
                 <span className="text-[#202124] font-medium text-sm">Active</span>
               </div>
             </div>
