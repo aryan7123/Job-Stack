@@ -13,7 +13,10 @@ const page = () => {
     const { data: session } = useSession();
     const employerId = session?.user?.id ?? '';
 
-    
+    const { data: applications, isLoading } = useFetchEmployerApplications(employerId);
+    console.log(applications);
+
+    if (isLoading) return <Loader />;
 
     return (
         <>
