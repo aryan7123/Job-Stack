@@ -39,6 +39,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
 
     const searchParams = useSearchParams();
     const jobTitle = searchParams.get("title");
+    const employerId = searchParams.get("employerId");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setJobApplication({
@@ -51,7 +52,8 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
         mutate({
             ...jobApplication,
             userId: session?.user?.id,
-            jobId: id
+            jobId: id,
+            employerId: employerId ?? ""
         });
     }
 

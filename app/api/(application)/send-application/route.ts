@@ -7,12 +7,20 @@ export async function POST(req: NextRequest) {
 
   const userId = formData.get("userId") as string;
   const jobId = formData.get("jobId") as string;
+  const employerId = formData.get("employerId") as string | undefined;
   const cover_letter = formData.get("cover_letter") as File | null;
   const resume = formData.get("resume") as File | null;
 
   if(!userId) {
     return NextResponse.json(
       { error: "You must be logged in to apply" },
+      { status: 400 }
+    );
+  }
+
+  if(!employerId) {
+    return NextResponse.json(
+      { error: "Invalid Employer ID" },
       { status: 400 }
     );
   }
@@ -49,6 +57,7 @@ export async function POST(req: NextRequest) {
     data: {
       userId,
       jobId,
+      companyId: employerId,
       resumeUrl,
       coverLetter: coverUrl,
       status: "Pending",
