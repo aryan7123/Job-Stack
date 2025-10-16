@@ -9,7 +9,7 @@ import Image from "next/image";
 import { MdSpaceDashboard, MdMenu } from "react-icons/md";
 import { BsGearFill, BsFillBriefcaseFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogOut, IoMdApps } from "react-icons/io";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const items = [
@@ -22,6 +22,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             icon: BsFillBriefcaseFill,
             label: "Post a Job",
             path: "/employer/job-post"
+        },
+        {
+            icon: IoMdApps,
+            label: "Applications",
+            path: "/employer/all-applications"
         },
         {
             icon: CgProfile,
