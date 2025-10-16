@@ -22,6 +22,7 @@ interface JobApplyPageProps {
     resume: File | null;
     userId: string | undefined;
     jobId: string | undefined;
+    employerId: string | undefined;
 }
 
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -32,6 +33,7 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
         resume: null,
         userId: "",
         jobId: "",
+        employerId: ""
     });
     const { mutate, isPending, error, isSuccess, data, isError } = useSendJobApplication();
 

@@ -6,6 +6,7 @@ export async function sendJobApplication(data: {
   cover_letter: File | null;
   resume: File | null;
   userId: string | undefined;
+  employerId: string | undefined;
   jobId: string | undefined;
 }) {
   try {
@@ -13,6 +14,7 @@ export async function sendJobApplication(data: {
 
     if (data.userId) formData.append("userId", data.userId);
     if (data.jobId) formData.append("jobId", data.jobId);
+    if(data.employerId) formData.append("employerId", data.employerId);
 
     if (data.cover_letter) formData.append("cover_letter", data.cover_letter);
     if (data.resume) formData.append("resume", data.resume);

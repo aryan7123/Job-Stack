@@ -29,6 +29,7 @@ interface Jobs {
     salary: string;
     postedAt: string;
     company: {
+        id: string;
         name: string;
         companyLogo: string;
     };
@@ -53,7 +54,7 @@ const categories = [
 
 const page = () => {
     const [page, setPage] = useState(1);
-    const { data, error, isFetching } = useFetchAllJobs(page);
+    const { data, isFetching } = useFetchAllJobs(page);
 
     const [searchTerm, setSearchTerm] = useState({
         name: "",
@@ -231,7 +232,8 @@ const page = () => {
                                             <Link href={{
                                                 pathname: `/job-details/${job?.id}`,
                                                 query: {
-                                                    title: job?.title
+                                                    title: job?.title,
+                                                    employerId: job?.company.id
                                                 }
                                             }} key={item} className='group relative overflow-hidden rounded shadow-sm hover:scale-105 shadow-gray-200 transition-transform duration-500 p-5 cursor-pointer'>
                                                 <span className="w-24 text-white p-1 text-center absolute ltr:-rotate-45 rtl:rotate-45 -start-[30px] top-3 bg-yellow-400 flex justify-center">

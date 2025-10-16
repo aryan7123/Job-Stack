@@ -22,7 +22,7 @@ import Link from 'next/link';
 
 const page = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = React.use(params);
-    const { data, error, isFetching } = useFetchJobDetails(id);
+    const { data, isFetching } = useFetchJobDetails(id);
 
     if (isFetching) return <Loader />
 
@@ -86,7 +86,8 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
                                 <Link href={{
                                     pathname: `/job-apply/${data?.details.id}`,
                                     query: {
-                                        title: data?.details.title
+                                        title: data?.details.title,
+                                        employerId: data?.details.company.id
                                     }
                                 }} className='text-white rounded-md bg-emerald-600 text-base font-semibold tracking-wide py-2 px-4 transition-colors duration-500 hover:bg-emerald-700 cursor-pointer'>Apply Now</Link>
                             </div>

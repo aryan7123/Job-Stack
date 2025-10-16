@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
             include: {
                 company: {
                     select: {
+                        id: true,
                         name: true,
                         companyLogo: true
                     }
